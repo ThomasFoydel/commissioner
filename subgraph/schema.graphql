@@ -1,0 +1,57 @@
+type Entry @entity {
+  id: ID! # author id + commission id
+  contributions: [Contribution!]! @derivedFrom(field: "entry")
+  author: User!
+  voteAmount: BigInt!
+  commission: Commission!
+  ipfsPath: String!
+  timestamp: BigInt!
+}
+
+type Commission @entity {
+  id: ID! # commission address
+  submittedEntries: [Entry!]! @derivedFrom(field: "commission")
+  entryCount: BigInt!
+  prompt: String!
+  commissioner: User!
+  winningAuthor: User
+  reward: BigInt!
+  timestamp: BigInt!
+  minTime: BigInt!
+}
+
+# for a specific entry to a specific commission
+# relationship between a contributor and a specific entry
+type Contribution @entity {
+  id: ID! # vote id + author ids
+  transactionHashes: [String!]!
+  author: User!
+  entry: Entry!
+  total: BigInt!
+  vote: Vote! # voter id + commission id
+}
+
+# for all votes of a user to speicific commission, might be for multiple entries
+# relationship between a contributor and a commission
+type Vote @entity {
+  id: ID! # voter id + commission id
+  contributions: [Contribution!]! @derivedFrom(field: "vote")
+  voter: User!
+  commission: Commission!
+}
+
+type User @entity {
+  id: ID! # user address
+  commissions: [Commission!]! @derivedFrom(field: "commissioner")
+  ownEntries: [Entry!]! @derivedFrom(field: "author")
+  entriesMade: BigInt!
+  commissionsCreated: BigInt!
+  commissionsCompleted: BigInt!
+  commissionsCancelled: BigInt!
+  commissionsWon: BigInt!
+  votesEarned: BigInt!
+  votesClaimed: BigInt!
+  votesCast: BigInt!
+  tipsEarned: BigInt! # total value earned from tips
+  valueContributed: BigInt! # total value contributed to own commissions or others
+}
