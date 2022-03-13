@@ -15,7 +15,7 @@
     "console": "cd blockchain; truffle console",
     "compile": "cd blockchain; truffle compile; npm run replace-abi",
     "install-subgraph": "npm ci --prefix subgraph",
-    "install": "npm i -D concurrently; concurrently \"npm i\" \"npm i --prefix blockchain\" \"npm i --prefix subgraph\"",
+    "install-all": "npm i -D concurrently; concurrently \"npm i\" \"npm i --prefix blockchain\" \"npm i --prefix subgraph\"",
     "c-install": "npm i -D concurrently; concurrently \"npm ci\" \"npm ci --prefix blockchain\" \"npm ci --prefix subgraph\"",
     "gbuild": "cd subgraph; graph build;",
     "gcodegen": "cd subgraph; graph codegen;",

@@ -43,4 +43,3 @@ yarn-error.log*
 
 # blockchain
 /blockchain/build
-/blockchain/truffle-config.js
