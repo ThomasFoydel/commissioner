@@ -1,7 +1,7 @@
 {
   "name": "commissioner",
   "version": "1.0.0",
-  "description": "commission, read, write, and vote for immutable, uncesorable writing",
+  "description": "commission, read, write, and vote for immutable, uncensorable writing",
   "directories": {
     "test": "test"
   },
