@@ -39,7 +39,9 @@ yarn-error.log*
 .vercel
 
 # subgraph
-/subgraph/generated
+subgraph/generated
+subgraph/build/
+subgraph/generated/
 
 # blockchain
-/blockchain/build
+blockchain/build
