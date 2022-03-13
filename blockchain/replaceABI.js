@@ -1,11 +1,21 @@
 const fs = require('fs')
-const path = './build/contracts/Factory.json'
-const factoryBuf = fs.readFileSync(path)
+const factoryPath = './build/contracts/Factory.json'
+const factoryBuf = fs.readFileSync(factoryPath)
 const factoryJSON = JSON.parse(factoryBuf)
-const abi = factoryJSON.abi
-const abiString = JSON.stringify(abi)
-fs.mkdir('../subgraph/abis', { recursive: true }, (err) => {
+const factoryAbi = factoryJSON.abi
+const factoryString = JSON.stringify(factoryAbi)
+fs.mkdir('../utils/ethers/ABIs/', { recursive: true }, (err) => {
   if (err) throw err
 })
-fs.writeFileSync('../subgraph/abis/Factory.json', abiString, { recursive: true })
-console.log('New factory contract build ABI successfully written to subgraph directory.')
+fs.writeFileSync('../utils/ethers/ABIs/factoryABI.json', factoryString, { recursive: true })
+console.log('New factory contract ABI successfully written to utils directory.')
+
+const commissionPath = './build/contracts/Commission.json'
+const commissionBuf = fs.readFileSync(commissionPath)
+const commissionJSON = JSON.parse(commissionBuf)
+const commissionAbi = commissionJSON.abi
+const commissionString = JSON.stringify(commissionAbi)
+fs.writeFileSync('../utils/ethers/ABIs/commissionABI.json', commissionString, {
+  recursive: true,
+})
+console.log('New commission contract ABI successfully written to utils directory.')

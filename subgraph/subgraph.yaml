@@ -6,7 +6,7 @@ dataSources:
     name: Factory
     network: ropsten
     source:
-      address: "0x3Af95936d052BC46a565792F6B1830F4063d8BA6"
+      address: '0x3Af95936d052BC46a565792F6B1830F4063d8BA6'
       abi: Factory
       startBlock: 11893698
     mapping:
@@ -21,7 +21,7 @@ dataSources:
         - Contribution
       abis:
         - name: Factory
-          file: ./abis/Factory.json
+          file: ../utils/ethers/ABIs/factoryABI.json
       eventHandlers:
         - event: CommissionCancelled(indexed address,indexed uint256)
           handler: handleCommissionCancelled
