@@ -6,23 +6,14 @@ const comFields = `
     commissioner {
         id
     }
-    submittedEntries @Entry {
+    submittedEntries {
         id
-        ipfsPath       
-        votes {
-            total
-            vote {
-                voter {
-                    id
-                }
-            }
-        }
         author {
             id
-            commissionsWon
-            entriesMade
         }
         voteAmount
+        ipfsPath
+        timestamp
     }
     entryCount
     prompt
@@ -60,14 +51,6 @@ export const userProfileFields = `
     ownEntries {
         id
         ipfsPath
-        votes {
-            total
-            vote {
-                voter {
-                    id
-                }
-            }
-        }
         voteAmount
         commission {
             id
@@ -81,7 +64,6 @@ export const userProfileFields = `
     commissionsCancelled
     commissionsWon
     votesEarned
-    votesClaimed
     votesCast
     tipsEarned 
     valueContributed

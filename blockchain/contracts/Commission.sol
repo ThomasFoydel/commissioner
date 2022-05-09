@@ -8,8 +8,8 @@ interface IFactory {
     function _commissionCancelled() external;
     function _entrySubmitted(string memory _ipfsPath, address _author) external;
     function _winnerChosen(address _winningAuthor, uint256 _reward) external;
-    function _rewardClaimed(address _claimer, uint256 _votesClaimed) external;
     function _winnerTipped(address _winningAuthor, uint256 _amount) external;
+    function _commissionerTipped(address _winningAuthor, uint256 _amount) external;
 }
 
 contract Commission {
@@ -89,7 +89,9 @@ contract Commission {
             "Contract cannot be cancelled once entries have been submitted"
         );
         active = false;
-        commissioner.transfer(address(this).balance);
+        if (address(this).balance > 0) {
+            commissioner.transfer(address(this).balance);
+        }
         factory._commissionCancelled();
     }
 
@@ -131,17 +133,14 @@ contract Commission {
         factory._winnerChosen(winningAuthor, reward);
     }
 
-    function claimReward() public finished {
-        require(votes[msg.sender] > 0, "No votes for you!");
-        uint256 votesForUser = votes[msg.sender];
-        votes[msg.sender] = 0;
-        payable(msg.sender).transfer(votesForUser);
-        factory._rewardClaimed(msg.sender, votesForUser);
-    }
-
     function tipWinner() public payable finished {
         winningAuthor.transfer(msg.value);
         factory._winnerTipped(winningAuthor, msg.value);
+    }
+
+    function tipCommissioner() public payable finished {
+        commissioner.transfer(msg.value);
+        factory._commissionerTipped(commissioner, msg.value);
     }
 
     function getWinningAuthor() public view finished returns (address) {
@@ -158,5 +157,6 @@ contract Commission {
             foreRunner = payable(_author);
         }
         factory._voteSubmitted(_author, msg.sender, msg.value);
+        payable(_author).transfer(msg.value);
     }
 }

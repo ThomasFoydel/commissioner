@@ -6,9 +6,9 @@ dataSources:
     name: Factory
     network: ropsten
     source:
-      address: '0x3Af95936d052BC46a565792F6B1830F4063d8BA6'
+      address: '0x04cAd3baf5A3bdc3E2df6D1fe1A1380D3B80032b'
       abi: Factory
-      startBlock: 11893698
+      startBlock: 12180321
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -31,8 +31,6 @@ dataSources:
           handler: handleEntrySubmitted
         - event: RewardAdded(indexed address,indexed uint256,indexed address)
           handler: handleRewardAdded
-        - event: RewardClaimed(indexed address,indexed uint256,indexed address)
-          handler: handleRewardClaimed
         - event: VoteSubmitted(indexed address,indexed address,uint256,indexed address)
           handler: handleVoteSubmitted
         - event: WinnerChosen(indexed address,indexed uint256,indexed address)

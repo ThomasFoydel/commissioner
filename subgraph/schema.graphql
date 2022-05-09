@@ -18,6 +18,9 @@ type Commission @entity {
   reward: BigInt!
   timestamp: BigInt!
   minTime: BigInt!
+  cancelled: Boolean!
+  active: Boolean!
+  complete: Boolean!
 }
 
 # for a specific entry to a specific commission
@@ -50,7 +53,6 @@ type User @entity {
   commissionsCancelled: BigInt!
   commissionsWon: BigInt!
   votesEarned: BigInt!
-  votesClaimed: BigInt!
   votesCast: BigInt!
   tipsEarned: BigInt! # total value earned from tips
   valueContributed: BigInt! # total value contributed to own commissions or others
