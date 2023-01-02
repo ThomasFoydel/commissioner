@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import { readTextFromIpfs } from '../../utils/ipfs/client'
 
 interface props {
   path: string
@@ -13,9 +13,8 @@ const InterplanetaryContent = (props: props) => {
     let mounted = true
     const fetchContent = async () => {
       try {
-        const result = await axios.get(`https://ipfs.infura.io/ipfs/${path}`)
-        const data = result?.data
-        if (data && typeof data === 'string') setContent(data)
+        const text = await readTextFromIpfs(path)
+        if (text && typeof text === 'string') setContent(text)
         else throw new Error()
       } catch (err) {
         mounted && setContent('Error loading content.')

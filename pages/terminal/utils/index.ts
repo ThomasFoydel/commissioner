@@ -1,17 +1,15 @@
 import { gql } from '@apollo/client'
-import axios from 'axios'
-import { textLine, textWord } from 'crt-terminal'
-import { formatEther } from 'ethers/lib/utils'
 import { DocumentNode } from 'graphql'
-import { client } from '../../../apollo/client'
+import { formatEther } from 'ethers/lib/utils'
+import { textLine, textWord } from 'crt-terminal'
 import { comDetails, userProfileQuery } from '../../../apollo/queries'
+import { readTextFromIpfs } from '../../../utils/ipfs/client'
+import { client } from '../../../apollo/client'
 
 export const getIpfsText = async (path: string) => {
   try {
-    const res = await axios.get(`https://ipfs.infura.io/ipfs/${path}`)
-    return res?.data
+    return await readTextFromIpfs(path)
   } catch (err) {
-    console.log('getIpfsText error: ', err, path)
     return path
   }
 }
