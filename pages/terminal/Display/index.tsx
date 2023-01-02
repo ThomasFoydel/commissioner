@@ -46,7 +46,7 @@ const Display = ({
     handleEntryIpfs,
   },
 }) => (
-  <div style={{ width: '100vw', height: '100vh', background: '#222' }}>
+  <div style={{ width: '100vw', height: 'calc(100vh - 30px)', background: '#222' }}>
     <Terminal
       effects={{ screenEffects: false, scanner: false, textEffects: false }}
       queue={eventQueue}

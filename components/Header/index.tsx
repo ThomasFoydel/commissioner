@@ -22,7 +22,7 @@ const ThemeToggle = () => {
 const Header = () => {
     const { account } = useEthers()
     return (
-        <div className="text-center flex justify-center">
+        <div className="text-center flex justify-center h-[30px]">
             <Link href="/commissions">
                 <p className="link mx-3">all commissions</p>
             </Link>
