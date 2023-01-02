@@ -67,7 +67,11 @@ const Display = ({
           if (!field) return printLine('invalid state field')
           if (field === 'all') return printState()
           return printLine(
-            `${field} state value: ` + String(stateVals[field as keyof typeof printLine])
+            `${field} state value: ` +
+              String(
+                stateVals[field as keyof typeof printLine].id ||
+                  stateVals[field as keyof typeof printLine]
+              )
           )
         }
         if (lcCommand === 'clear' || lcCommand === 'c') return clear()
@@ -81,6 +85,10 @@ const Display = ({
         if (lcCommand.startsWith('details') && page === 'commissions') {
           const index = Number(lcCommand.split(' ')[1])
           return commissionDetails(index)
+        }
+
+        if (lcCommand === 'view commissioner') {
+          return displayUserProfile(stateVals.selectedCommission.commissioner.id)
         }
 
         if (lcCommand === 'create') {

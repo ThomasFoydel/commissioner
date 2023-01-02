@@ -51,7 +51,7 @@ commissions create help man about profile
 const commands = {
   home: 'commissions, create, help, man, about, profile',
   commissions: 'next, back, sort (field), details (index#), go (page)',
-  details: 'view entries, create-entry, view author, return',
+  details: 'view entries, create-entry, view commissioner, return',
   entries: 'next, previous, entry details (index#)',
 }
 
@@ -119,11 +119,12 @@ const Terminal = () => {
     // orderCommissionsDirection,
     // commissionPagination,
     page,
-    selectedCommission: selectedCommission?.id,
+    selectedCommission,
     selectedEntry: selectedEntry?.id,
   }
   const printState = () => {
-    for (const key in stateVals) printLine(`${key}: ${stateVals[key as keyof typeof stateVals]}`)
+    for (const [key, value] of Object.entries(stateVals))
+      printLine(`${key}: ${typeof value === 'object' ? value.id : value}`)
   }
 
   const homePage = () => {
@@ -133,30 +134,27 @@ const Terminal = () => {
   }
   const returnToPreviousPage = () => {
     clear()
-    if (page === 'commissions') changePage('home')
     if (page === 'details') {
       displayCommissions(null, commissionPagination)
-      setPage('commissions')
+      return setPage('commissions')
     }
     if (page === 'entries') {
       setPage('details')
-      setEntriesPagination(0)
       if (selectedCommission) displayCommissionDetails(selectedCommission)
+      return setEntriesPagination(0)
     }
     if (page === 'entry-details') {
-      setPage('entries')
       if (selectedCommission) displayEntries(selectedCommission, null)
+      return setPage('entries')
     }
     if (page === 'vote') {
-      setPage('entry-details')
       if (selectedEntry) refetchAndDisplayEntryDetails()
+      return setPage('entry-details')
     }
     if (page === 'confirm-entry') {
       return createEntryPage()
     }
-    if (page === 'entry-success') {
-      homePage()
-    }
+    return homePage()
   }
   const commissionsPage = () => {
     clear()
@@ -431,7 +429,7 @@ const Terminal = () => {
     handleChooseWinner(selectedCommission, account, printLine, signer, loading)
 
   const displayUserProfile = async (user?: string) =>
-    handleDisplayUser(user || account, printLine, setSelectedUser)
+    handleDisplayUser(user || account, printLine, setSelectedUser, setPage)
 
   return (
     <Display

@@ -57,7 +57,7 @@ export const handleDisplayCommissionDetails = async (
   printLine(
     `commands: view entries, create-entry, ${
       commissioner.id === account.toLowerCase() ? commissionerOptions : ''
-    }view author, return`
+    }view commissioner, return`
   )
   loading(false)
 }
@@ -378,11 +378,13 @@ export const handleVote = async (
 export const handleDisplayUser = async (
   account: string,
   printLine: Function,
-  setSelectedUser: Function
+  setSelectedUser: Function,
+  setPage: Function
 ) => {
   try {
     const user: User = await getUser(account)
     setSelectedUser(user)
+    setPage('profile')
     if (!user) return printLine(`user ${account} not found`)
     printLine(`user id ${account}`)
     printLine(`commissions created: ${user.commissionsCreated}`)
