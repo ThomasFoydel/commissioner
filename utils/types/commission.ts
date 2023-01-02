@@ -52,4 +52,5 @@ export interface CommissionType {
   reward: string
   timestamp: string
   minTime: string
+  active: boolean
 }

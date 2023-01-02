@@ -14,12 +14,47 @@ export const getIpfsText = async (path: string) => {
   }
 }
 
+export const timeStringFromSeconds = (secondsRemaining: number, exact = true) => {
+  let seconds = secondsRemaining || 0
+  seconds = Number(seconds)
+  seconds = Math.abs(seconds)
+
+  const d = Math.floor(seconds / (3600 * 24))
+  const h = Math.floor((seconds % (3600 * 24)) / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  const s = Math.floor(seconds % 60)
+
+  if (exact) {
+    let res = ''
+    res += d > 0 ? `${d}d ` : ''
+    res += h > 0 ? `${h}h ` : ''
+    res += m > 0 ? `${m}m ` : ''
+    res += s > 0 ? `${s}s ` : ''
+    return res || '0s'
+  }
+  if (d > 0) return `${d} day${d > 1 ? 's' : ''}`
+  if (h > 0) return `${h} hour${h > 1 ? 's' : ''}`
+  if (m > 0) return `${m} minute${m > 1 ? 's' : ''}`
+  if (h > 0) return `${s} second${s > 1 ? 's' : ''}`
+  if (s > 0) return `${s} second${s > 1 ? 's' : ''}`
+}
+
 export const makeCommissionString = (
   commission: Commission,
   index: number | null,
   includeDetails: boolean
 ) => {
-  const { winningAuthor, reward, entryCount, timestamp, content, id, commissioner } = commission
+  const {
+    winningAuthor,
+    reward,
+    entryCount,
+    timestamp,
+    content,
+    id,
+    commissioner,
+    minTime,
+    active,
+  } = commission
   const creation = new Date(Number(timestamp) * 1000)
   const winner = `${
     winningAuthor
@@ -31,11 +66,24 @@ export const makeCommissionString = (
   const details = `
     COMMISSIONER: ${commissioner.id}
     ENTRY COUNT: ${entryCount}
+    ${
+      Number(timestamp) + Number(minTime) + 172800 < Date.now() / 1000 && active
+        ? 'PUBLIC TRIGGER OPEN'
+        : Number(timestamp) + Number(minTime) < Date.now() / 1000 && active
+        ? `COMMISSIONER TRIGGER OPEN.\n${timeStringFromSeconds(
+            172800 + Number(timestamp) + Number(minTime) - Date.now() / 1000
+          )} UNTIL PUBLIC TRIGGER.`
+        : `${timeStringFromSeconds(
+            Number(timestamp) + Number(minTime) - Date.now() / 1000
+          )}UNTIL COMMISSIONER TRIGGER OPENS.\n    ${timeStringFromSeconds(
+            172800 + Number(timestamp) + Number(minTime) - Date.now() / 1000
+          )}UNTIL PUBLIC TRIGGER OPENS.`
+    }
     `
 
   const characters = `
 ${index ? `index ${index}` : ''}
-    COMMISION: #${id}
+    COMMISION: ${id}
     CREATED: ${creation.toLocaleTimeString()} ${creation.toLocaleDateString()}${
     includeDetails
       ? details
@@ -43,6 +91,7 @@ ${index ? `index ${index}` : ''}
     `
   }REWARD: ${formatEther(reward)} ETH${winner}
     PROMPT: ${!includeDetails && content.length > 140 ? content.slice(0, 140) + '...' : content}
+  
 `
   return characters
 }
@@ -110,6 +159,8 @@ export const makeCommissionQuery = (
                 winningAuthor
                 reward
                 timestamp
+                minTime
+                active
             }
         }
     `

@@ -20,6 +20,8 @@ const comFields = `
     winningAuthor
     reward
     timestamp
+    minTime
+    active
 `
 
 export const comDetails = gql`
