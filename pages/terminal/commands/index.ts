@@ -158,6 +158,7 @@ export const handleCreateCommission = async (
       const tx = await factoryContract.createCommission(path, minTimeSeconds, options)
       printLine(`creating your commission... transaction hash ${tx.hash}`)
       setTransactionHash(tx.hash)
+      printLine('hang tight this will take a minute...')
       const receipt = await tx.wait()
       if (receipt) printLine('successfully uploaded')
       const comId = receipt.events[0].args.commission
