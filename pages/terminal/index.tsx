@@ -51,7 +51,7 @@ commissions create help man about profile
 const commands = {
   home: 'commissions, create, help, man, about, profile',
   commissions: 'next, back, sort (field), details (index#), go (page)',
-  details: 'view entries, create-entry, return',
+  details: 'view entries, create-entry, view author, return',
   entries: 'next, previous, entry details (index#)',
 }
 

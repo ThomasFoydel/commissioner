@@ -57,7 +57,7 @@ export const handleDisplayCommissionDetails = async (
   printLine(
     `commands: view entries, create-entry, ${
       commissioner.id === account.toLowerCase() ? commissionerOptions : ''
-    }return`
+    }view author, return`
   )
   loading(false)
 }
@@ -621,8 +621,9 @@ export const handleSortCommissions = async (
   displayCommissions: Function
 ) => {
   const field = command.split('sort ')[1]?.trim()
-  if (!commissionOrderFields.includes(field))
+  if (!commissionOrderFields.includes(field)) {
     return printLine(`invalid sort field. valid sort fields: ${commissionOrderFields.join(', ')}`)
+  }
   clear()
   loading(true)
   setOrderCommissionsBy(field)
