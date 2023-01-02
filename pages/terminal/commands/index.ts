@@ -1,12 +1,12 @@
-import { DocumentNode } from 'graphql'
-import { create as ipfsHttpClient } from 'ipfs-http-client'
-import { Interface, parseEther } from 'ethers/lib/utils'
 import { Contract } from 'ethers'
+import { DocumentNode } from 'graphql'
+import { Interface, parseEther } from 'ethers/lib/utils'
 import { JsonRpcSigner } from '@ethersproject/providers'
 import { fetchCommissions, getIpfsText, getUser, makeCommissionString } from '../utils'
-import { client } from '../../../apollo/client'
 import commissionAbi from '../../../utils/ethers/ABIs/commissionABI.json'
 import { ErrorResponse, MetaMaskError } from '../../../utils/types/error'
+import { uploadTextToIpfs } from '../../../utils/ipfs/client'
+import { client } from '../../../apollo/client'
 import {
   commissionOrderFields,
   commissionsPerPage,
@@ -62,18 +62,14 @@ export const handleDisplayCommissionDetails = async (
   loading(false)
 }
 
-const ipfs = ipfsHttpClient({
-  url: 'https://ipfs.infura.io:5001/api/v0',
-})
-
 export const createCommissionIPFS = async (content: string, error: Function) => {
-  let added: any
+  let path: string
   try {
-    added = await ipfs.add(content)
+    path = await uploadTextToIpfs(content)
   } catch (err) {
     error(err)
   }
-  return added?.path || ''
+  return path || ''
 }
 
 export const handleIPFSInput = async (
@@ -195,13 +191,14 @@ export const handleEntryIpfs = async (
 ) => {
   loading(true)
   try {
-    const added = await ipfs.add(content)
-    setEntryPath(added?.path)
+    const path = await uploadTextToIpfs(content)
+    setEntryPath(path)
     loading(false)
-    printLine(`ipfs upload successful. ipfs path: ${added?.path}`)
+    printLine(`ipfs upload successful. ipfs path: ${path}`)
     printLine('do you want to proceed? (yes/no)')
     return true
   } catch (err) {
+    console.log({ err })
     printLine('ipfs upload failed')
     loading(false)
     return false
