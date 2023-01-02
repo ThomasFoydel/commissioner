@@ -53,6 +53,7 @@ const commands = {
   commissions: 'next, back, sort (field), details (index#), go (page)',
   details: 'view entries, create-entry, view commissioner, return',
   entries: 'next, previous, entry details (index#)',
+  profile: 'user commissions, user entries',
 }
 
 const Terminal = () => {

@@ -1,5 +1,6 @@
 import { Terminal } from 'crt-terminal'
 import { line } from '../utils'
+import { aboutMessage, manualMessage } from '../utils/messages'
 
 const Display = ({
   props: {
@@ -196,6 +197,14 @@ const Display = ({
           setPage('profile')
           const id = command.split(' ')[1]
           return displayUserProfile(id)
+        }
+
+        if (lcCommand === 'about') {
+          return printLine(aboutMessage)
+        }
+
+        if (lcCommand === 'man') {
+          return printLine(manualMessage)
         }
 
         printLine(`command "${command}" not recognized`)

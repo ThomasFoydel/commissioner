@@ -24,7 +24,7 @@ contract Factory {
         string prompt, 
         address commission,
         uint minTime
-        );
+    );
     event RewardAdded(address indexed sender, uint256 indexed value, address indexed commission);
     event CommissionCancelled(address indexed commission, uint256 indexed timestamp);
     event EntrySubmitted(address indexed author,string ipfsPath, address indexed commission);
@@ -39,6 +39,7 @@ contract Factory {
     );
 
     function createCommission(string memory prompt, uint256 _minTime) payable public {
+        require(_minTime > 172800); // two days minimum
         Commission newCommission = (new Commission){value: msg.value}(msg.sender, msg.value, prompt, _minTime);
         address payable commissionAddress = payable(address(newCommission));
         deployedCommissions.push(commissionAddress);

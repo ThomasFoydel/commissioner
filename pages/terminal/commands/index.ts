@@ -109,7 +109,7 @@ export const handleRewardInput = async (
 
   printLine(`initial reward of ${reward} eth selected.`)
 
-  printLine('please enter a minimum time in days: ')
+  printLine('please enter a minimum time in days (at least 2): ')
 
   setReward(reward)
   loading(false)
@@ -122,7 +122,11 @@ export const handleMinTimeInput = async (
   printLine: Function
 ) => {
   if (isNaN(Number(minTime))) {
-    printLine('invalid entry. please enter a valid number for the minimum time.')
+    printLine('invalid entry. minimum time must be a number.\nplease select a minimum time in days:')
+    return false
+  }
+  if (Number(minTime) < 2) {
+    printLine('invalid entry. minimum time must be at least 2 days.\nplease select a minimum time in days:')
     return false
   }
   setMinTime(minTime)
