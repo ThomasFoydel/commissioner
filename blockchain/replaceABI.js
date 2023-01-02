@@ -8,7 +8,7 @@ fs.mkdir('../utils/ethers/ABIs/', { recursive: true }, (err) => {
   if (err) throw err
 })
 fs.writeFileSync('../utils/ethers/ABIs/factoryABI.json', factoryString, { recursive: true })
-console.log('New factory contract ABI successfully written to utils directory.')
+console.log('\n\nNew factory contract ABI successfully written to utils directory.')
 
 const commissionPath = './build/contracts/Commission.json'
 const commissionBuf = fs.readFileSync(commissionPath)
@@ -18,4 +18,4 @@ const commissionString = JSON.stringify(commissionAbi)
 fs.writeFileSync('../utils/ethers/ABIs/commissionABI.json', commissionString, {
   recursive: true,
 })
-console.log('New commission contract ABI successfully written to utils directory.')
+console.log('\nNew commission contract ABI successfully written to utils directory.\n')
