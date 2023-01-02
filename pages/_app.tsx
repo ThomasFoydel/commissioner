@@ -1,10 +1,10 @@
-import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { ApolloProvider } from '@apollo/client'
 import { ThemeProvider } from 'next-themes'
+import DappProvider from '../utils/ethers/DappProvider'
 import { client } from '../apollo/client'
-import DappProvider from '../ethers/DappProvider'
 import Header from '../components/Header'
+import '../styles/globals.css'
 import Head from 'next/head'
 
 function MyApp({ Component, pageProps }: AppProps) {
