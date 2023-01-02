@@ -2,7 +2,13 @@ import { Contract } from 'ethers'
 import { DocumentNode } from 'graphql'
 import { Interface, parseEther } from 'ethers/lib/utils'
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { fetchCommissions, getIpfsText, getUser, makeCommissionString } from '../utils'
+import {
+  fetchCommission,
+  fetchCommissions,
+  getIpfsText,
+  getUser,
+  makeCommissionString,
+} from '../utils'
 import commissionAbi from '../../../utils/ethers/ABIs/commissionABI.json'
 import { ErrorResponse, MetaMaskError } from '../../../utils/types/error'
 import { uploadTextToIpfs } from '../../../utils/ipfs/client'
@@ -122,11 +128,15 @@ export const handleMinTimeInput = async (
   printLine: Function
 ) => {
   if (isNaN(Number(minTime))) {
-    printLine('invalid entry. minimum time must be a number.\nplease select a minimum time in days:')
+    printLine(
+      'invalid entry. minimum time must be a number.\nplease select a minimum time in days:'
+    )
     return false
   }
   if (Number(minTime) < 2) {
-    printLine('invalid entry. minimum time must be at least 2 days.\nplease select a minimum time in days:')
+    printLine(
+      'invalid entry. minimum time must be at least 2 days.\nplease select a minimum time in days:'
+    )
     return false
   }
   setMinTime(minTime)
@@ -585,6 +595,18 @@ export const handleCommissionDetails = async (
   setSelectedCommission(commissionsDisplayed[Number(index) - 1])
   setEntriesPagination(0)
   displayCommissionDetails(commissionsDisplayed[Number(index) - 1])
+}
+
+export const handleDisplayCommissionDetailsById = async (
+  printLine: Function,
+  loading: Function,
+  id: string,
+  setSelectedCommission: Function,
+  account: string
+) => {
+  const commission = await fetchCommission(id)
+  setSelectedCommission(commission)
+  handleDisplayCommissionDetails(printLine, loading, commission, account)
 }
 
 export const handleCommissionsDirection = async (

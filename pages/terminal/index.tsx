@@ -41,6 +41,7 @@ import {
   handleEntriesBackPage,
   handleEntriesNextPage,
   handleEntriesDirection,
+  handleDisplayCommissionDetailsById,
 } from './commands'
 
 const bannerText = `
@@ -278,6 +279,9 @@ const Terminal = () => {
       displayCommissionDetails
     )
 
+  const displayCommissionDetailsById = (id: string) =>
+    handleDisplayCommissionDetailsById(printLine, loading, id, setSelectedCommission, account)
+
   const handleCommissionInput = (command: string) => {
     if (!library || !account) return printLine('metamask not connected')
     handleCreateCommission(
@@ -476,6 +480,7 @@ const Terminal = () => {
         commands,
         handleIPFSInput,
         handleEntryIpfs,
+        displayCommissionDetailsById,
       }}
     />
   )

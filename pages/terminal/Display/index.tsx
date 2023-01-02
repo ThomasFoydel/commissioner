@@ -45,6 +45,7 @@ const Display = ({
     commands,
     handleIPFSInput,
     handleEntryIpfs,
+    displayCommissionDetailsById,
   },
 }) => (
   <div style={{ width: '100vw', height: 'calc(100vh - 30px)', background: '#222' }}>
@@ -205,6 +206,12 @@ const Display = ({
 
         if (lcCommand === 'man') {
           return printLine(manualMessage)
+        }
+
+        if (lcCommand.startsWith('commission ')) {
+          clear()
+          const id = command.split(' ')[1]
+          return displayCommissionDetailsById(id)
         }
 
         printLine(`command "${command}" not recognized`)
