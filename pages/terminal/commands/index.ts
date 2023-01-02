@@ -199,7 +199,6 @@ export const handleEntryIpfs = async (
     printLine('do you want to proceed? (yes/no)')
     return true
   } catch (err) {
-    console.log({ err })
     printLine('ipfs upload failed')
     loading(false)
     return false
