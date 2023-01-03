@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
 import { formatEther } from 'ethers/lib/utils'
 import { textLine, textWord } from 'crt-terminal'
-import { comDetails, userProfileQuery } from '../../../apollo/queries'
+import { comDetails, userCommissionsQuery, userProfileQuery } from '../../../apollo/queries'
 import { readTextFromIpfs } from '../../../utils/ipfs/client'
 import { client } from '../../../apollo/client'
 
@@ -101,11 +101,7 @@ export const line = (characters: string) =>
     words: [textWord({ characters })],
   })
 
-export const fetchCommissions = async (getCommissionsQuery: DocumentNode) => {
-  const res = await client.query({ query: getCommissionsQuery, fetchPolicy: 'no-cache' })
-
-  const commissions = res?.data?.commissions
-
+export const addCommissionPromptContent = async (commissions: Commission[]) => {
   const commissionsWithIps = await Promise.all(
     commissions.map(async (com: Commission) => {
       const ipfsData = await getIpfsText(com.prompt)
@@ -113,6 +109,13 @@ export const fetchCommissions = async (getCommissionsQuery: DocumentNode) => {
     })
   )
   return commissionsWithIps
+}
+
+export const fetchCommissions = async (getCommissionsQuery: DocumentNode) => {
+  const res = await client.query({ query: getCommissionsQuery, fetchPolicy: 'no-cache' })
+  const commissions = res?.data?.commissions
+  const commissionsWithPromptContent = await addCommissionPromptContent(commissions)
+  return commissionsWithPromptContent
 }
 
 export const fetchCommission = async (comId: string) => {
@@ -207,4 +210,15 @@ export const makeEntriesQuery = (
 export const getUser = async (user: string) => {
   const res = await client.query({ query: userProfileQuery, variables: { id: user.toLowerCase() } })
   return res?.data?.user
+}
+
+export const getUserCommissions = async (userId: string) => {
+  const res = await client.query({
+    query: userCommissionsQuery,
+    variables: { userId },
+    fetchPolicy: 'no-cache',
+  })
+  const commissions = res?.data?.commissions
+  const commissionsWithPromptContent = await addCommissionPromptContent(commissions)
+  return commissionsWithPromptContent
 }

@@ -33,6 +33,7 @@ export const comDetails = gql`
 `
 
 export const userProfileFields = `
+    id
     commissions {
         submittedEntries @Entry {
             id
@@ -72,9 +73,17 @@ export const userProfileFields = `
 `
 
 export const userProfileQuery = gql`
-        query getUserDetails($id: String!) {
-            user(id: $id) {
-                ${userProfileFields}
-            }
+    query getUserDetails($id: String!) {
+        user(id: $id) {
+            ${userProfileFields}
         }
-    `
+    }
+`
+
+export const userCommissionsQuery = gql`
+    query getUserComs($userId: String!) {
+        commissions(where: {commissioner: $userId}) {
+            ${comFields}
+        }
+    }
+`

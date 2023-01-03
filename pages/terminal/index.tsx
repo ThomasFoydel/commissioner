@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { useEventQueue } from 'crt-terminal'
-import { fetchCommission, line, makeCommissionQuery, makeEntriesQuery } from './utils'
-import { Interface } from 'ethers/lib/utils'
-import { useEthers } from '@usedapp/core'
 import { Contract } from 'ethers'
 import { DocumentNode } from 'graphql'
+import { useEthers } from '@usedapp/core'
+import { Interface } from 'ethers/lib/utils'
+import { useEventQueue } from 'crt-terminal'
+import React, { useState, useEffect } from 'react'
+import { fetchCommission, line, makeCommissionQuery, makeEntriesQuery } from './utils'
+import { commissionsPerPage, entriesPerPage } from '../../utils/constants'
 import factoryABI from '../../utils/ethers/ABIs/factoryABI.json'
 import useGetConfig from '../../utils/customHooks/useGetConfig'
-import { commissionsPerPage, entriesPerPage } from '../../utils/constants'
 import Display from './Display'
 import {
   handleDisplayCommissionDetails,
@@ -42,6 +42,7 @@ import {
   handleEntriesNextPage,
   handleEntriesDirection,
   handleDisplayCommissionDetailsById,
+  handleDisplayUserCommissions,
 } from './commands'
 
 const bannerText = `
@@ -120,6 +121,7 @@ const Terminal = () => {
     // orderCommissionsBy,
     // orderCommissionsDirection,
     // commissionPagination,
+    selectedUser,
     page,
     selectedCommission,
     selectedEntry: selectedEntry?.id,
@@ -436,6 +438,15 @@ const Terminal = () => {
   const displayUserProfile = async (user?: string) =>
     handleDisplayUser(user || account, printLine, setSelectedUser, setPage)
 
+  const displayUserCommissions = (user: User) =>
+    handleDisplayUserCommissions(
+      user,
+      loading,
+      printLine,
+      setCommissionsDisplayed,
+      setPage
+    )
+
   return (
     <Display
       props={{
@@ -481,6 +492,7 @@ const Terminal = () => {
         handleIPFSInput,
         handleEntryIpfs,
         displayCommissionDetailsById,
+        displayUserCommissions,
       }}
     />
   )

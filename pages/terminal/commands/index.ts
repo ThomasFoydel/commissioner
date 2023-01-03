@@ -2,24 +2,26 @@ import { Contract } from 'ethers'
 import { DocumentNode } from 'graphql'
 import { Interface, parseEther } from 'ethers/lib/utils'
 import { JsonRpcSigner } from '@ethersproject/providers'
-import {
-  fetchCommission,
-  fetchCommissions,
-  getIpfsText,
-  getUser,
-  makeCommissionString,
-} from '../utils'
 import commissionAbi from '../../../utils/ethers/ABIs/commissionABI.json'
 import { ErrorResponse, MetaMaskError } from '../../../utils/types/error'
 import { uploadTextToIpfs } from '../../../utils/ipfs/client'
 import { client } from '../../../apollo/client'
 import {
-  commissionOrderFields,
-  commissionsPerPage,
   directions,
   entriesPerPage,
   entrySortFields,
+  commissionsPerPage,
+  commissionOrderFields,
 } from '../../../utils/constants'
+import {
+  getUser,
+  getIpfsText,
+  fetchCommission,
+  fetchCommissions,
+  makeCommissionString,
+  getUserCommissions,
+} from '../utils'
+import { userCommissionsQuery } from '../../../apollo/queries'
 
 export const handleDisplayCommissions = async (
   printLine: Function,
@@ -35,9 +37,7 @@ export const handleDisplayCommissions = async (
   setCommissionsDisplayed(coms)
   const comStrings = coms.map((com, i) => makeCommissionString(com, i + 1, false))
   comStrings.forEach((com) => printLine(com))
-  printLine(`
-
-        `)
+  printLine('\n\n')
   printLine('commands: next, back, sort (field), details (index#), go (page)')
   loading(false)
 }
@@ -413,11 +413,6 @@ export const handleDisplayUser = async (
   } catch (err) {
     printLine(err.message)
   }
-  //   const res = await client.query({
-  //     query: getUserQuery,
-  //     variables,
-  //     fetchPolicy: 'no-cache',
-  //   })
 }
 
 export const handleCreateEntryPage = (
@@ -684,7 +679,7 @@ export const handleCommissionsNext = async (
     commissionPagination + 1,
     commissionsPerPage
   )
-  setCommissionPagination((p) => p + 1)
+  setCommissionPagination((p: number) => p + 1)
   displayCommissions(getCommissionsQuery, commissionPagination + 1)
   loading(false)
 }
@@ -910,4 +905,23 @@ export const handleEntriesDirection = (
   setEntriesPagination(0)
   const query = makeEntriesQuery(sortEntriesBy, direction, 0, entriesPerPage)
   displayEntries(selectedCommission, query)
+}
+
+export const handleDisplayUserCommissions = async (
+  user: User,
+  loading: Function,
+  printLine: Function,
+  setCommissionsDisplayed: Function,
+  setPage: Function
+) => {
+  loading(true)
+  printLine('COMMISSIONS BY ' + user.id)
+  setPage('user commissions')
+  const coms = await getUserCommissions(user.id)
+  setCommissionsDisplayed(coms)
+  const comStrings = coms.map((com, i) => makeCommissionString(com, i + 1, false))
+  comStrings.forEach((com) => printLine(com))
+  printLine('\n\n')
+  printLine('commands: sort (field), details (index#)')
+  loading(false)
 }

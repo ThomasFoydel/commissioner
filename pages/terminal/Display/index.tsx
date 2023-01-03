@@ -1,6 +1,6 @@
 import { Terminal } from 'crt-terminal'
-import { line } from '../utils'
 import { aboutMessage, manualMessage } from '../utils/messages'
+import { line } from '../utils'
 
 const Display = ({
   props: {
@@ -46,6 +46,7 @@ const Display = ({
     handleIPFSInput,
     handleEntryIpfs,
     displayCommissionDetailsById,
+    displayUserCommissions,
   },
 }) => (
   <div style={{ width: '100vw', height: 'calc(100vh - 30px)', background: '#222' }}>
@@ -212,6 +213,10 @@ const Display = ({
           clear()
           const id = command.split(' ')[1]
           return displayCommissionDetailsById(id)
+        }
+
+        if (page === 'profile' && lcCommand === 'user commissions') {
+          return displayUserCommissions(stateVals.selectedUser)
         }
 
         printLine(`command "${command}" not recognized`)
