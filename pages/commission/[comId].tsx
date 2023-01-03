@@ -1,7 +1,8 @@
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import { comDetails } from '../../apollo/queries'
+import CountDown from '../../components/CountDown'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
 import { timeStringFromSeconds } from '../terminal/utils'
 
@@ -11,8 +12,8 @@ const CommissionDetails = () => {
   } = useRouter()
 
   const { data } = useQuery(comDetails, { variables: { comId } })
-  const commission: Commission = data?.commission
-  if (!commission) return <></>
+  const commission: Commission = data?.commission || {}
+
   const {
     id,
     submittedEntries,
@@ -28,12 +29,18 @@ const CommissionDetails = () => {
   const createdDate = new Date(+timestamp * 1000)
   const comTriggerTime = +timestamp + +minTime
   const nowSeconds = Date.now() / 1000
-  const comTriggerTimeSeconds = comTriggerTime
+
   const secondsLeftUntilComTrigger = comTriggerTime - nowSeconds
-  const comTriggerOpen = active && secondsLeftUntilComTrigger <= 0
-  const publicTriggerTimeSeconds = comTriggerTimeSeconds + 172800
-  const secondsLeftUntilPublicTriggerOpens = publicTriggerTimeSeconds - nowSeconds
-  const publicTriggerOpen = active && secondsLeftUntilPublicTriggerOpens <= 0
+  const publicTriggerTime = comTriggerTime + 172800
+  const secondsLeftUntilPublicTriggerOpens = publicTriggerTime - nowSeconds
+
+  const [commissionerTriggerOpen, setCommissionerTriggerOpen] = useState(
+    active && secondsLeftUntilComTrigger <= 0
+  )
+  const [publicTriggerOpen, setPublicTriggerOpen] = useState(
+    active && secondsLeftUntilPublicTriggerOpens <= 0
+  )
+  if (!data?.commission) return <></>
   return (
     <div>
       <p>COMMISSION {commission.id}</p>
@@ -43,21 +50,26 @@ const CommissionDetails = () => {
       <p>{active && 'ACTIVE'}</p>
       {publicTriggerOpen ? (
         <button>PUBLIC TRIGGER OPEN</button>
-      ) : comTriggerOpen ? (
+      ) : commissionerTriggerOpen ? (
         <div>
           <button>COMMISSIONER TRIGGER OPEN</button>
           <p>
-            {timeStringFromSeconds(secondsLeftUntilPublicTriggerOpens)} UNTIL COMMISSIONER TRIGGER
-            OPENS
+            <CountDown endTimestamp={publicTriggerTime} onCompletion={() => setPublicTriggerOpen} />{' '}
+            UNTIL PUBLIC TRIGGER OPENS
           </p>
         </div>
       ) : active ? (
         <div>
           <p>
-            {timeStringFromSeconds(secondsLeftUntilComTrigger)} UNTIL COMMISSIONER TRIGGER OPENS
+            <CountDown
+              endTimestamp={comTriggerTime}
+              onCompletion={() => setCommissionerTriggerOpen(true)}
+            />{' '}
+            UNTIL COMMISSIONER TRIGGER OPENS
           </p>
           <p>
-            {timeStringFromSeconds(secondsLeftUntilPublicTriggerOpens)} UNTIL PUBLIC TRIGGER OPENS
+            <CountDown endTimestamp={publicTriggerTime} onCompletion={() => setPublicTriggerOpen} />{' '}
+            UNTIL PUBLIC TRIGGER OPENS
           </p>
         </div>
       ) : (

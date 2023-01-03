@@ -14,7 +14,7 @@ export const getIpfsText = async (path: string) => {
   }
 }
 
-export const timeStringFromSeconds = (secondsRemaining: number, exact = true) => {
+export const timeStringFromSeconds = (secondsRemaining: number, full = true, exact = false) => {
   let seconds = secondsRemaining || 0
   seconds = Number(seconds)
   seconds = Math.abs(seconds)
@@ -24,6 +24,14 @@ export const timeStringFromSeconds = (secondsRemaining: number, exact = true) =>
   const m = Math.floor((seconds % 3600) / 60)
   const s = Math.floor(seconds % 60)
 
+  if (full) {
+    let res = ''
+    res += `${d}d `
+    res += `${h}h `
+    res += `${m}m `
+    res += `${s}s `
+    return res
+  }
   if (exact) {
     let res = ''
     res += d > 0 ? `${d}d ` : ''
