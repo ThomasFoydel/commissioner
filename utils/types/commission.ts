@@ -45,7 +45,7 @@ export interface CommissionType {
   id: string
   submittedEntries: [EntryType]
   commissioner: UserType
-  winningAuthor: UserType
+  winningAuthor: UserType | null
   entryCount: number
   prompt: string
   content: string

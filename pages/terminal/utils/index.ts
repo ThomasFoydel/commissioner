@@ -159,7 +159,9 @@ export const makeCommissionQuery = (
                 }
                 entryCount
                 prompt
-                winningAuthor
+                winningAuthor {
+                  id
+                }
                 reward
                 timestamp
                 minTime

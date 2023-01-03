@@ -17,7 +17,9 @@ const comFields = `
     }
     entryCount
     prompt
-    winningAuthor
+    winningAuthor {
+        id
+    }
     reward
     timestamp
     minTime

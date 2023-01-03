@@ -39,6 +39,7 @@ export function getCommission(id: string): Commission {
     commission.cancelled = false
     commission.active = true
     commission.complete = false
+    commission.winningAuthor = null
   }
   return commission
 }

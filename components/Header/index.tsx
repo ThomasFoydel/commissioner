@@ -37,7 +37,7 @@ const Header = () => {
             <Link href="/terminal">
                 <p className="link mx-3">terminal</p>
             </Link>
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
         </div>
     )
 }
