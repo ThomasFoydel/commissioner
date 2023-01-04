@@ -37,6 +37,7 @@ const UserProfile = () => {
       <p>COMMISSIONS COMPLETED {commissionsCompleted}</p>
       <p>COMMISSIONS CANCELLED {commissionsCancelled}</p>
 
+      {commissions.length > 0 && <p>COMMISSIONS</p>}
       {commissions.slice(0, 3).map((commission: Commission) => (
         <CommissionSummary key={commission.id} commission={commission} commissionerId={id} />
       ))}
@@ -50,6 +51,7 @@ const UserProfile = () => {
       <p>VALUE CONTRIBUTED {valueContributed}</p>
       <p>TIPS EARNED {tipsEarned}</p>
 
+      {ownEntries.length > 0 && <p>ENTRIES</p>}
       {ownEntries.slice(0, 3).map((entry: Entry) => (
         <EntrySummary key={entry.id} entry={entry} authorId={id} />
       ))}

@@ -4,7 +4,6 @@ import { useEthers } from '@usedapp/core'
 import { Interface } from 'ethers/lib/utils'
 import { H, Level } from 'react-accessible-headings'
 import commissionABI from '../../utils/ethers/ABIs/commissionABI.json'
-import { ErrorResponse } from '../../utils/types/error'
 import TextUpload from '../../components/TextUpload'
 import { toast } from 'react-toastify'
 
@@ -37,11 +36,12 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
         if (onComplete) onComplete()
       }
     } catch (err) {
-      toast.update(toastId, { type: 'error', render: 'entry creation failed!' })
-      if (err instanceof ErrorResponse && err.code === 4001) {
-        return
+      if (err.code === 4001) {
+        toast.error('user rejected in metamask')
+      } else {
+        setError('entry creation failed!')
+        return toast.error('entry creation failed')
       }
-      setError('Transaction failed!')
     }
     setProcessing(false)
   }
