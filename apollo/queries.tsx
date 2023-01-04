@@ -98,6 +98,9 @@ export const entryDetails = gql`
       voteAmount
       voteAmount
       timestamp
+      commission {
+        prompt
+      }
       author {
         id
       }

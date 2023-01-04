@@ -21,14 +21,14 @@ const CommissionDetails = () => {
   const [enterFormOpen, setEnterFormOpen] = useState(false)
 
   const {
-    submittedEntries,
-    commissioner,
+    submittedEntries: entries,
     winningAuthor,
+    commissioner,
     entryCount,
-    prompt,
-    reward,
     timestamp,
     minTime,
+    prompt,
+    reward,
     active,
   } = commission
 
@@ -49,9 +49,8 @@ const CommissionDetails = () => {
 
   if (!data?.commission) return <></>
 
-  const userHasNotSubmittedEntry = submittedEntries.every(
-    (entry: Entry) => entry.author.id !== account.toLowerCase()
-  )
+  const userHasNotSubmittedEntry =
+    account && entries.every((entry: Entry) => entry.author.id !== account.toLowerCase())
   const userCanEnter = account && active && commissioner.id !== account && userHasNotSubmittedEntry
   return (
     <div className="m-2 p-2 border rounded-sm">
@@ -95,10 +94,10 @@ const CommissionDetails = () => {
       <p>
         {entryCount} {Number(entryCount) === 1 ? 'ENTRY' : 'ENTRIES'}
       </p>
-      {submittedEntries.slice(0, 3).map((entry: Entry) => (
+      {entries.slice(0, 3).map((entry: Entry) => (
         <Entry key={entry.id} entry={entry} />
       ))}
-      {submittedEntries.length > 3 && (
+      {entries.length > 3 && (
         <Link href={`/entries/${comId}`}>
           <button>see more entries</button>
         </Link>
@@ -115,17 +114,18 @@ const CommissionDetails = () => {
 }
 
 const Entry = ({ entry }: { entry: Entry }) => (
-  <div className="m-2 p-2 border rounded-sm">
-    <p>ENTRY {truncate(entry.id)}</p>
-    <p>AUTHOR {truncate(entry.author.id)}</p>
-    <p>
-      CONTENT <InterplanetaryContent path={entry.ipfsPath} />
-    </p>
-    <p>
-      {entry.voteAmount} {Number(entry.voteAmount) === 1 ? 'VOTE' : 'VOTES'}
-    </p>
-    <Link href={`/entry/${entry.id}`}>details</Link>
-  </div>
+  <Link href={`/entry/${entry.id}`}>
+    <div className="m-2 p-2 border rounded-sm cursor-pointer">
+      <p>ENTRY {truncate(entry.id)}</p>
+      <p>AUTHOR {truncate(entry.author.id)}</p>
+      <p>
+        CONTENT <InterplanetaryContent path={entry.ipfsPath} />
+      </p>
+      <p>
+        {entry.voteAmount} {Number(entry.voteAmount) === 1 ? 'VOTE' : 'VOTES'}
+      </p>
+    </div>
+  </Link>
 )
 
 export default CommissionDetails
