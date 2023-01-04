@@ -40,6 +40,7 @@ const UserProfile = () => {
       {commissions.slice(0, 3).map((commission: Commission) => (
         <CommissionSummary key={commission.id} commission={commission} commissionerId={id} />
       ))}
+      {commissions.length > 3 && <Link href={`/user/commissions/${id}`}>SEE ALL COMMISSIONS</Link>}
 
       <p>ENTRIES MADE {entriesMade}</p>
       <p>COMMISSIONS WON {commissionsWon}</p>
@@ -52,6 +53,7 @@ const UserProfile = () => {
       {ownEntries.slice(0, 3).map((entry: Entry) => (
         <EntrySummary key={entry.id} entry={entry} authorId={id} />
       ))}
+      {ownEntries.length > 3 && <Link href={`/user/entries/${id}`}>SEE ALL ENTRIES</Link>}
     </div>
   )
 }
