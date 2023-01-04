@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { readTextFromIpfs } from '../../utils/ipfs/client'
 
-interface props {
-  path: string
-}
-
-const InterplanetaryContent = (props: props) => {
-  const { path } = props
+const InterplanetaryContent = ({ path }: { path: string }) => {
   const [content, setContent] = useState('Loading...')
   useEffect(() => {
     if (!path) return

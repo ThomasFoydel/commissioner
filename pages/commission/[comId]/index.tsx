@@ -3,13 +3,12 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useEthers } from '@usedapp/core'
 import { useQuery } from '@apollo/client'
-import InterplanetaryContent from '../../components/InterplanetaryContent'
-import CountDown from '../../components/CountDown'
-import EntryForm from '../../components/EntryForm'
-import { comDetails } from '../../apollo/queries'
 import { formatEther } from 'ethers/lib/utils'
-import { truncate } from '../../utils'
-import EntrySummary from '../../components/EntrySummary'
+import InterplanetaryContent from '../../../components/InterplanetaryContent'
+import EntrySummary from '../../../components/EntrySummary'
+import CountDown from '../../../components/CountDown'
+import EntryForm from '../../../components/EntryForm'
+import { comDetails } from '../../../apollo/queries'
 
 const CommissionDetails = () => {
   const {
@@ -99,7 +98,7 @@ const CommissionDetails = () => {
         <EntrySummary key={entry.id} entry={entry} />
       ))}
       {entries.length > 3 && (
-        <Link href={`/entries/${comId}`}>
+        <Link href={`/commission/${comId}/entries/`}>
           <button>see more entries</button>
         </Link>
       )}

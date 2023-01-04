@@ -1,12 +1,12 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
-import InterplanetaryContent from '../../components/InterplanetaryContent'
-import EntryForm from '../../components/EntryForm'
-import { comDetails } from '../../apollo/queries'
-import { truncate } from '../../utils'
-import Link from 'next/link'
+import InterplanetaryContent from '../../../components/InterplanetaryContent'
+import EntryForm from '../../../components/EntryForm'
+import { comDetails } from '../../../apollo/queries'
+import { truncate } from '../../../utils'
 
 const Entries = () => {
   const { account } = useEthers()

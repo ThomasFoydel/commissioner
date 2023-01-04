@@ -1,13 +1,7 @@
 import React, { useState } from 'react'
 import { uploadTextToIpfs } from '../../utils/ipfs/client'
 
-interface textUploadProps {
-  setPath: Function
-  label: string
-}
-
-const TextUpload = (props: textUploadProps) => {
-  const { setPath, label } = props
+const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) => {
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false)
   const [uploaded, setUploaded] = useState(false)

@@ -1,9 +1,9 @@
+import React from 'react'
+import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
-import { useRouter } from 'next/router'
-import React from 'react'
-import { entryDetails } from '../../apollo/queries'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
+import { entryDetails } from '../../apollo/queries'
 import { truncate } from '../../utils'
 
 const EntryDetails = () => {

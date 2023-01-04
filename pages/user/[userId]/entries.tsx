@@ -1,8 +1,8 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
-import { userEntriesQuery } from '../../../apollo/queries'
 import EntrySummary from '../../../components/EntrySummary'
+import { userEntriesQuery } from '../../../apollo/queries'
 
 const UserEntries = () => {
   const {
