@@ -29,7 +29,7 @@ const EntryDetails = () => {
         COMMISSION PROMPT <InterplanetaryContent path={commission.prompt} />
       </p>
       <p>
-        ENTRY CONTENT <InterplanetaryContent path={ipfsPath} />
+        CONTENT <InterplanetaryContent path={ipfsPath} />
       </p>
       {contributions.map((contribution) => (
         <Contribution key={contribution.id} contribution={contribution} />
