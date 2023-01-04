@@ -26,14 +26,6 @@ const comFields = `
     active
 `
 
-export const comDetails = gql`
-    query getComDetail($comId: String!) {
-        commission(id: $comId) {
-            ${comFields}
-        }
-    }
-`
-
 export const userProfileFields = `
     id
     commissions {
@@ -74,6 +66,14 @@ export const userProfileFields = `
     valueContributed
 `
 
+export const comDetails = gql`
+    query getComDetail($comId: String!) {
+        commission(id: $comId) {
+            ${comFields}
+        }
+    }
+`
+
 export const userProfileQuery = gql`
     query getUserDetails($id: String!) {
         user(id: $id) {
@@ -88,4 +88,25 @@ export const userCommissionsQuery = gql`
             ${comFields}
         }
     }
+`
+
+export const entriesForCommissionQuery = gql`
+  query getUserComs($comId: String!) {
+    entries(where: { commission: $comId }) {
+      id
+      ipfsPath
+      voteAmount
+      voteAmount
+      timestamp
+      author {
+        id
+      }
+      contributions {
+        id
+        transactionHashes
+        total
+        vote
+      }
+    }
+  }
 `
