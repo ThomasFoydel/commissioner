@@ -2,9 +2,9 @@ import { useQuery } from '@apollo/client'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { userProfileQuery } from '../../apollo/queries'
-import CommissionSummary from '../../components/CommissionSummary'
-import EntrySummary from '../../components/EntrySummary'
+import { userProfileQuery } from '../../../apollo/queries'
+import CommissionSummary from '../../../components/CommissionSummary'
+import EntrySummary from '../../../components/EntrySummary'
 
 const UserProfile = () => {
   const {
