@@ -1,22 +1,26 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import { useEthers } from '@usedapp/core'
 import { useQuery } from '@apollo/client'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
 import CountDown from '../../components/CountDown'
+import EntryForm from '../../components/EntryForm'
 import { comDetails } from '../../apollo/queries'
-import { truncate } from '../../utils'
 import { formatEther } from 'ethers/lib/utils'
+import { truncate } from '../../utils'
 
 const CommissionDetails = () => {
   const {
     query: { comId },
   } = useRouter()
+  const { account } = useEthers()
 
-  const { data } = useQuery(comDetails, { variables: { comId } })
+  const { data, refetch } = useQuery(comDetails, { variables: { comId } })
   const commission: Commission = data?.commission || {}
+  const [enterFormOpen, setEnterFormOpen] = useState(false)
 
-  let {
+  const {
     submittedEntries,
     commissioner,
     winningAuthor,
@@ -42,7 +46,13 @@ const CommissionDetails = () => {
   const [publicTriggerOpen, setPublicTriggerOpen] = useState(
     active && secondsLeftUntilPublicTriggerOpens <= 0
   )
+
   if (!data?.commission) return <></>
+
+  const userHasNotSubmittedEntry = submittedEntries.every(
+    (entry: Entry) => entry.author.id !== account.toLowerCase()
+  )
+  const userCanEnter = account && active && commissioner.id !== account && userHasNotSubmittedEntry
   return (
     <div className="m-2 p-2 border rounded-sm">
       <p>COMMISSION {commission.id}</p>
@@ -90,8 +100,15 @@ const CommissionDetails = () => {
       ))}
       {submittedEntries.length > 3 && (
         <Link href={`/entries/${comId}`}>
-          <button>see all entries</button>
+          <button>see more entries</button>
         </Link>
+      )}
+
+      {userCanEnter && (
+        <div>
+          <button onClick={() => setEnterFormOpen((o) => !o)}>ENTER COMMISSION</button>
+          {enterFormOpen && <EntryForm id={String(comId)} onComplete={refetch} />}
+        </div>
       )}
     </div>
   )

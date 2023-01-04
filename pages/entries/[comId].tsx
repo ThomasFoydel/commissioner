@@ -1,10 +1,10 @@
-import { useQuery } from '@apollo/client'
-import { useEthers } from '@usedapp/core'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { comDetails } from '../../apollo/queries'
-import EntryForm from '../../components/EntryForm'
+import { useQuery } from '@apollo/client'
+import { useEthers } from '@usedapp/core'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
+import EntryForm from '../../components/EntryForm'
+import { comDetails } from '../../apollo/queries'
 import { truncate } from '../../utils'
 
 const Entries = () => {
@@ -13,17 +13,16 @@ const Entries = () => {
   const { comId } = router.query
   const { data, refetch } = useQuery(comDetails, { variables: { comId } })
   const commission = data?.commission
-  const entries = commission?.submittedEntries
-
   const [enterFormOpen, setEnterFormOpen] = useState(false)
-  const toggleEnterForm = () => setEnterFormOpen((o) => !o)
 
   if (!commission) return <></>
 
-  const userCanEnter =
-    account &&
-    commission?.commissioner?.id !== account &&
-    entries.every((entry: Entry) => entry?.author?.id !== account.toLowerCase())
+  const { active, submittedEntries, commissioner } = commission
+
+  const userHasNotSubmittedEntry = submittedEntries.every(
+    (entry: Entry) => entry?.author?.id !== account.toLowerCase()
+  )
+  const userCanEnter = account && active && commissioner.id !== account && userHasNotSubmittedEntry
 
   return (
     <div>
@@ -33,14 +32,14 @@ const Entries = () => {
       </p>
       {userCanEnter && (
         <div>
-          <button onClick={toggleEnterForm}>ENTER COMMISSION</button>
+          <button onClick={() => setEnterFormOpen((o) => !o)}>ENTER COMMISSION</button>
           {enterFormOpen && <EntryForm id={String(comId)} onComplete={refetch} />}
         </div>
       )}
-      {entries.length === 0 ? (
+      {submittedEntries.length === 0 ? (
         <p>NO ENTRIES MADE FOR COMMISSION {comId}</p>
       ) : (
-        entries.map((entry: Entry) => <IndividualEntry key={entry.id} entry={entry} />)
+        submittedEntries.map((entry: Entry) => <IndividualEntry key={entry.id} entry={entry} />)
       )}
     </div>
   )
