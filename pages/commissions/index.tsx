@@ -1,7 +1,6 @@
-import { useQuery } from '@apollo/client'
-import Link from 'next/link'
 import React, { useState } from 'react'
-import InterplanetaryContent from '../../components/InterplanetaryContent'
+import { useQuery } from '@apollo/client'
+import CommissionSummary from '../../components/CommissionSummary'
 import { makeCommissionQuery } from '../terminal/utils'
 
 const Commissions = () => {
@@ -18,37 +17,13 @@ const Commissions = () => {
       <div>
         {commissions &&
           commissions.map((commission: Commission) => (
-            <Commission key={commission.id} commission={commission} />
+            <CommissionSummary key={commission.id} commission={commission} />
           ))}
       </div>
     </div>
   )
 }
 
-const Commission = ({ commission }: { commission: Commission }) => {
-  const {
-    id,
-    prompt,
-    active,
-    reward,
-    minTime,
-    timestamp,
-    entryCount,
-    commissioner,
-    winningAuthor,
-    submittedEntries,
-  } = commission
-  return (
-    <Link href={`/commission/${commission.id}`}>
-      <div className="m-2 p-2 border rounded-sm cursor-pointer">
-        <p>COMMISSION {id}</p>
-        <InterplanetaryContent path={prompt} />
-        <p>COMMISSIONER: {commissioner.id}</p>
-        <p>REWARD: {reward}</p>
-        <p>{active ? 'ACTIVE' : 'COMPLETED'}</p>
-      </div>
-    </Link>
-  )
-}
+
 
 export default Commissions

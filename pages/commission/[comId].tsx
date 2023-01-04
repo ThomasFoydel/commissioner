@@ -9,6 +9,7 @@ import EntryForm from '../../components/EntryForm'
 import { comDetails } from '../../apollo/queries'
 import { formatEther } from 'ethers/lib/utils'
 import { truncate } from '../../utils'
+import EntrySummary from '../../components/EntrySummary'
 
 const CommissionDetails = () => {
   const {
@@ -95,7 +96,7 @@ const CommissionDetails = () => {
         {entryCount} {Number(entryCount) === 1 ? 'ENTRY' : 'ENTRIES'}
       </p>
       {entries.slice(0, 3).map((entry: Entry) => (
-        <Entry key={entry.id} entry={entry} />
+        <EntrySummary key={entry.id} entry={entry} />
       ))}
       {entries.length > 3 && (
         <Link href={`/entries/${comId}`}>
@@ -112,20 +113,5 @@ const CommissionDetails = () => {
     </div>
   )
 }
-
-const Entry = ({ entry }: { entry: Entry }) => (
-  <Link href={`/entry/${entry.id}`}>
-    <div className="m-2 p-2 border rounded-sm cursor-pointer">
-      <p>ENTRY {truncate(entry.id)}</p>
-      <p>AUTHOR {truncate(entry.author.id)}</p>
-      <p>
-        CONTENT <InterplanetaryContent path={entry.ipfsPath} />
-      </p>
-      <p>
-        {entry.voteAmount} {Number(entry.voteAmount) === 1 ? 'VOTE' : 'VOTES'}
-      </p>
-    </div>
-  </Link>
-)
 
 export default CommissionDetails
