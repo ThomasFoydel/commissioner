@@ -1,11 +1,13 @@
-import type { AppProps } from 'next/app'
-import { ApolloProvider } from '@apollo/client'
-import { ThemeProvider } from 'next-themes'
-import DappProvider from '../utils/ethers/DappProvider'
-import { client } from '../apollo/client'
-import Header from '../components/Header'
-import '../styles/globals.css'
 import Head from 'next/head'
+import type { AppProps } from 'next/app'
+import { ThemeProvider } from 'next-themes'
+import { ApolloProvider } from '@apollo/client'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import DappProvider from '../utils/ethers/DappProvider'
+import Header from '../components/Header'
+import { client } from '../apollo/client'
+import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -21,6 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </DappProvider>
       </ApolloProvider>
+      <ToastContainer position="bottom-right" />
     </ThemeProvider>
   )
 }

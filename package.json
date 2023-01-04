@@ -35,7 +35,8 @@
     "next-themes": "0.0.15",
     "react": "17.0.2",
     "react-accessible-headings": "^3.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-toastify": "^9.1.1"
   },
   "devDependencies": {
     "@types/node": "17.0.13",

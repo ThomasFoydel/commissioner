@@ -6,6 +6,7 @@ import { H, Level } from 'react-accessible-headings'
 import commissionABI from '../../utils/ethers/ABIs/commissionABI.json'
 import { ErrorResponse } from '../../utils/types/error'
 import TextUpload from '../../components/TextUpload'
+import { toast } from 'react-toastify'
 
 const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) => {
   const [path, setPath] = useState('')
@@ -19,6 +20,7 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!library || !account || !path || processing || complete) return
+    const toastId = toast.info('submitting entry...')
     setError('')
     try {
       const signer = library.getSigner(String(account))
@@ -31,9 +33,11 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
       const receipt = await tx.wait()
       if (receipt) {
         setComplete(true)
+        toast.update(toastId, { type: 'success', render: 'new entry created!' })
         if (onComplete) onComplete()
       }
     } catch (err) {
+      toast.update(toastId, { type: 'error', render: 'entry creation failed!' })
       if (err instanceof ErrorResponse && err.code === 4001) {
         return
       }
