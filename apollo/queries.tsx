@@ -90,9 +90,9 @@ export const userCommissionsQuery = gql`
     }
 `
 
-export const entriesForCommissionQuery = gql`
-  query getUserComs($comId: String!) {
-    entries(where: { commission: $comId }) {
+export const entryDetails = gql`
+  query getEntryDetails($entryId: String!) {
+    entry(id: $entryId) {
       id
       ipfsPath
       voteAmount
