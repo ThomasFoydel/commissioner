@@ -1,8 +1,8 @@
-import { useQuery } from '@apollo/client'
-import { useRouter } from 'next/router'
 import React from 'react'
-import { userCommissionsQuery } from '../../../apollo/queries'
+import { useRouter } from 'next/router'
+import { useQuery } from '@apollo/client'
 import CommissionSummary from '../../../components/CommissionSummary'
+import { userCommissionsQuery } from '../../../apollo/queries'
 
 const UserCommissions = () => {
   const {

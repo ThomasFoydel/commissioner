@@ -66,6 +66,26 @@ export const userProfileFields = `
     valueContributed
 `
 
+export const entryFields = `
+    id
+    ipfsPath
+    voteAmount
+    voteAmount
+    timestamp
+    commission {
+        prompt
+    }
+    author {
+        id
+    }
+    contributions {
+        id
+        transactionHashes
+        total
+        vote
+    }
+`
+
 export const comDetails = gql`
     query getComDetail($comId: String!) {
         commission(id: $comId) {
@@ -90,26 +110,18 @@ export const userCommissionsQuery = gql`
     }
 `
 
+export const userEntriesQuery = gql`
+    query getUserEntries($userId: String!) {
+        entries(where: {author: $userId}) {
+            ${entryFields}
+        }
+    }
+`
+
 export const entryDetails = gql`
   query getEntryDetails($entryId: String!) {
     entry(id: $entryId) {
-      id
-      ipfsPath
-      voteAmount
-      voteAmount
-      timestamp
-      commission {
-        prompt
-      }
-      author {
-        id
-      }
-      contributions {
-        id
-        transactionHashes
-        total
-        vote
-      }
+        ${entryFields}
     }
   }
 `
