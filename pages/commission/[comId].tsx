@@ -56,7 +56,7 @@ const CommissionDetails = () => {
   return (
     <div className="m-2 p-2 border rounded-sm">
       <p>COMMISSION {commission.id}</p>
-      <p>COMMISSIONER {commissioner.id}</p>
+      <Link href={`/user/${commissioner.id}`}>COMMISSIONER {commissioner.id}</Link>
       <p>REWARD: {formatEther(reward)} ETH</p>
       <p>CREATED {createdDate.toLocaleString().toUpperCase()}</p>
       <p>{active && 'ACTIVE'}</p>
