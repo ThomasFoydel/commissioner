@@ -1,10 +1,12 @@
-import { useQuery } from '@apollo/client'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { comDetails } from '../../apollo/queries'
-import CountDown from '../../components/CountDown'
+import { useQuery } from '@apollo/client'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
-import { timeStringFromSeconds } from '../terminal/utils'
+import CountDown from '../../components/CountDown'
+import { comDetails } from '../../apollo/queries'
+import { truncate } from '../../utils'
+import { formatEther } from 'ethers/lib/utils'
 
 const CommissionDetails = () => {
   const {
@@ -14,8 +16,7 @@ const CommissionDetails = () => {
   const { data } = useQuery(comDetails, { variables: { comId } })
   const commission: Commission = data?.commission || {}
 
-  const {
-    id,
+  let {
     submittedEntries,
     commissioner,
     winningAuthor,
@@ -26,6 +27,7 @@ const CommissionDetails = () => {
     minTime,
     active,
   } = commission
+
   const createdDate = new Date(+timestamp * 1000)
   const comTriggerTime = +timestamp + +minTime
   const nowSeconds = Date.now() / 1000
@@ -42,10 +44,10 @@ const CommissionDetails = () => {
   )
   if (!data?.commission) return <></>
   return (
-    <div>
+    <div className="m-2 p-2 border rounded-sm">
       <p>COMMISSION {commission.id}</p>
       <p>COMMISSIONER {commissioner.id}</p>
-      <p>REWARD: {reward}</p>
+      <p>REWARD: {formatEther(reward)} ETH</p>
       <p>CREATED {createdDate.toLocaleString().toUpperCase()}</p>
       <p>{active && 'ACTIVE'}</p>
       {publicTriggerOpen ? (
@@ -75,13 +77,38 @@ const CommissionDetails = () => {
       ) : (
         'COMPLETE'
       )}
-      <p>{entryCount} ENTRIES</p>
       <p>
-        PROMPT: <InterplanetaryContent path={prompt} />
+        PROMPT <InterplanetaryContent path={prompt} />
       </p>
       {winningAuthor && <p>WINNER: {winningAuthor.id}</p>}
+
+      <p>
+        {entryCount} {Number(entryCount) === 1 ? 'ENTRY' : 'ENTRIES'}
+      </p>
+      {submittedEntries.slice(0, 3).map((entry: Entry) => (
+        <Entry key={entry.id} entry={entry} />
+      ))}
+      {submittedEntries.length > 3 && (
+        <Link href={`/entries/${comId}`}>
+          <button>see all entries</button>
+        </Link>
+      )}
     </div>
   )
 }
+
+const Entry = ({ entry }: { entry: Entry }) => (
+  <div className="m-2 p-2 border rounded-sm">
+    <p>ENTRY {truncate(entry.id)}</p>
+    <p>AUTHOR {truncate(entry.author.id)}</p>
+    <p>
+      CONTENT <InterplanetaryContent path={entry.ipfsPath} />
+    </p>
+    <p>
+      {entry.voteAmount} {Number(entry.voteAmount) === 1 ? 'VOTE' : 'VOTES'}
+    </p>
+    <Link href={`/entry/${entry.id}`}>details</Link>
+  </div>
+)
 
 export default CommissionDetails
