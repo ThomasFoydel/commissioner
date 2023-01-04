@@ -74,6 +74,7 @@ export const entryFields = `
     timestamp
     commission {
         prompt
+        id
     }
     author {
         id
