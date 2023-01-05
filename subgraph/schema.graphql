@@ -30,7 +30,7 @@ type Contribution @entity {
   transactionHashes: [String!]!
   author: User!
   entry: Entry!
-  total: BigInt!
+  total: BigInt! # total contributed from voter to specific entry
   vote: Vote! # voter id + commission id
 }
 

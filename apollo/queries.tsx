@@ -119,6 +119,32 @@ export const userEntriesQuery = gql`
     }
 `
 
+export const userVotesQuery = gql`
+  query getUserVotes($userId: String!) {
+    votes(where: { voter: $userId }) {
+      contributions {
+        id
+        author {
+          id
+        }
+        entry {
+          id
+          ipfsPath
+        }
+        total
+      }
+      id
+      commission {
+        id
+        prompt
+        commissioner {
+          id
+        }
+      }
+    }
+  }
+`
+
 export const entryDetails = gql`
   query getEntryDetails($entryId: String!) {
     entry(id: $entryId) {
