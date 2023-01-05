@@ -54,7 +54,6 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
         if (onComplete) onComplete()
       }
     } catch (err) {
-      console.log('err: ', err)
       if (err.code === 4001) toast.error('user rejected in metamask')
       else toast.update(toastId, { type: 'error', render: 'commission creation failed!' })
     }
