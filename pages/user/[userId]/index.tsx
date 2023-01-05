@@ -1,15 +1,19 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
-import { userProfileQuery } from '../../../apollo/queries'
+import { userProfileQuery, userVotesQuery } from '../../../apollo/queries'
 import CommissionSummary from '../../../components/CommissionSummary'
 import EntrySummary from '../../../components/EntrySummary'
+import VoteSummary from '../../../components/VoteSummary'
 
 const UserProfile = () => {
   const router = useRouter()
   const userId = String(router.query.userId).toLowerCase()
   const { data } = useQuery(userProfileQuery, { variables: { id: userId } })
   const user: User | undefined = data?.user
+  const res = useQuery(userVotesQuery, { variables: { userId } })
+  const votes: Vote[] | undefined = res?.data?.votes
+
   if (!user) return <></>
 
   const {
@@ -53,7 +57,11 @@ const UserProfile = () => {
       {ownEntries.slice(0, 3).map((entry: Entry) => (
         <EntrySummary key={entry.id} entry={entry} authorId={id} />
       ))}
-      {ownEntries.length > 3 && <Link href={`/user/entries/${id}`}>SEE ALL ENTRIES</Link>}
+      {ownEntries.length > 3 && <Link href={`/user/${id}/entries`}>SEE ALL ENTRIES</Link>}
+
+      {votes && votes.length > 0 && <p>VOTES</p>}
+      {votes && votes.slice(0, 3).map((vote: Vote) => <VoteSummary key={vote.id} vote={vote} />)}
+      {votes && votes.length > 3 && <Link href={`/user/${id}/votes`}>SEE ALL VOTES</Link>}
     </div>
   )
 }

@@ -34,7 +34,7 @@ type Contribution @entity {
   vote: Vote! # voter id + commission id
 }
 
-# for all votes of a user to speicific commission, might be for multiple entries
+# for all votes of a user to specific commission, might be for multiple entries
 # relationship between a contributor and a commission
 type Vote @entity {
   id: ID! # voter id + commission id

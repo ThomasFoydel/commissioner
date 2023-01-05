@@ -17,6 +17,8 @@ const EntryDetails = () => {
   if (!entry) return <></>
   const { id, author, voteAmount, commission, ipfsPath, timestamp, contributions } = entry
 
+  const userCanVote = account && account.toLowerCase() !== entry.author.id && commission.active
+  
   return (
     <div className="m-2 p-2 border rounded-sm">
       <p>
@@ -36,7 +38,7 @@ const EntryDetails = () => {
         CONTENT <InterplanetaryContent path={ipfsPath} />
       </p>
 
-      <VoteForm onSuccess={refetch} entry={entry} commission={commission} />
+      {userCanVote && <VoteForm onSuccess={refetch} entry={entry} commission={commission} />}
 
       {contributions.map((contribution) => (
         <Contribution key={contribution.id} contribution={contribution} />
