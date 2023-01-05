@@ -79,4 +79,8 @@ contract Factory {
     function _commissionerTipped(address _commissioner, uint256 _amount) external commissionOnly {
         emit CommissionerTipped(_commissioner, _amount, msg.sender, tx.origin);
     }
+
+    function payout() external {
+        payable(deployer).transfer(address(this).balance);
+    }
 }

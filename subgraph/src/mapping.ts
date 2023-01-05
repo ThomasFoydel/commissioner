@@ -160,6 +160,10 @@ export function handleVoteSubmitted(event: VoteSubmitted): void {
   const entryId = `${authorId}${commissionId}`
   const voteId = `${commissionId}${voterId}`
 
+  const commission = getCommission(commissionId)
+  const onepercent = event.params.amount.div(new BigInt(100))
+  commission.reward = commission.reward.plus(onepercent)
+
   const vote = getVote(voteId)
   vote.voter = voterId
   vote.commission = commissionId
