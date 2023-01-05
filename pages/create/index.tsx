@@ -1,4 +1,3 @@
-import React from 'react'
 import CommissionForm from '../../components/CommissionForm'
 
 const Create = () => {

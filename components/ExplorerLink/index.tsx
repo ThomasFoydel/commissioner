@@ -1,4 +1,3 @@
-import React from 'react'
 import { getChainById, useEthers } from '@usedapp/core'
 
 const ExplorerLink = ({ tx, label }: { tx: string; label: string }) => {

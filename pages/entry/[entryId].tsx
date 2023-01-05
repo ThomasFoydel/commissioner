@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
