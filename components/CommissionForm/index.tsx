@@ -13,7 +13,6 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const [path, setPath] = useState('')
   const [processing, setProcessing] = useState(false)
   const [complete, setComplete] = useState(false)
-  const [error, setError] = useState('')
   const [txHash, setTxHash] = useState('')
   const [minTime, setMinTime] = useState(2)
   const [reward, setReward] = useState(0)
@@ -31,13 +30,12 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
     e.preventDefault()
     if (!library || !account || !path || processing || complete) return
     const toastId = toast.info('creating commission...')
-    setError('')
     try {
       const options = {
         value: parseEther(
           reward.toLocaleString('fullwide', {
             useGrouping: false,
-            maximumSignificantDigits: 32,
+            maximumSignificantDigits: 20,
           })
         ).toString(),
       }
@@ -56,12 +54,9 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
         if (onComplete) onComplete()
       }
     } catch (err) {
-      if (err.code === 4001) {
-        toast.error('user rejected in metamask')
-      } else {
-        toast.error('commission creation failed!')
-        setError('Transaction failed!')
-      }
+      console.log('err: ', err)
+      if (err.code === 4001) toast.error('user rejected in metamask')
+      else toast.update(toastId, { type: 'error', render: 'commission creation failed!' })
     }
     setProcessing(false)
   }
@@ -95,6 +90,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
                 onChange={handleMinTime}
                 value={minTime}
                 placeholder="minimum time (days)"
+                min={2}
               />
             </div>
 
@@ -106,6 +102,8 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
                 onChange={handleReward}
                 value={reward}
                 placeholder="minimum time (days)"
+                min="0"
+                step="any"
               />
             </div>
             <button className={`button ${(!path || processing) && 'disabled'}`} type="submit">
@@ -114,7 +112,6 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
           </form>
         </div>
         {(processing || complete) && <p>{complete ? 'Submission complete!' : 'Processing...'}</p>}
-        {error && <p>error: {error}</p>}
         {txHash && <p>txHash: {txHash}</p>}
       </div>
     </div>

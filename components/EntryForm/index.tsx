@@ -11,7 +11,6 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
   const [path, setPath] = useState('')
   const [processing, setProcessing] = useState(false)
   const [complete, setComplete] = useState(false)
-  const [error, setError] = useState('')
   const [txHash, setTxHash] = useState('')
   const { account, library } = useEthers()
 
@@ -20,7 +19,6 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
     e.preventDefault()
     if (!library || !account || !path || processing || complete) return
     const toastId = toast.info('submitting entry...')
-    setError('')
     try {
       const signer = library.getSigner(String(account))
       const commissionContract = new Contract(id, commissionInterface, signer)
@@ -39,7 +37,6 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
       if (err.code === 4001) {
         toast.error('user rejected in metamask')
       } else {
-        setError('entry creation failed!')
         return toast.error('entry creation failed')
       }
     }
@@ -70,7 +67,6 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
           </form>
         </div>
         {(processing || complete) && <p>{complete ? 'Submission complete!' : 'Processing...'}</p>}
-        {error && <p>error: {error}</p>}
         {txHash && <p>txHash: {txHash}</p>}
       </div>
     </div>
