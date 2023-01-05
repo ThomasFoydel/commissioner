@@ -24,14 +24,14 @@ const Header = () => {
   return (
     <div className="text-center flex justify-center h-[30px]">
       <Link href="/commissions">
-        <p className="link mx-3">all commissions</p>
+        <p className="link mx-3">commissions</p>
       </Link>
       <Link href="/create">
-        <p className="link mx-3">create commission</p>
+        <p className="link mx-3">create</p>
       </Link>
       {account && (
         <Link href={`/user/${account.toLowerCase()}`}>
-          <p className="link mx-3">my profile</p>
+          <p className="link mx-3">profile</p>
         </Link>
       )}
       <Link href="/terminal">
