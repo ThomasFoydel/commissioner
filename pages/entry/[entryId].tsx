@@ -6,6 +6,7 @@ import InterplanetaryContent from '../../components/InterplanetaryContent'
 import { entryDetails } from '../../apollo/queries'
 import { truncate } from '../../utils'
 import Link from 'next/link'
+import VoteForm from '../../components/VoteForm'
 
 const EntryDetails = () => {
   const { account } = useEthers()
@@ -17,7 +18,7 @@ const EntryDetails = () => {
   const entry: Entry | undefined = data?.entry
   if (!entry) return <></>
   const { id, author, voteAmount, commission, ipfsPath, timestamp, contributions } = entry
-  
+
   return (
     <div className="m-2 p-2 border rounded-sm">
       <p>
@@ -36,6 +37,9 @@ const EntryDetails = () => {
       <p>
         CONTENT <InterplanetaryContent path={ipfsPath} />
       </p>
+
+      <VoteForm onSuccess={refetch} entry={entry} commission={commission} />
+
       {contributions.map((contribution) => (
         <Contribution key={contribution.id} contribution={contribution} />
       ))}
@@ -45,9 +49,10 @@ const EntryDetails = () => {
 
 const Contribution = ({ contribution }: { contribution: Contribution }) => (
   <div className="m-2 p-2 border rounded-sm">
-    <p>CONTRIBUTION {truncate(contribution.id)}</p>
+    <Link href={`/user/${contribution.vote.voter.id}`}>
+      <p>CONTRIBUTOR {contribution.vote.voter.id}</p>
+    </Link>
     <p>TOTAL {contribution.total}</p>
-    <p>CONTRIBUTOR {contribution.vote.voter}</p>
   </div>
 )
 

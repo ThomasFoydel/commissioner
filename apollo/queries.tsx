@@ -83,7 +83,12 @@ export const entryFields = `
         id
         transactionHashes
         total
-        vote
+        vote {
+            id
+            voter {
+                id
+            }
+        }
     }
 `
 
