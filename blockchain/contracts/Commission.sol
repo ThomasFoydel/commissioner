@@ -157,6 +157,10 @@ contract Commission {
             foreRunner = payable(_author);
         }
         factory._voteSubmitted(_author, msg.sender, msg.value);
-        payable(_author).transfer(msg.value);
+        uint256 onepercent = msg.value.div(100);
+        uint256 voteAfterFees = msg.value.sub(onepercent).sub(onepercent);
+        reward = reward.add(onepercent);
+        payable(address(factory)).transfer(onepercent);
+        payable(_author).transfer(voteAfterFees);
     }
 }
