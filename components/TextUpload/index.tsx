@@ -10,15 +10,17 @@ const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) =>
   const uploadText = async (e: React.FormEvent) => {
     e.preventDefault()
     if (loading || uploaded) return
-    const toastId = toast.info('uploading to ipfs...')
+    toast.info('uploading to ipfs...')
     setLoading(true)
     try {
       const path = await uploadTextToIpfs(text)
       setPath(path)
       setUploaded(true)
-      toast.update(toastId, { type: 'success', render: 'successful upload to ipfs' })
+      toast.dismiss()
+      toast.success('successful upload to ipfs')
     } catch (err) {
-      toast.update(toastId, { type: 'error', render: 'upload to ipfs failed' })
+      toast.dismiss()
+      toast.error('upload to ipfs failed')
     }
     setLoading(false)
   }

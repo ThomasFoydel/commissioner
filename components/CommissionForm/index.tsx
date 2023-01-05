@@ -29,7 +29,9 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!library || !account || !path || processing || complete) return
-    const toastId = toast.info('creating commission...')
+    setProcessing(true)
+    toast.dismiss()
+    toast.info('please approve in metamask')
     try {
       const options = {
         value: parseEther(
@@ -41,21 +43,21 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
       }
       const minTimeSeconds = minTime * 86400
       const tx = await factoryContract.createCommission(path, minTimeSeconds, options)
-
+      toast.info('creating commission...')
       if (tx) {
-        toast.update(toastId, { type: 'info', render: `transaction hash ${truncate(tx.hash)}` })
-        setProcessing(true)
         setTxHash(tx.hash)
       }
       const receipt = await tx.wait()
       if (receipt) {
         setComplete(true)
-        toast.update(toastId, { type: 'success', render: 'new commission created!' })
+        toast.dismiss()
+        toast.success('new commission created!')
         if (onComplete) onComplete()
       }
     } catch (err) {
+      toast.dismiss()
       if (err.code === 4001) toast.error('user rejected in metamask')
-      else toast.update(toastId, { type: 'error', render: 'commission creation failed!' })
+      else toast.error('commission creation failed!')
     }
     setProcessing(false)
   }

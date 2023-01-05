@@ -18,22 +18,23 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!library || !account || !path || processing || complete) return
-    const toastId = toast.info('submitting entry...')
+    setProcessing(true)
+    toast.dismiss()
+    toast.info('please approve in metamask')
     try {
       const signer = library.getSigner(String(account))
       const commissionContract = new Contract(id, commissionInterface, signer)
       const tx = await commissionContract.submitEntry(path)
-      if (tx) {
-        setProcessing(true)
-        setTxHash(tx.hash)
-      }
+      toast.info('submitting entry...')
+      setTxHash(tx.hash)
       const receipt = await tx.wait()
       if (receipt) {
         setComplete(true)
-        toast.update(toastId, { type: 'success', render: 'new entry created!' })
+        toast.success('new entry created!')
         if (onComplete) onComplete()
       }
     } catch (err) {
+      toast.dismiss()
       if (err.code === 4001) {
         toast.error('user rejected in metamask')
       } else {
