@@ -40,21 +40,28 @@ const VoteSummary = ({ vote }: { vote: Vote }) => {
       </Link>
 
       {contributions.map((contribution) => (
-        <div className="m-2 p-2 border rounded-sm">
-          <Link href={`/user/${contribution.author.id}`}>
-            <p>AUTHOR {truncate(contribution.author.id)}</p>
-          </Link>
-          <Link href={`/entry/${contribution.entry.id}`}>
-            <div>
-              <p>ENTRY {truncate(contribution.entry.id)}</p>
-              <p>
-                CONTENT <InterplanetaryContent path={contribution.entry.ipfsPath} />
-              </p>
-            </div>
-          </Link>
-          <p>TOTAL {contribution.total}</p>
-        </div>
+        <ContributionSummary contribution={contribution} key={contribution.id} />
       ))}
+    </div>
+  )
+}
+
+const ContributionSummary = ({ contribution }: { contribution: Contribution }) => {
+  const { author, entry, total } = contribution
+  return (
+    <div className="m-2 p-2 border rounded-sm">
+      <Link href={`/user/${author.id}`}>
+        <p>AUTHOR {truncate(author.id)}</p>
+      </Link>
+      <Link href={`/entry/${entry.id}`}>
+        <div>
+          <p>ENTRY {truncate(entry.id)}</p>
+          <p>
+            CONTENT <InterplanetaryContent path={entry.ipfsPath} />
+          </p>
+        </div>
+      </Link>
+      <p>TOTAL {total}</p>
     </div>
   )
 }
