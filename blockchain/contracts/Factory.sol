@@ -83,4 +83,9 @@ contract Factory {
     function payout() external {
         payable(deployer).transfer(address(this).balance);
     }
+
+    function changePayoutAddress(address _newAddress) external {
+        require (msg.sender == deployer);
+        deployer = _newAddress;
+    }
 }
