@@ -5,9 +5,8 @@ import CommissionSummary from '../../../components/CommissionSummary'
 import { userCommissionsQuery } from '../../../apollo/queries'
 
 const UserCommissions = () => {
-  const {
-    query: { userId },
-  } = useRouter()
+  const router = useRouter()
+  const userId = String(router.query.userId).toLowerCase()
   const { data } = useQuery(userCommissionsQuery, { variables: { userId } })
   const commissions = data?.commissions
   if (!commissions) return <></>

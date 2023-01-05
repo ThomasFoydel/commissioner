@@ -5,9 +5,8 @@ import EntrySummary from '../../../components/EntrySummary'
 import { userEntriesQuery } from '../../../apollo/queries'
 
 const UserEntries = () => {
-  const {
-    query: { userId },
-  } = useRouter()
+  const router = useRouter()
+  const userId = String(router.query.userId).toLowerCase()
   const { data } = useQuery(userEntriesQuery, { variables: { userId } })
   const entries = data?.entries
   if (!entries) return <></>

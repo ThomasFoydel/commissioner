@@ -11,9 +11,8 @@ import EntryForm from '../../../components/EntryForm'
 import { comDetails } from '../../../apollo/queries'
 
 const CommissionDetails = () => {
-  const {
-    query: { comId },
-  } = useRouter()
+  const router = useRouter()
+  const comId = String(router.query.comId).toLowerCase()
   const { account } = useEthers()
 
   const { data, refetch } = useQuery(comDetails, { variables: { comId } })

@@ -10,9 +10,8 @@ import VoteForm from '../../components/VoteForm'
 
 const EntryDetails = () => {
   const { account } = useEthers()
-  const {
-    query: { entryId },
-  } = useRouter()
+  const router = useRouter()
+  const entryId = String(router.query.entryId).toLowerCase()
 
   const { data, refetch } = useQuery(entryDetails, { variables: { entryId } })
   const entry: Entry | undefined = data?.entry

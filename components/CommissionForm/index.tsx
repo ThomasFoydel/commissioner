@@ -7,7 +7,6 @@ import { Interface, parseEther } from 'ethers/lib/utils'
 import factoryABI from '../../utils/ethers/ABIs/factoryABI.json'
 import useGetConfig from '../../utils/customHooks/useGetConfig'
 import TextUpload from '../TextUpload'
-import { truncate } from '../../utils'
 
 const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const [path, setPath] = useState('')

@@ -7,9 +7,8 @@ import CommissionSummary from '../../../components/CommissionSummary'
 import EntrySummary from '../../../components/EntrySummary'
 
 const UserProfile = () => {
-  const {
-    query: { userId },
-  } = useRouter()
+  const router = useRouter()
+  const userId = String(router.query.userId).toLowerCase()
   const { data } = useQuery(userProfileQuery, { variables: { id: userId } })
   const user: User | undefined = data?.user
   if (!user) return <></>
