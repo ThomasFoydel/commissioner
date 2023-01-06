@@ -1,7 +1,6 @@
-const { fiveDays } = require("./helpers")
-
 const Factory = artifacts.require('Factory')
 const Commission = artifacts.require('Commission')
+const { fiveDays } = require("./helpers")
 
 contract('Factory', ([owner, account1]) => {
   let factory

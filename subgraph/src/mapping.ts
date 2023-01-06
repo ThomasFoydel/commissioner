@@ -1,15 +1,14 @@
 import { BigInt } from '@graphprotocol/graph-ts'
+import { User, Commission, Entry, Vote, Contribution } from '../generated/schema'
 import {
-  // Factory,
   CommissionCancelled,
   CommissionCreated,
   EntrySubmitted,
-  RewardAdded,
   VoteSubmitted,
-  WinnerChosen,
   WinnerTipped,
+  WinnerChosen,
+  RewardAdded,
 } from '../generated/Factory/Factory'
-import { User, Commission, Entry, Vote, Contribution } from '../generated/schema'
 
 const ZERO = BigInt.fromI32(0)
 const ONE = BigInt.fromI32(1)
