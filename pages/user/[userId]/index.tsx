@@ -24,7 +24,6 @@ const UserProfile = () => {
     commissions,
     entriesMade,
     votesEarned,
-    votesClaimed,
     commissionsWon,
     valueContributed,
     commissionsCreated,
@@ -49,7 +48,6 @@ const UserProfile = () => {
       <p>COMMISSIONS WON {commissionsWon}</p>
       <p>VOTES EARNED {votesEarned}</p>
       <p>VOTES CAST {votesCast}</p>
-      <p>VOTES CLAIMED {votesClaimed}</p>
       <p>VALUE CONTRIBUTED {valueContributed}</p>
       <p>TIPS EARNED {tipsEarned}</p>
 

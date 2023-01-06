@@ -137,15 +137,6 @@ export function handleRewardAdded(event: RewardAdded): void {
   sender.save()
 }
 
-// export function handleRewardClaimed(event: RewardClaimed): void {
-//   // (address indexed claimer, uint256 indexed votesClaimed, address indexed commission)
-//   const claimerId = event.params.claimer.toHex()
-//   const claimer = getUser(claimerId)
-//   claimer.votesClaimed = claimer.votesClaimed.plus(event.params.votesClaimed)
-
-//   claimer.save()
-// }
-
 export function handleVoteSubmitted(event: VoteSubmitted): void {
   // (address indexed author, address indexed voter, uint256 amount, address commission)
   const authorId = event.params.author.toHex()

@@ -8,7 +8,6 @@ export interface UserType {
   commissionsCancelled: string
   commissionsWon: string
   votesEarned: string
-  votesClaimed: string
   votesCast: string
   tipsEarned: string
   valueContributed: string
