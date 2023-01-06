@@ -39,8 +39,8 @@ contract Factory {
     );
 
     function createCommission(string memory prompt, uint256 _minTime) payable public {
-        require(_minTime > 172800); // two days minimum
-        Commission newCommission = (new Commission){value: msg.value}(msg.sender, msg.value, prompt, _minTime);
+        require(_minTime >= 172800); // two days minimum
+        Commission newCommission = (new Commission){value: msg.value}(msg.sender, msg.value, prompt, _minTime, address(this));
         address payable commissionAddress = payable(address(newCommission));
         deployedCommissions.push(commissionAddress);
         commissionCount++;
@@ -88,4 +88,6 @@ contract Factory {
         require (msg.sender == deployer);
         deployer = _newAddress;
     }
+
+    receive() external payable {}
 }

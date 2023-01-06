@@ -31,6 +31,7 @@ contract Commission {
     bool canBeCancelled = true;
     string public prompt;
     IFactory public factory;
+    address payable factoryAddress;
     mapping(address => bool) entered;
     mapping(address => uint256) public votes;
     Entry[] public entries;
@@ -39,9 +40,11 @@ contract Commission {
         address _commissioner,
         uint256 _reward,
         string memory _prompt,
-        uint256 _minTime
+        uint256 _minTime,
+        address _factoryAddress
     ) payable {
         factory = IFactory(msg.sender);
+        factoryAddress = payable(_factoryAddress);
         commissioner = payable(_commissioner);
         reward = _reward;
         prompt = _prompt;
@@ -129,7 +132,7 @@ contract Commission {
         payable(caller).transfer(tenpercent);
         winningAuthor = foreRunner;
         reward = reward.sub(tenpercent);
-        winningAuthor.transfer(reward.add(votes[winningAuthor]));
+        winningAuthor.transfer(reward);
         factory._winnerChosen(winningAuthor, reward);
     }
 
@@ -158,9 +161,9 @@ contract Commission {
         }
         factory._voteSubmitted(_author, msg.sender, msg.value);
         uint256 onepercent = msg.value.div(100);
-        uint256 voteAfterFees = msg.value.sub(onepercent).sub(onepercent);
+        uint256 voteAfterFees = msg.value.sub(onepercent.mul(2));
         reward = reward.add(onepercent);
-        payable(address(factory)).transfer(onepercent);
+        payable(factoryAddress).transfer(onepercent);
         payable(_author).transfer(voteAfterFees);
     }
 }

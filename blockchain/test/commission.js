@@ -64,7 +64,7 @@ contract('Commission', ([owner, account1, account2, account3, account4, account5
   })
 
   it('Should allow voting on entries', async () => {
-    const voteAmount = '1000000'
+    const voteAmount = '100000000000'
     await commission.submitEntry(ipfsPath)
     const entryCount = await commission.entryCount()
     const entry = await commission.entries(entryCount - 1)
@@ -319,17 +319,18 @@ contract('Commission', ([owner, account1, account2, account3, account4, account5
       value: voteAmount,
     })
 
+    const reward = await commission.reward()
+
     const balancePriorToWin = await web3.eth.getBalance(entry.author)
     await advanceFiveDays()
     await commission.chooseWinner({ from: account1 })
     const balanceAfterWin = await web3.eth.getBalance(entry.author)
     const actualPayout = parseInt(balanceAfterWin) - parseInt(balancePriorToWin)
 
-    const initialRewardMinusCommissionerPayback =
-      parseInt(initialReward) - parseInt(initialReward) / 10
-    const totalReward = initialRewardMinusCommissionerPayback + parseInt(voteAmount)
+    const rewardMinusCommissionerPayback = parseInt(reward) - parseInt(reward) / 10
+
     assert(parseInt(balanceAfterWin) > parseInt(balancePriorToWin))
-    assert(Math.abs(totalReward - actualPayout) < 20000)
+    assert(Math.abs(rewardMinusCommissionerPayback - actualPayout) < 20000)
   })
 
   it('Should pay back 10% of reward to commissioner to disincentivize abandonment', async () => {
@@ -396,15 +397,19 @@ contract('Commission', ([owner, account1, account2, account3, account4, account5
     assert(changeRateDespiteSlippage > 0.99)
   })
 
-  it('Should allow non-winning authors to claim the votes they got', async () => {
+  it('Should send votes to authors', async () => {
     const winningVoteAmount = '50000000000000000'
     const losingVoteAmount = '10000000000000000'
+
     await commission.submitEntry(ipfsPath, { from: account2 })
     const entryCount1 = await commission.entryCount()
     const entry1 = await commission.entries(entryCount1 - 1)
     await commission.submitEntry(ipfsPath, { from: account3 })
     const entryCount2 = await commission.entryCount()
     const entry2 = await commission.entries(entryCount2 - 1)
+    const balance1Prior = await web3.eth.getBalance(entry1.author)
+    const balance2Prior = await web3.eth.getBalance(entry2.author)
+
     await commission.vote(entry1.author, {
       from: account4,
       value: winningVoteAmount,
@@ -413,14 +418,17 @@ contract('Commission', ([owner, account1, account2, account3, account4, account5
       from: account5,
       value: losingVoteAmount,
     })
-    await advanceFiveDays()
-    await commission.chooseWinner({ from: account1 })
-    const balance1 = await web3.eth.getBalance(entry2.author)
-    await commission.claimReward({ from: entry2.author })
-    const balance2 = await web3.eth.getBalance(entry2.author)
-    const balanceDifference = parseInt(balance2) - parseInt(balance1)
-    const changeRateDespiteSlippage = balanceDifference / losingVoteAmount
-    assert(changeRateDespiteSlippage > 0.99)
+
+    const balance1After = await web3.eth.getBalance(entry1.author)
+    const balance2After = await web3.eth.getBalance(entry2.author)
+
+    const difference1 = parseInt(balance1After) - parseInt(balance1Prior)
+    const difference2 = parseInt(balance2After) - parseInt(balance2Prior)
+
+    assert(difference1 === parseInt(winningVoteAmount) * 0.98)
+    assert(difference2 === parseInt(losingVoteAmount) * 0.98)
+    assert(parseInt(balance1After) > parseInt(balance1Prior))
+    assert(parseInt(balance2After) > parseInt(balance2Prior))
   })
 
   it('Should emit a new event with correct data when vote submitted', async () => {
