@@ -1,28 +1,31 @@
 import Link from 'next/link'
-import { useTheme } from 'next-themes'
+// import { useTheme } from 'next-themes'
 import { useEthers } from '@usedapp/core'
 import React, { useEffect, useState } from 'react'
 
-const ThemeToggle = () => {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => {
-    setMounted(true)
-    return () => {
-      setMounted(false)
-    }
-  }, [])
-  const { systemTheme, theme, setTheme } = useTheme()
-  const currentTheme = theme === 'system' ? systemTheme : theme
-  if (currentTheme === 'dark') {
-    return <button onClick={() => mounted && setTheme('light')}>SUN</button>
-  }
-  return <button onClick={() => mounted && setTheme('dark')}>MOON</button>
-}
+// const ThemeToggle = () => {
+//   const [mounted, setMounted] = useState(false)
+//   useEffect(() => {
+//     setMounted(true)
+//     return () => {
+//       setMounted(false)
+//     }
+//   }, [])
+//   const { systemTheme, theme, setTheme } = useTheme()
+//   const currentTheme = theme === 'system' ? systemTheme : theme
+//   if (currentTheme === 'dark') {
+//     return <button onClick={() => mounted && setTheme('light')}>SUN</button>
+//   }
+//   return <button onClick={() => mounted && setTheme('dark')}>MOON</button>
+// }
 
 const Header = () => {
   const { account } = useEthers()
   return (
     <div className="text-center flex justify-center h-[30px]">
+      <Link href="/">
+        <p className="link mx-3">home</p>
+      </Link>
       <Link href="/commissions">
         <p className="link mx-3">commissions</p>
       </Link>
@@ -37,7 +40,7 @@ const Header = () => {
       <Link href="/terminal">
         <p className="link mx-3">terminal</p>
       </Link>
-      <ThemeToggle />
+      {/* <ThemeToggle /> */}
     </div>
   )
 }
