@@ -67,52 +67,55 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   return (
     <div className="w-100">
       <div className="w-50 center bg-card">
-        <TextUpload setPath={setPath} label="Upload Commission Prompt:" />
-        {path && (
-          <p>
-            IPFS Path:{' '}
-            <a
-              href={`https://ipfs.infura.io/ipfs/${path}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {path}
-            </a>
-          </p>
-        )}
-        <div>
-          <form onSubmit={handleSubmit} className="text-center my-3">
-            <div>
-              <label htmlFor="mintime">Minimum Time (days)</label>
-              <input
-                type="number"
-                name="mintime"
-                onChange={handleMinTime}
-                value={minTime}
-                placeholder="minimum time (days)"
-                min={2}
-              />
-            </div>
+        <H>COMMISSION FORM</H>
+        <Level>
+          <TextUpload setPath={setPath} label="Upload Commission Prompt:" />
+          {path && (
+            <p>
+              IPFS Path:{' '}
+              <a
+                href={`https://ipfs.infura.io/ipfs/${path}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {path}
+              </a>
+            </p>
+          )}
+          <div>
+            <form onSubmit={handleSubmit} className="text-center my-3">
+              <div>
+                <label htmlFor="mintime">Minimum Time (days)</label>
+                <input
+                  type="number"
+                  name="mintime"
+                  onChange={handleMinTime}
+                  value={minTime}
+                  placeholder="minimum time (days)"
+                  min={2}
+                />
+              </div>
 
-            <div>
-              <label htmlFor="reward">Reward (ETH)</label>
-              <input
-                type="number"
-                name="reward"
-                onChange={handleReward}
-                value={reward}
-                placeholder="minimum time (days)"
-                min="0"
-                step="any"
-              />
-            </div>
-            <button className={`button ${(!path || processing) && 'disabled'}`} type="submit">
-              Create Commission
-            </button>
-          </form>
-        </div>
-        {(processing || complete) && <p>{complete ? 'Submission complete!' : 'Processing...'}</p>}
-        {txHash && <p>txHash: {txHash}</p>}
+              <div>
+                <label htmlFor="reward">Reward (ETH)</label>
+                <input
+                  type="number"
+                  name="reward"
+                  onChange={handleReward}
+                  value={reward}
+                  placeholder="minimum time (days)"
+                  min="0"
+                  step="any"
+                />
+              </div>
+              <button className={`button ${(!path || processing) && 'disabled'}`} type="submit">
+                Create Commission
+              </button>
+            </form>
+          </div>
+          {(processing || complete) && <p>{complete ? 'Submission complete!' : 'Processing...'}</p>}
+          {txHash && <p>txHash: {txHash}</p>}
+        </Level>
       </div>
     </div>
   )

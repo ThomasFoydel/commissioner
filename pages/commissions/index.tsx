@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
-import CommissionForm from '../../components/CommissionForm'
+import { H, Level } from 'react-accessible-headings'
 import CommissionSummary from '../../components/CommissionSummary'
+import CommissionForm from '../../components/CommissionForm'
 import { makeCommissionQuery } from '../terminal/utils'
 
 const Commissions = () => {
@@ -14,14 +15,16 @@ const Commissions = () => {
   const commissions = data?.commissions
   return (
     <div>
-      <h2>COMMISSIONS</h2>
-      <div>
-        {commissions &&
-          commissions.map((commission: Commission) => (
-            <CommissionSummary key={commission.id} commission={commission} />
-          ))}
-      </div>
-      <CommissionForm onComplete={refetch} />
+      <H>COMMISSIONS</H>
+      <Level>
+        <div>
+          {commissions &&
+            commissions.map((commission: Commission) => (
+              <CommissionSummary key={commission.id} commission={commission} />
+            ))}
+        </div>
+        <CommissionForm onComplete={refetch} />
+      </Level>
     </div>
   )
 }

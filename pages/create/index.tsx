@@ -1,10 +1,13 @@
+import { H, Level } from 'react-accessible-headings'
 import CommissionForm from '../../components/CommissionForm'
 
 const Create = () => {
   return (
     <div>
-      <p>CREATE COMMISSION</p>
-      <CommissionForm />
+      <H>CREATE COMMISSION</H>
+      <Level>
+        <CommissionForm />
+      </Level>
     </div>
   )
 }

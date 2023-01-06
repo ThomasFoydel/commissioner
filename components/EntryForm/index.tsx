@@ -47,28 +47,31 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
   return (
     <div className="w-100">
       <div className="w-50 center bg-card">
-        <TextUpload setPath={setPath} label="Upload Entry:" />
-        {path && (
-          <p>
-            IPFS Path:{' '}
-            <a
-              href={`https://ipfs.infura.io/ipfs/${path}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {path}
-            </a>
-          </p>
-        )}
-        <div>
-          <form onSubmit={handleSubmit} className="text-center my-3">
-            <button className={`button ${(!path || processing) && 'disabled'}`} type="submit">
-              Create Entry
-            </button>
-          </form>
-        </div>
-        {(processing || complete) && <p>{complete ? 'Submission complete!' : 'Processing...'}</p>}
-        {txHash && <p>txHash: {txHash}</p>}
+        <H>ENTRY FORM</H>
+        <Level>
+          <TextUpload setPath={setPath} label="Upload Entry:" />
+          {path && (
+            <p>
+              IPFS Path:{' '}
+              <a
+                href={`https://ipfs.infura.io/ipfs/${path}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {path}
+              </a>
+            </p>
+          )}
+          <div>
+            <form onSubmit={handleSubmit} className="text-center my-3">
+              <button className={`button ${(!path || processing) && 'disabled'}`} type="submit">
+                Create Entry
+              </button>
+            </form>
+          </div>
+          {(processing || complete) && <p>{complete ? 'Submission complete!' : 'Processing...'}</p>}
+          {txHash && <p>txHash: {txHash}</p>}
+        </Level>
       </div>
     </div>
   )

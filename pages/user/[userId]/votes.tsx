@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
+import { H, Level } from 'react-accessible-headings'
 import VoteSummary from '../../../components/VoteSummary'
 import { userVotesQuery } from '../../../apollo/queries'
 
@@ -14,11 +15,13 @@ const UserVotes = () => {
   if (!votes) return <></>
   return (
     <div>
-      <p>{account && userId === account.toLowerCase() ? 'YOUR' : userId} CONTRIBUTIONS</p>
-      {votes.length === 0 && 'NO VOTES'}
-      {votes.map((vote: Vote) => (
-        <VoteSummary key={vote.id} vote={vote} />
-      ))}
+      <H>{account && userId === account.toLowerCase() ? 'YOUR' : userId} CONTRIBUTIONS</H>
+      <Level>
+        {votes.length === 0 && 'NO VOTES'}
+        {votes.map((vote: Vote) => (
+          <VoteSummary key={vote.id} vote={vote} />
+        ))}
+      </Level>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
+import { H, Level } from 'react-accessible-headings'
 import CommissionSummary from '../../../components/CommissionSummary'
 import { userCommissionsQuery } from '../../../apollo/queries'
 
@@ -12,12 +13,14 @@ const UserCommissions = () => {
 
   return (
     <div>
-      <p>ALL COMMISSIONS BY USER {userId}</p>
-      <div>
-        {commissions.map((commission: Commission) => (
-          <CommissionSummary key={commission.id} commission={commission} />
-        ))}
-      </div>
+      <H>ALL COMMISSIONS BY USER {userId}</H>
+      <Level>
+        <div>
+          {commissions.map((commission: Commission) => (
+            <CommissionSummary key={commission.id} commission={commission} />
+          ))}
+        </div>
+      </Level>
     </div>
   )
 }

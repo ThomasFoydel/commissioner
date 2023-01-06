@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useEthers } from '@usedapp/core'
 import { useQuery } from '@apollo/client'
 import { formatEther } from 'ethers/lib/utils'
+import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import EntrySummary from '../../../components/EntrySummary'
 import CountDown from '../../../components/CountDown'
@@ -53,63 +54,71 @@ const CommissionDetails = () => {
   const userCanEnter = account && active && commissioner.id !== account && userHasNotSubmittedEntry
   return (
     <div className="m-2 p-2 border rounded-sm">
-      <p>COMMISSION {commission.id}</p>
-      <Link href={`/user/${commissioner.id}`}>
-        <p>COMMISSIONER {commissioner.id}</p>
-      </Link>
-      <p>REWARD: {formatEther(reward)} ETH</p>
-      <p>CREATED {createdDate.toLocaleString().toUpperCase()}</p>
-      <p>{active && 'ACTIVE'}</p>
-      {publicTriggerOpen ? (
-        <button>PUBLIC TRIGGER OPEN</button>
-      ) : commissionerTriggerOpen ? (
-        <div>
-          <button>COMMISSIONER TRIGGER OPEN</button>
-          <p>
-            <CountDown endTimestamp={publicTriggerTime} onCompletion={() => setPublicTriggerOpen} />{' '}
-            UNTIL PUBLIC TRIGGER OPENS
-          </p>
-        </div>
-      ) : active ? (
-        <div>
-          <p>
-            <CountDown
-              endTimestamp={comTriggerTime}
-              onCompletion={() => setCommissionerTriggerOpen(true)}
-            />{' '}
-            UNTIL COMMISSIONER TRIGGER OPENS
-          </p>
-          <p>
-            <CountDown endTimestamp={publicTriggerTime} onCompletion={() => setPublicTriggerOpen} />{' '}
-            UNTIL PUBLIC TRIGGER OPENS
-          </p>
-        </div>
-      ) : (
-        'COMPLETE'
-      )}
-      <p>
-        PROMPT <InterplanetaryContent path={prompt} />
-      </p>
-      {winningAuthor && <p>WINNER: {winningAuthor.id}</p>}
-
-      <p>
-        {entryCount} {Number(entryCount) === 1 ? 'ENTRY' : 'ENTRIES'}
-      </p>
-      {entries.slice(0, 3).map((entry: Entry) => (
-        <EntrySummary key={entry.id} entry={entry} />
-      ))}
-      {entries.length > 3 && (
-        <Link href={`/commission/${comId}/entries/`}>
-          <button>see more entries</button>
+      <H>COMMISSION {commission.id}</H>
+      <Level>
+        <Link href={`/user/${commissioner.id}`}>
+          <p>COMMISSIONER {commissioner.id}</p>
         </Link>
-      )}
+        <p>REWARD: {formatEther(reward)} ETH</p>
+        <p>CREATED {createdDate.toLocaleString().toUpperCase()}</p>
+        <p>{active && 'ACTIVE'}</p>
+        {publicTriggerOpen ? (
+          <button>PUBLIC TRIGGER OPEN</button>
+        ) : commissionerTriggerOpen ? (
+          <div>
+            <button>COMMISSIONER TRIGGER OPEN</button>
+            <p>
+              <CountDown
+                endTimestamp={publicTriggerTime}
+                onCompletion={() => setPublicTriggerOpen}
+              />{' '}
+              UNTIL PUBLIC TRIGGER OPENS
+            </p>
+          </div>
+        ) : active ? (
+          <div>
+            <p>
+              <CountDown
+                endTimestamp={comTriggerTime}
+                onCompletion={() => setCommissionerTriggerOpen(true)}
+              />{' '}
+              UNTIL COMMISSIONER TRIGGER OPENS
+            </p>
+            <p>
+              <CountDown
+                endTimestamp={publicTriggerTime}
+                onCompletion={() => setPublicTriggerOpen}
+              />{' '}
+              UNTIL PUBLIC TRIGGER OPENS
+            </p>
+          </div>
+        ) : (
+          'COMPLETE'
+        )}
+        <p>
+          PROMPT <InterplanetaryContent path={prompt} />
+        </p>
+        {winningAuthor && <p>WINNER: {winningAuthor.id}</p>}
 
-      {userCanEnter && (
-        <div>
-          <button onClick={() => setEnterFormOpen((o) => !o)}>ENTER COMMISSION</button>
-          {enterFormOpen && <EntryForm id={String(comId)} onComplete={refetch} />}
-        </div>
-      )}
+        <p>
+          {entryCount} {Number(entryCount) === 1 ? 'ENTRY' : 'ENTRIES'}
+        </p>
+        {entries.slice(0, 3).map((entry: Entry) => (
+          <EntrySummary key={entry.id} entry={entry} />
+        ))}
+        {entries.length > 3 && (
+          <Link href={`/commission/${comId}/entries/`}>
+            <button>see more entries</button>
+          </Link>
+        )}
+
+        {userCanEnter && (
+          <div>
+            <button onClick={() => setEnterFormOpen((o) => !o)}>ENTER COMMISSION</button>
+            {enterFormOpen && <EntryForm id={String(comId)} onComplete={refetch} />}
+          </div>
+        )}
+      </Level>
     </div>
   )
 }

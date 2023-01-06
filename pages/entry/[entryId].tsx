@@ -1,11 +1,12 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
+import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
 import { entryDetails } from '../../apollo/queries'
-import { truncate } from '../../utils'
-import Link from 'next/link'
 import VoteForm from '../../components/VoteForm'
+import { truncate } from '../../utils'
 
 const EntryDetails = () => {
   const { account } = useEthers()
@@ -18,31 +19,33 @@ const EntryDetails = () => {
   const { id, author, voteAmount, commission, ipfsPath, timestamp, contributions } = entry
 
   const userCanVote = account && account.toLowerCase() !== entry.author.id && commission.active
-  
+
   return (
     <div className="m-2 p-2 border rounded-sm">
-      <p>
+      <H>
         {account === author.id.toLocaleLowerCase() && 'YOUR '}ENTRY {truncate(id)}
-      </p>
-      <Link href={`/user/${author.id}`}>
-        <p>AUTHOR {author.id}</p>
-      </Link>
-      <p>SUBMITTED {new Date(+timestamp * 1000).toLocaleString()}</p>
-      <p>VOTES {voteAmount}</p>
-      <Link href={`/commission/${commission.id}`}>
+      </H>
+      <Level>
+        <Link href={`/user/${author.id}`}>
+          <p>AUTHOR {author.id}</p>
+        </Link>
+        <p>SUBMITTED {new Date(+timestamp * 1000).toLocaleString()}</p>
+        <p>VOTES {voteAmount}</p>
+        <Link href={`/commission/${commission.id}`}>
+          <p>
+            COMMISSION PROMPT <InterplanetaryContent path={commission.prompt} />
+          </p>
+        </Link>
         <p>
-          COMMISSION PROMPT <InterplanetaryContent path={commission.prompt} />
+          CONTENT <InterplanetaryContent path={ipfsPath} />
         </p>
-      </Link>
-      <p>
-        CONTENT <InterplanetaryContent path={ipfsPath} />
-      </p>
 
-      {userCanVote && <VoteForm onSuccess={refetch} entry={entry} commission={commission} />}
+        {userCanVote && <VoteForm onSuccess={refetch} entry={entry} commission={commission} />}
 
-      {contributions.map((contribution) => (
-        <Contribution key={contribution.id} contribution={contribution} />
-      ))}
+        {contributions.map((contribution) => (
+          <Contribution key={contribution.id} contribution={contribution} />
+        ))}
+      </Level>
     </div>
   )
 }
@@ -50,9 +53,11 @@ const EntryDetails = () => {
 const Contribution = ({ contribution }: { contribution: Contribution }) => (
   <div className="m-2 p-2 border rounded-sm">
     <Link href={`/user/${contribution.vote.voter.id}`}>
-      <p>CONTRIBUTOR {contribution.vote.voter.id}</p>
+      <H>CONTRIBUTOR {contribution.vote.voter.id}</H>
     </Link>
-    <p>TOTAL {contribution.total}</p>
+    <Level>
+      <p>TOTAL {contribution.total}</p>
+    </Level>
   </div>
 )
 
