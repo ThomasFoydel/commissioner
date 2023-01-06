@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
@@ -8,6 +9,7 @@ import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import EntryForm from '../../../components/EntryForm'
 import { comDetails } from '../../../apollo/queries'
 import { truncate } from '../../../utils'
+import Layout from '../../layouts/CRT'
 
 const Entries = () => {
   const { account } = useEthers()
@@ -64,6 +66,10 @@ const IndividualEntry = ({ entry }: { entry: Entry }) => {
       </div>
     </Link>
   )
+}
+
+Entries.getLayout = function getLayout(page: NextPage) {
+  return <Layout>{page}</Layout>
 }
 
 export default Entries

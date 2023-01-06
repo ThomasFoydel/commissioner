@@ -1,9 +1,11 @@
+import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { H, Level } from 'react-accessible-headings'
 import VoteSummary from '../../../components/VoteSummary'
 import { userVotesQuery } from '../../../apollo/queries'
+import Layout from '../../layouts/CRT'
 
 const UserVotes = () => {
   const { account } = useEthers()
@@ -24,6 +26,10 @@ const UserVotes = () => {
       </Level>
     </div>
   )
+}
+
+UserVotes.getLayout = function getLayout(page: NextPage) {
+  return <Layout>{page}</Layout>
 }
 
 export default UserVotes

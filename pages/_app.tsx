@@ -1,15 +1,22 @@
 import Head from 'next/head'
-import type { AppProps } from 'next/app'
+import { ReactNode } from 'react'
+import { NextComponentType } from 'next'
 import { ThemeProvider } from 'next-themes'
 import 'react-toastify/dist/ReactToastify.css'
 import { ApolloProvider } from '@apollo/client'
 import { ToastContainer } from 'react-toastify'
+import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app'
 import DappProvider from '../utils/ethers/DappProvider'
 import Header from '../components/Header'
 import { client } from '../apollo/client'
 import '../styles/globals.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
+  Component,
+  pageProps,
+}: AppLayoutProps) => {
+  const getLayout = Component.getLayout || ((page: ReactNode) => page)
+
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <ApolloProvider client={client}>
@@ -20,7 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <Header />
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </DappProvider>
       </ApolloProvider>
       <ToastContainer position="bottom-right" />

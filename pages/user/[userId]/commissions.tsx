@@ -1,8 +1,10 @@
+import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { H, Level } from 'react-accessible-headings'
 import CommissionSummary from '../../../components/CommissionSummary'
 import { userCommissionsQuery } from '../../../apollo/queries'
+import Layout from '../../layouts/CRT'
 
 const UserCommissions = () => {
   const router = useRouter()
@@ -23,6 +25,10 @@ const UserCommissions = () => {
       </Level>
     </div>
   )
+}
+
+UserCommissions.getLayout = function getLayout(page: NextPage) {
+  return <Layout>{page}</Layout>
 }
 
 export default UserCommissions

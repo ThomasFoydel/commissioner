@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
@@ -7,6 +8,7 @@ import InterplanetaryContent from '../../components/InterplanetaryContent'
 import { entryDetails } from '../../apollo/queries'
 import VoteForm from '../../components/VoteForm'
 import { truncate } from '../../utils'
+import Layout from '../layouts/CRT'
 
 const EntryDetails = () => {
   const { account } = useEthers()
@@ -60,5 +62,9 @@ const Contribution = ({ contribution }: { contribution: Contribution }) => (
     </Level>
   </div>
 )
+
+EntryDetails.getLayout = function getLayout(page: NextPage) {
+  return <Layout>{page}</Layout>
+}
 
 export default EntryDetails

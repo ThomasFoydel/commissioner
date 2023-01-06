@@ -1,9 +1,11 @@
+import { NextPage } from 'next'
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { H, Level } from 'react-accessible-headings'
 import CommissionSummary from '../../components/CommissionSummary'
 import CommissionForm from '../../components/CommissionForm'
 import { makeCommissionQuery } from '../terminal/utils'
+import Layout from '../layouts/CRT'
 
 const Commissions = () => {
   const [order, setOrder] = useState('created')
@@ -27,6 +29,10 @@ const Commissions = () => {
       </Level>
     </div>
   )
+}
+
+Commissions.getLayout = function getLayout(page: NextPage) {
+  return <Layout>{page}</Layout>
 }
 
 export default Commissions

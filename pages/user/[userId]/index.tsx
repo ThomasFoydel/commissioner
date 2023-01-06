@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { H, Level } from 'react-accessible-headings'
@@ -6,6 +7,7 @@ import { userProfileQuery, userVotesQuery } from '../../../apollo/queries'
 import CommissionSummary from '../../../components/CommissionSummary'
 import EntrySummary from '../../../components/EntrySummary'
 import VoteSummary from '../../../components/VoteSummary'
+import Layout from '../../layouts/CRT'
 
 const UserProfile = () => {
   const router = useRouter()
@@ -66,6 +68,10 @@ const UserProfile = () => {
       </Level>
     </div>
   )
+}
+
+UserProfile.getLayout = function getLayout(page: NextPage) {
+  return <Layout>{page}</Layout>
 }
 
 export default UserProfile

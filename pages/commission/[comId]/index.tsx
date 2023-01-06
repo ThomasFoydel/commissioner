@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useEthers } from '@usedapp/core'
@@ -10,6 +11,7 @@ import EntrySummary from '../../../components/EntrySummary'
 import CountDown from '../../../components/CountDown'
 import EntryForm from '../../../components/EntryForm'
 import { comDetails } from '../../../apollo/queries'
+import Layout from '../../layouts/CRT'
 
 const CommissionDetails = () => {
   const router = useRouter()
@@ -121,6 +123,10 @@ const CommissionDetails = () => {
       </Level>
     </div>
   )
+}
+
+CommissionDetails.getLayout = function getLayout(page: NextPage) {
+  return <Layout>{page}</Layout>
 }
 
 export default CommissionDetails
