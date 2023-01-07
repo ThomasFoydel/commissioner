@@ -1,26 +1,35 @@
 import Link from 'next/link'
 import { NextPage } from 'next'
+import { Contract } from 'ethers'
+import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useEthers } from '@usedapp/core'
 import { useQuery } from '@apollo/client'
-import { formatEther } from 'ethers/lib/utils'
+import { formatEther, Interface } from 'ethers/lib/utils'
 import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../../../components/InterplanetaryContent'
+import commissionABI from '../../../utils/ethers/ABIs/commissionABI.json'
 import EntrySummary from '../../../components/EntrySummary'
 import CountDown from '../../../components/CountDown'
 import EntryForm from '../../../components/EntryForm'
 import { comDetails } from '../../../apollo/queries'
 import Layout from '../../layouts/CRT'
 
+enum Trigger {
+  public = 'public',
+  commissioner = 'commissioner',
+}
+
 const CommissionDetails = () => {
   const router = useRouter()
   const comId = String(router.query.comId).toLowerCase()
-  const { account } = useEthers()
+  const { account, library } = useEthers()
 
   const { data, refetch } = useQuery(comDetails, { variables: { comId } })
   const commission: Commission = data?.commission || {}
   const [enterFormOpen, setEnterFormOpen] = useState(false)
+  const [processingTrigger, setProcessingTrigger] = useState(false)
 
   const {
     submittedEntries: entries,
@@ -54,6 +63,45 @@ const CommissionDetails = () => {
   const userHasNotSubmittedEntry =
     account && entries.every((entry: Entry) => entry.author.id !== account.toLowerCase())
   const userCanEnter = account && active && commissioner.id !== account && userHasNotSubmittedEntry
+
+  const commissionInterface = new Interface(commissionABI)
+
+  const handleTrigger = async (trigger: Trigger) => {
+    if (processingTrigger) return toast.error('trigger already processing')
+    if (!library || !account) return
+    if (trigger === Trigger.public && !publicTriggerOpen) return
+    if (trigger === Trigger.commissioner && !commissionerTriggerOpen) return
+    if (trigger === Trigger.commissioner && account.toLowerCase() !== commissioner.id) {
+      return toast.error('commissioner only')
+    }
+    setProcessingTrigger(true)
+    toast.info('approve in metamask')
+    const type = trigger === Trigger.commissioner ? 'commissioner' : 'public'
+    try {
+      const signer = library.getSigner(String(account))
+      const commissionContract = new Contract(comId, commissionInterface, signer)
+      const triggerFunction =
+        trigger === Trigger.commissioner
+          ? commissionContract.chooseWinner
+          : commissionContract.chooseWinnerPublic
+      const tx = await triggerFunction()
+      toast.dismiss()
+      toast.info(`attempting ${type} trigger. sit tight...`, { autoClose: false })
+      await tx.wait()
+      toast.dismiss()
+      toast.success(`${type} trigger successful`)
+      setTimeout(() => refetch(), 2000)
+    } catch (err) {
+      toast.dismiss()
+      if (err.code === 4001) toast.error('user rejected in metamask')
+      toast.error(`${type} trigger failed`)
+    }
+    setProcessingTrigger(false)
+  }
+
+  const handlePublicTrigger = () => handleTrigger(Trigger.public)
+  const handleCommissionerTrigger = () => handleTrigger(Trigger.commissioner)
+
   return (
     <div className="m-2 p-2 border rounded-sm">
       <H>COMMISSION {commission.id}</H>
@@ -65,10 +113,10 @@ const CommissionDetails = () => {
         <p>CREATED {createdDate.toLocaleString().toUpperCase()}</p>
         <p>{active && 'ACTIVE'}</p>
         {publicTriggerOpen ? (
-          <button>PUBLIC TRIGGER OPEN</button>
+          <button onClick={handlePublicTrigger}>PUBLIC TRIGGER OPEN</button>
         ) : commissionerTriggerOpen ? (
           <div>
-            <button>COMMISSIONER TRIGGER OPEN</button>
+            <button onClick={handleCommissionerTrigger}>COMMISSIONER TRIGGER OPEN</button>
             <p>
               <CountDown
                 endTimestamp={publicTriggerTime}
