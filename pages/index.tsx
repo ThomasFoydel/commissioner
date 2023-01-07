@@ -7,7 +7,7 @@ const Home = () => (
   <div>
     <main className={styles.greenText}>
       {aboutMessage.split('- ').map((line: string) => (
-        <p>{line}</p>
+        <p>- {line}</p>
       ))}
     </main>
 
