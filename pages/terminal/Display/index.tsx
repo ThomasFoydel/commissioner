@@ -49,7 +49,7 @@ const Display = ({
     displayUserCommissions,
   },
 }) => (
-  <div style={{ width: '100vw', height: 'calc(100vh - 30px)', background: '#222' }}>
+  <div style={{ width: '100vw', height: 'calc(100vh - 30px)' }}>
     <Terminal
       effects={{ screenEffects: false, scanner: false, textEffects: false }}
       queue={eventQueue}
