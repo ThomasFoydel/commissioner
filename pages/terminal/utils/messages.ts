@@ -6,7 +6,7 @@ Commissioner is a decentralized, censorship-resistant platform.
 - The IPFS hash for the prompt/content is stored on the blockchain.
 - Users may create commissions for written content. 
 - The topic can be anything. 
-- Subject matter could be journalistic, scientific, political, economic, artistic- anything.
+- Subject matter could be journalistic, scientific, political, economic, artistic. Anything.
 - Commissions can be created with an initial reward from the commissioner.
 - Other users can also contribute reward to valuable commissions.
 - Users may also submit entries to the commission in hopes of winning.

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { formatEther } from 'ethers/lib/utils'
 import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../InterplanetaryContent'
 
@@ -28,7 +29,7 @@ const CommissionSummary = ({
         <Level>
           <InterplanetaryContent path={prompt} />
           <p>COMMISSIONER: {commissionerId || commissioner.id}</p>
-          <p>REWARD: {reward}</p>
+          <p>REWARD: {formatEther(reward)} ETH</p>
           <p>{active ? 'ACTIVE' : 'COMPLETED'}</p>
         </Level>
       </div>
