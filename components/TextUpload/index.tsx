@@ -8,18 +8,16 @@ const TextUpload = ({ onSuccess, label }: { onSuccess: Function; label: string }
   const [path, setPath] = useState('')
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false)
-  const [uploaded, setUploaded] = useState(false)
 
   const uploadText = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (loading || uploaded) return
+    if (loading || path) return
     toast.info('uploading to ipfs...')
     setLoading(true)
     try {
       const path = await uploadTextToIpfs(text)
       toast.dismiss()
       toast.success('successful upload to ipfs')
-      setUploaded(true)
       setPath(path)
       onSuccess(path)
     } catch (err) {
@@ -32,11 +30,11 @@ const TextUpload = ({ onSuccess, label }: { onSuccess: Function; label: string }
   return (
     <form onSubmit={uploadText} className="text-center">
       <div>
-        {uploaded && path ? (
+        {path ? (
           <>
             <p className="h-[20px]">Uploaded Content:</p>
             <textarea
-              value={text}
+              value={truncateContent(text)}
               className="p-3 my-3 rounded-[24px] crt-border resize-none h-[150px] w-[80%] focus:outline-inherit"
               style={{
                 boxShadow: 'inset 10px 10px 40px #e6fff814, inset -10px -10px 40px #00000094',
@@ -70,7 +68,7 @@ const TextUpload = ({ onSuccess, label }: { onSuccess: Function; label: string }
               onChange={(e) => setText(e.target.value)}
             />
             <button
-              className={`block center button w-[210px] ${(uploaded || loading) && 'disabled'}`}
+              className={`block center button w-[210px] ${(path || loading) && 'disabled'}`}
               type="submit"
             >
               Upload To IPFS
