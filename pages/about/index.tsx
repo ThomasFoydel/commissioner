@@ -1,13 +1,19 @@
 import { NextPage } from 'next'
+import { H, Level } from 'react-accessible-headings'
 import { aboutMessage } from '../terminal/utils/messages'
 import TypeOut from '../../components/TypeOut'
 import Layout from '../layouts/CRT'
 
 const About = () => (
   <main>
-    {aboutMessage.split('- ').map((line: string) => (
-      <TypeOut key={line}>- {line}</TypeOut>
-    ))}
+    <H>
+      <TypeOut>ABOUT</TypeOut>
+    </H>
+    <Level>
+      {aboutMessage.split('- ').map((line: string) => (
+        <TypeOut key={line}>- {line}</TypeOut>
+      ))}
+    </Level>
   </main>
 )
 
