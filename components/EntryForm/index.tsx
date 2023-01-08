@@ -53,11 +53,7 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
           {path && (
             <p>
               IPFS Path:{' '}
-              <a
-                href={`https://ipfs.infura.io/ipfs/${path}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={`http://ipfs.io/ipfs/${path}`} target="_blank" rel="noopener noreferrer">
                 {path}
               </a>
             </p>

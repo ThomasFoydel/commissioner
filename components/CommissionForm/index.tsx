@@ -76,7 +76,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
         <TextUpload setPath={setPath} label="Upload Commission Prompt:" />
         {path && (
           <a
-            href={`https://ipfs.infura.io/ipfs/${path}`}
+            href={`http://ipfs.io/ipfs/${path}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-center w-100"
