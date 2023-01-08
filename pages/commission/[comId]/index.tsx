@@ -63,7 +63,7 @@ const CommissionDetails = () => {
 
   const userHasNotSubmittedEntry =
     account && entries.every((entry: Entry) => entry.author.id !== account.toLowerCase())
-  const userCanEnter = account && active && commissioner.id !== account && userHasNotSubmittedEntry
+  const userCanEnter = account && active && commissioner.id !== account.toLowerCase() && userHasNotSubmittedEntry
 
   const commissionInterface = new Interface(commissionABI)
 
@@ -128,30 +128,30 @@ const CommissionDetails = () => {
         ) : commissionerTriggerOpen ? (
           <div>
             <button onClick={handleCommissionerTrigger}>COMMISSIONER TRIGGER OPEN</button>
-            <p>
+            <div>
               <CountDown
                 endTimestamp={publicTriggerTime}
                 onCompletion={() => setPublicTriggerOpen}
               />{' '}
               <TypeOut>UNTIL PUBLIC TRIGGER OPENS</TypeOut>
-            </p>
+            </div>
           </div>
         ) : active ? (
           <div>
-            <p>
+            <div>
               <CountDown
                 endTimestamp={comTriggerTime}
                 onCompletion={() => setCommissionerTriggerOpen(true)}
               />{' '}
               <TypeOut>UNTIL COMMISSIONER TRIGGER OPENS</TypeOut>
-            </p>
-            <p>
+            </div>
+            <div>
               <CountDown
                 endTimestamp={publicTriggerTime}
                 onCompletion={() => setPublicTriggerOpen}
               />{' '}
               <TypeOut>UNTIL PUBLIC TRIGGER OPENS</TypeOut>
-            </p>
+            </div>
           </div>
         ) : (
           <TypeOut>COMPLETE</TypeOut>
