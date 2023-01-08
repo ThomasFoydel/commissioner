@@ -42,8 +42,8 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
       } else {
         return toast.error('entry creation failed')
       }
+      setProcessing(false)
     }
-    setProcessing(false)
   }
 
   return (
