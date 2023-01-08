@@ -17,11 +17,11 @@ const TextUpload = ({ onSuccess, label }: { onSuccess: Function; label: string }
     setLoading(true)
     try {
       const path = await uploadTextToIpfs(text)
-      setPath(path)
-      onSuccess(path)
-      setUploaded(true)
       toast.dismiss()
       toast.success('successful upload to ipfs')
+      setUploaded(true)
+      setPath(path)
+      onSuccess(path)
     } catch (err) {
       toast.dismiss()
       toast.error('upload to ipfs failed')
@@ -34,30 +34,31 @@ const TextUpload = ({ onSuccess, label }: { onSuccess: Function; label: string }
       <div>
         {uploaded ? (
           <>
-            Uploaded Content:
-            <p
-              className="center p-3 my-3 rounded-[24px] crt-border resize-none h-[150px] w-[80%]"
+            <p className="h-[20px]">Uploaded Content:</p>
+            <textarea
+              value={text}
+              className="p-3 my-3 rounded-[24px] crt-border resize-none h-[150px] w-[80%] focus:outline-inherit"
               style={{
                 boxShadow: 'inset 10px 10px 40px #e6fff814, inset -10px -10px 40px #00000094',
                 background:
                   'radial-gradient(circle, rgb(60 159 63 / 24%) 0%, rgb(18 98 18 / 13%) 100%)',
               }}
-            >
-              {truncateContent(text)}
-            </p>
+              readOnly
+            />
             <a
+              className="button block center px-0 w-[210px]"
               href={`http://ipfs.io/ipfs/${path}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-center w-100 h-[40px]"
             >
-              <TypeOut>IPFS Path: {truncate(path)}</TypeOut>
+              <TypeOut>
+                <span style={{ textShadow: 'none' }}>Path: {truncate(path)}</span>
+              </TypeOut>
             </a>
           </>
         ) : (
           <>
-            <label>{label}</label>
-            <br />
+            <label className="h-[20px] block">{label}</label>
             <textarea
               value={text}
               className="p-3 my-3 rounded-[24px] crt-border resize-none h-[150px] w-[80%] focus:outline-inherit"
@@ -69,7 +70,7 @@ const TextUpload = ({ onSuccess, label }: { onSuccess: Function; label: string }
               onChange={(e) => setText(e.target.value)}
             />
             <button
-              className={`button h-[40px] ${(uploaded || loading) && 'disabled'}`}
+              className={`button w-[210px] ${(uploaded || loading) && 'disabled'}`}
               type="submit"
             >
               Upload To IPFS

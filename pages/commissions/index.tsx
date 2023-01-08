@@ -1,9 +1,9 @@
+import Link from 'next/link'
 import { NextPage } from 'next'
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { H, Level } from 'react-accessible-headings'
 import CommissionSummary from '../../components/CommissionSummary'
-import CommissionForm from '../../components/CommissionForm'
 import { makeCommissionQuery } from '../terminal/utils'
 import TypeOut from '../../components/TypeOut'
 import Layout from '../layouts/CRT'
@@ -16,6 +16,7 @@ const Commissions = () => {
 
   const { data, refetch } = useQuery(makeCommissionQuery(order, direction, page, perPage))
   const commissions = data?.commissions
+
   return (
     <div>
       <H>
@@ -28,7 +29,11 @@ const Commissions = () => {
               <CommissionSummary key={commission.id} commission={commission} />
             ))}
         </div>
-        <CommissionForm onComplete={refetch} />
+        <Link href="/create">
+          <a className="text-center">
+            <TypeOut>CREATE COMMISSION</TypeOut>
+          </a>
+        </Link>
       </Level>
     </div>
   )

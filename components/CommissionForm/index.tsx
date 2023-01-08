@@ -9,6 +9,7 @@ import useGetConfig from '../../utils/customHooks/useGetConfig'
 import TextUpload from '../TextUpload'
 import { truncate } from '../../utils'
 import TypeOut from '../TypeOut'
+import { useRouter } from 'next/router'
 
 const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const [path, setPath] = useState<string>()
@@ -17,7 +18,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const [txHash, setTxHash] = useState('')
   const [minTime, setMinTime] = useState(2)
   const [reward, setReward] = useState(0)
-
+  const router = useRouter()
   const config = useGetConfig()
   const { account, library } = useEthers()
   const signer = library && account ? library.getSigner(String(account)) : null
@@ -44,7 +45,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
       }
       const minTimeSeconds = minTime * 86400
       const tx = await factoryContract.createCommission(path, minTimeSeconds, options)
-      toast.info('creating commission. this will take a minute...', {autoClose: false})
+      toast.info('creating commission. this will take a minute...', { autoClose: false })
       if (tx) {
         setTxHash(tx.hash)
       }
@@ -53,7 +54,9 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
         setComplete(true)
         toast.dismiss()
         toast.success('new commission created!')
+        const comId = receipt?.events[0]?.args?.commission
         if (onComplete) onComplete()
+        else router.push(`/commission/${comId}`)
       }
     } catch (err) {
       toast.dismiss()
@@ -104,15 +107,15 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
                 step="any"
               />
             </div>
-            <button className={`button mt-2 ${(!path || processing) && 'disabled'}`} type="submit">
+            <button className={`button mt-2 w-[210px] ${(!path || processing) && 'disabled'}`} type="submit">
               Create Commission
             </button>
           </form>
         </div>
         {txHash && (
-          <TypeOut>
-            <p className="text-center">txHash: {truncate(txHash)}</p>
-          </TypeOut>
+          <div className="text-center">
+            <TypeOut>txHash: {truncate(txHash)}</TypeOut>
+          </div>
         )}
       </Level>
     </div>
