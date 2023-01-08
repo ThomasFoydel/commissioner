@@ -6,21 +6,20 @@ import TypeOut from '../TypeOut'
 const ContributionSummary = ({ contribution }: { contribution: Contribution }) => {
   const { author, entry, total } = contribution
   return (
-    <div className="m-2 p-2 crt-border rounded-sm">
-      <Link href={`/user/${author.id}`}>
-        <a>
+    <Link href={`/contribution/${contribution.id}`}>
+      <a>
+        <div className="m-2 p-2 crt-border rounded-sm">
           <TypeOut>AUTHOR {truncate(author.id)}</TypeOut>
-        </a>
-      </Link>
-      <Link href={`/entry/${entry.id}`}>
-        <div>
-          <TypeOut>ENTRY {truncate(entry.id)}</TypeOut>
-          <TypeOut>CONTENT</TypeOut>
-          <InterplanetaryContent path={entry.ipfsPath} />
+          <div>
+            <TypeOut>ENTRY {truncate(entry.id)}</TypeOut>
+            <TypeOut>CONTENT</TypeOut>
+            <InterplanetaryContent path={entry.ipfsPath} />
+          </div>
+
+          <TypeOut>TOTAL {total}</TypeOut>
         </div>
-      </Link>
-      <TypeOut>TOTAL {total}</TypeOut>
-    </div>
+      </a>
+    </Link>
   )
 }
 
