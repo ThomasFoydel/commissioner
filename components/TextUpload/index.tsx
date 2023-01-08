@@ -32,7 +32,7 @@ const TextUpload = ({ onSuccess, label }: { onSuccess: Function; label: string }
   return (
     <form onSubmit={uploadText} className="text-center">
       <div>
-        {uploaded ? (
+        {uploaded && path ? (
           <>
             <p className="h-[20px]">Uploaded Content:</p>
             <textarea
@@ -70,7 +70,7 @@ const TextUpload = ({ onSuccess, label }: { onSuccess: Function; label: string }
               onChange={(e) => setText(e.target.value)}
             />
             <button
-              className={`button w-[210px] ${(uploaded || loading) && 'disabled'}`}
+              className={`block center button w-[210px] ${(uploaded || loading) && 'disabled'}`}
               type="submit"
             >
               Upload To IPFS
