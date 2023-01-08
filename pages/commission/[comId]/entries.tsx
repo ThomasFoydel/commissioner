@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
@@ -8,8 +7,8 @@ import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import EntryForm from '../../../components/EntryForm'
 import { comDetails } from '../../../apollo/queries'
-import { truncate } from '../../../utils'
 import Layout from '../../layouts/CRT'
+import EntrySummary from '../../../components/EntrySummary'
 
 const Entries = () => {
   const { account } = useEthers()
@@ -43,28 +42,11 @@ const Entries = () => {
         {submittedEntries.length === 0 ? (
           <p>NO ENTRIES MADE FOR COMMISSION {comId}</p>
         ) : (
-          submittedEntries.map((entry: Entry) => <IndividualEntry key={entry.id} entry={entry} />)
+          // submittedEntries.map((entry: Entry) => <IndividualEntry key={entry.id} entry={entry} />)
+          submittedEntries.map((entry: Entry) => <EntrySummary key={entry.id} entry={entry} />)
         )}
       </Level>
     </div>
-  )
-}
-
-const IndividualEntry = ({ entry }: { entry: Entry }) => {
-  return (
-    <Link href={`/entry/${entry.id}`}>
-      <div className="m-2 p-2 border rounded-sm cursor-pointer">
-        <H>ENTRY {truncate(entry.id)}</H>
-        <Level>
-          <p>AUTHOR {entry.author.id}</p>
-          <p>{new Date(+entry.timestamp * 1000).toLocaleString()}</p>
-          <p>
-            CONTENT <InterplanetaryContent path={entry.ipfsPath} />
-          </p>
-          <p>VOTES {entry.voteAmount}</p>
-        </Level>
-      </div>
-    </Link>
   )
 }
 

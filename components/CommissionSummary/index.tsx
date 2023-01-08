@@ -24,7 +24,7 @@ const CommissionSummary = ({
   } = commission
   return (
     <Link href={`/commission/${commission.id}`}>
-      <div className="m-2 p-2 border rounded-sm cursor-pointer">
+      <div className="m-2 p-2 crt-border rounded-sm cursor-pointer">
         <H>COMMISSION {id}</H>
         <Level>
           <InterplanetaryContent path={prompt} />

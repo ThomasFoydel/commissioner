@@ -7,7 +7,7 @@ const VoteSummary = ({ vote }: { vote: Vote }) => {
   const { contributions, commission } = vote
 
   return (
-    <div className="m-2 p-2 border rounded-sm">
+    <div className="m-2 p-2 crt-border rounded-sm">
       <Link href={`/commission/${commission.id}`}>
         <div>
           <p>COMMISSION {truncate(commission.id)}</p>

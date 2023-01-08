@@ -23,7 +23,7 @@ const EntryDetails = () => {
   const userCanVote = account && account.toLowerCase() !== entry.author.id && commission.active
 
   return (
-    <div className="m-2 p-2 border rounded-sm">
+    <div className="m-2 p-2 crt-border rounded-sm">
       <H>
         {account === author.id.toLocaleLowerCase() && 'YOUR '}ENTRY {truncate(id)}
       </H>
@@ -53,7 +53,7 @@ const EntryDetails = () => {
 }
 
 const Contribution = ({ contribution }: { contribution: Contribution }) => (
-  <div className="m-2 p-2 border rounded-sm">
+  <div className="m-2 p-2 crt-border rounded-sm">
     <Link href={`/user/${contribution.vote.voter.id}`}>
       <H>CONTRIBUTOR {contribution.vote.voter.id}</H>
     </Link>

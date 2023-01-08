@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { readTextFromIpfs } from '../../utils/ipfs/client'
+import TypeOut from '../TypeOut'
 
-const InterplanetaryContent = ({ path }: { path: string }) => {
-  const [content, setContent] = useState('Loading...')
+const InterplanetaryContent = ({ path, label }: { path: string; label?: string }) => {
+  const [content, setContent] = useState('')
   useEffect(() => {
     if (!path) return
     let mounted = true
@@ -20,7 +21,8 @@ const InterplanetaryContent = ({ path }: { path: string }) => {
       mounted = false
     }
   }, [path])
-  return <>{content}</>
+  if (!content) return <></>
+  return <TypeOut>{label ? `${label} ${content}` : content}</TypeOut>
 }
 
 export default InterplanetaryContent

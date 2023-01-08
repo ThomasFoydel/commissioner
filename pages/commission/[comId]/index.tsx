@@ -103,7 +103,7 @@ const CommissionDetails = () => {
   const handleCommissionerTrigger = () => handleTrigger(Trigger.commissioner)
 
   return (
-    <div className="m-2 p-2 border rounded-sm">
+    <div className="m-2 p-2 crt-border rounded-sm">
       <H>COMMISSION {commission.id}</H>
       <Level>
         <Link href={`/user/${commissioner.id}`}>
