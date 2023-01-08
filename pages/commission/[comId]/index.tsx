@@ -6,16 +6,16 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useEthers } from '@usedapp/core'
 import { useQuery } from '@apollo/client'
-import { formatEther, Interface } from 'ethers/lib/utils'
 import { H, Level } from 'react-accessible-headings'
+import { formatEther, Interface } from 'ethers/lib/utils'
 import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import commissionABI from '../../../utils/ethers/ABIs/commissionABI.json'
 import EntrySummary from '../../../components/EntrySummary'
 import CountDown from '../../../components/CountDown'
 import EntryForm from '../../../components/EntryForm'
 import { comDetails } from '../../../apollo/queries'
-import Layout from '../../layouts/CRT'
 import TypeOut from '../../../components/TypeOut'
+import Layout from '../../layouts/CRT'
 
 enum Trigger {
   public = 'public',
@@ -63,7 +63,8 @@ const CommissionDetails = () => {
 
   const userHasNotSubmittedEntry =
     account && entries.every((entry: Entry) => entry.author.id !== account.toLowerCase())
-  const userCanEnter = account && active && commissioner.id !== account.toLowerCase() && userHasNotSubmittedEntry
+  const userCanEnter =
+    account && active && commissioner.id !== account.toLowerCase() && userHasNotSubmittedEntry
 
   const commissionInterface = new Interface(commissionABI)
 
@@ -103,8 +104,10 @@ const CommissionDetails = () => {
   const handlePublicTrigger = () => handleTrigger(Trigger.public)
   const handleCommissionerTrigger = () => handleTrigger(Trigger.commissioner)
   const entrySuccess = () => {
-    refetch()
-    setEnterFormOpen(false)
+    setTimeout(() => {
+      refetch()
+      setEnterFormOpen(false)
+    }, 1500)
   }
 
   return (

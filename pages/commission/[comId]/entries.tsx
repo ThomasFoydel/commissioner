@@ -25,11 +25,14 @@ const Entries = () => {
 
   const userHasNotSubmittedEntry =
     account && submittedEntries.every((entry: Entry) => entry?.author?.id !== account.toLowerCase())
-  const userCanEnter = account && active && commissioner.id !== account && userHasNotSubmittedEntry
-  
+  const userCanEnter =
+    account && active && commissioner.id !== account.toLowerCase() && userHasNotSubmittedEntry
+
   const entrySuccess = () => {
-    refetch()
-    setEnterFormOpen(false)
+    setTimeout(() => {
+      refetch()
+      setEnterFormOpen(false)
+    }, 1500)
   }
 
   return (

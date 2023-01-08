@@ -27,7 +27,7 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
       const signer = library.getSigner(String(account))
       const commissionContract = new Contract(id, commissionInterface, signer)
       const tx = await commissionContract.submitEntry(path)
-      toast.info('submitting entry...')
+      toast.info('submitting entry. this will take a minute...', { autoClose: false })
       setTxHash(tx.hash)
       const receipt = await tx.wait()
       if (receipt) {

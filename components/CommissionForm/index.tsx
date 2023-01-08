@@ -44,7 +44,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
       }
       const minTimeSeconds = minTime * 86400
       const tx = await factoryContract.createCommission(path, minTimeSeconds, options)
-      toast.info('creating commission...')
+      toast.info('creating commission. this will take a minute...', {autoClose: false})
       if (tx) {
         setTxHash(tx.hash)
       }
