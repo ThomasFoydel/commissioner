@@ -1,6 +1,8 @@
 import { getChainById, useEthers } from '@usedapp/core'
+import { truncate } from '../../utils'
+import TypeOut from '../TypeOut'
 
-const ExplorerLink = ({ tx, label }: { tx: string; label: string }) => {
+const ExplorerLink = ({ tx, label }: { tx: string; label?: string }) => {
   const { chainId } = useEthers()
   const chain = getChainById(Number(chainId))
 
@@ -12,14 +14,13 @@ const ExplorerLink = ({ tx, label }: { tx: string; label: string }) => {
           rel="noopener noreferrer"
           href={chain.getExplorerTransactionLink(tx)}
           style={{
-            color: 'red',
             textOverflow: 'ellipsis',
             width: '100%',
             display: 'block',
             overflow: 'hidden',
           }}
         >
-          {label ? label : tx}
+          <TypeOut>{label ? label : truncate(tx)}</TypeOut>
         </a>
       )}
     </>

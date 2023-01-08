@@ -8,6 +8,7 @@ import TypeOut from '../../components/TypeOut'
 import { truncate } from '../../utils'
 import Link from 'next/link'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
+import ExplorerLink from '../../components/ExplorerLink'
 
 const ContributionDetails = () => {
   const router = useRouter()
@@ -53,8 +54,8 @@ const ContributionDetails = () => {
 
       <div className="m-2 p-2 crt-border rounded-sm">
         <TypeOut>TRANSACTION HASHES</TypeOut>
-        {transactionHashes.map((hash) => (
-          <TypeOut>{hash}</TypeOut>
+        {transactionHashes.map((hash: string) => (
+          <ExplorerLink tx={hash} />
         ))}
       </div>
     </div>
