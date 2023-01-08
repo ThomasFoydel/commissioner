@@ -12,7 +12,7 @@ Commissioner is a decentralized, censorship-resistant platform.
 - Users may also submit entries to the commission in hopes of winning.
 - Users may also vote for entries they think are valuable.
 - When an entry receives votes, the value goes to their wallet address.
-- %1 is taken from votes and added to the total reward 
+- 1% is taken from votes and added to the total reward. 
 - 1% is taken for the Commissioner system.
 - Once the commission is over, the winning entry will be displayed with it, and users can tip the winner.
 - When the commission is created, the commissioner sets a minimum number of days on it.
