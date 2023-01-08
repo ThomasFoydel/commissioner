@@ -10,13 +10,15 @@ const VoteSummary = ({ vote }: { vote: Vote }) => {
   return (
     <div className="m-2 p-2 crt-border rounded-sm">
       <Link href={`/commission/${commission.id}`}>
-        <div>
-          <TypeOut>COMMISSION {truncate(commission.id)}</TypeOut>
+        <a>
           <div>
-            <TypeOut>PROMPT</TypeOut>
-            <InterplanetaryContent path={commission.prompt} />
+            <TypeOut>COMMISSION {truncate(commission.id)}</TypeOut>
+            <div>
+              <TypeOut>PROMPT</TypeOut>
+              <InterplanetaryContent path={commission.prompt} />
+            </div>
           </div>
-        </div>
+        </a>
       </Link>
 
       {contributions.map((contribution) => (

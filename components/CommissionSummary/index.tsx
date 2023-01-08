@@ -26,17 +26,19 @@ const CommissionSummary = ({
   } = commission
   return (
     <Link href={`/commission/${commission.id}`}>
-      <div className="m-2 p-2 crt-border rounded-sm cursor-pointer">
-        <H>
-          <TypeOut>COMMISSION {truncate(id)}</TypeOut>
-        </H>
-        <Level>
-          <InterplanetaryContent path={truncateContent(prompt)} />
-          <TypeOut>COMMISSIONER: {truncate(commissionerId || commissioner.id)}</TypeOut>
-          <TypeOut>REWARD: {formatEther(reward)} ETH</TypeOut>
-          <TypeOut>{active ? 'ACTIVE' : 'COMPLETED'}</TypeOut>
-        </Level>
-      </div>
+      <a>
+        <div className="m-2 p-2 crt-border rounded-sm">
+          <H>
+            <TypeOut>COMMISSION {truncate(id)}</TypeOut>
+          </H>
+          <Level>
+            <InterplanetaryContent path={truncateContent(prompt)} />
+            <TypeOut>COMMISSIONER: {truncate(commissionerId || commissioner.id)}</TypeOut>
+            <TypeOut>REWARD: {formatEther(reward)} ETH</TypeOut>
+            <TypeOut>{active ? 'ACTIVE' : 'COMPLETED'}</TypeOut>
+          </Level>
+        </div>
+      </a>
     </Link>
   )
 }
