@@ -6,6 +6,8 @@ import { H, Level } from 'react-accessible-headings'
 import commissionABI from '../../utils/ethers/ABIs/commissionABI.json'
 import TextUpload from '../../components/TextUpload'
 import { toast } from 'react-toastify'
+import { truncate } from '../../utils'
+import TypeOut from '../TypeOut'
 
 const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) => {
   const [path, setPath] = useState('')
@@ -46,15 +48,16 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
 
   return (
     <div className="w-100">
-      <div className="w-50 center bg-card">
-        <H>ENTRY FORM</H>
+      <div className="w-100 center bg-card">
+        <H className="text-center">
+          <TypeOut>ENTRY FORM</TypeOut>
+        </H>
         <Level>
           <TextUpload setPath={setPath} label="Upload Entry:" />
           {path && (
-            <p>
-              IPFS Path:{' '}
+            <p className="text-center w-100">
               <a href={`http://ipfs.io/ipfs/${path}`} target="_blank" rel="noopener noreferrer">
-                {path}
+                <TypeOut>IPFS Path: {truncate(path)}</TypeOut>
               </a>
             </p>
           )}
