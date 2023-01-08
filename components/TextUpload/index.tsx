@@ -28,33 +28,39 @@ const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) =>
 
   return (
     <form onSubmit={uploadText} className="text-center">
-      {(loading || uploaded) && (
+      {loading || uploaded ? (
         <>
           Uploaded Content:
-          <p className="p-3 my-3 center w-90 rounded bg-skin-card" style={{ height: '150px' }}>
+          <p
+            className="center p-3 my-3 rounded-[24px] crt-border resize-none h-[150px] w-[80%]"
+            style={{
+              boxShadow: 'inset 10px 10px 40px #e6fff814, inset -10px -10px 40px #00000094',
+              background:
+                'radial-gradient(circle, rgb(60 159 63 / 24%) 0%, rgb(18 98 18 / 13%) 100%)',
+            }}
+          >
             {truncateContent(text)}
           </p>
         </>
+      ) : (
+        <>
+          <label>{label}</label>
+          <br />
+          <textarea
+            value={text}
+            className="p-3 my-3 rounded-[24px] crt-border resize-none h-[150px] w-[80%]"
+            style={{
+              boxShadow: 'inset 10px 10px 40px #e6fff814, inset -10px -10px 40px #00000094',
+              background:
+                'radial-gradient(circle, rgb(60 159 63 / 24%) 0%, rgb(18 98 18 / 13%) 100%)',
+            }}
+            onChange={(e) => setText(e.target.value)}
+          />
+        </>
       )}
-      <div>
-        {!loading && !uploaded && (
-          <>
-            <label>{label}</label>
-            <br />
-            <textarea
-              value={text}
-              className="p-3 my-3"
-              style={{ resize: 'none', height: '150px', width: '80%' }}
-              onChange={(e) => setText(e.target.value)}
-            />
-          </>
-        )}
-      </div>
+
       {!uploaded && (
-        <button
-          className={`button ${(uploaded || loading) && 'disabled'}`}
-          type="submit"
-        >
+        <button className={`button ${(uploaded || loading) && 'disabled'}`} type="submit">
           {loading ? 'Please Wait...' : 'Upload To IPFS'}
         </button>
       )}

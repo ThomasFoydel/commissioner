@@ -7,8 +7,8 @@ import { Interface, parseEther } from 'ethers/lib/utils'
 import factoryABI from '../../utils/ethers/ABIs/factoryABI.json'
 import useGetConfig from '../../utils/customHooks/useGetConfig'
 import TextUpload from '../TextUpload'
-import TypeOut from '../TypeOut'
 import { truncate } from '../../utils'
+import TypeOut from '../TypeOut'
 
 const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const [path, setPath] = useState('')
@@ -96,6 +96,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
                 onChange={handleMinTime}
                 value={minTime}
                 placeholder="minimum time (days)"
+                className="crt-border p-1"
                 min={2}
               />
             </div>
@@ -111,6 +112,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
                 value={reward}
                 placeholder="minimum time (days)"
                 min="0"
+                className="crt-border p-1"
                 step="any"
               />
             </div>
