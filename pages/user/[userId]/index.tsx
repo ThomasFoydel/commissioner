@@ -8,6 +8,7 @@ import CommissionSummary from '../../../components/CommissionSummary'
 import EntrySummary from '../../../components/EntrySummary'
 import VoteSummary from '../../../components/VoteSummary'
 import Layout from '../../layouts/CRT'
+import TypeOut from '../../../components/TypeOut'
 
 const UserProfile = () => {
   const router = useRouter()
@@ -35,36 +36,54 @@ const UserProfile = () => {
   } = user
   return (
     <div>
-      <H>USER {userId}</H>
+      <H>
+        <TypeOut>USER {userId}</TypeOut>
+      </H>
       <Level>
-        <p>COMMISSIONS CREATED {commissionsCreated}</p>
-        <p>COMMISSIONS COMPLETED {commissionsCompleted}</p>
-        <p>COMMISSIONS CANCELLED {commissionsCancelled}</p>
+        <TypeOut>COMMISSIONS CREATED {commissionsCreated}</TypeOut>
+        <TypeOut>COMMISSIONS COMPLETED {commissionsCompleted}</TypeOut>
+        <TypeOut>COMMISSIONS CANCELLED {commissionsCancelled}</TypeOut>
 
-        {commissions.length > 0 && <p>COMMISSIONS</p>}
+        {commissions.length > 0 && <TypeOut>COMMISSIONS</TypeOut>}
         {commissions.slice(0, 3).map((commission: Commission) => (
           <CommissionSummary key={commission.id} commission={commission} commissionerId={id} />
         ))}
         {commissions.length > 3 && (
-          <Link href={`/user/commissions/${id}`}>SEE ALL COMMISSIONS</Link>
+          <Link href={`/user/commissions/${id}`}>
+            <a>
+              <TypeOut>SEE ALL COMMISSIONS</TypeOut>
+            </a>
+          </Link>
         )}
 
-        <p>ENTRIES MADE {entriesMade}</p>
-        <p>COMMISSIONS WON {commissionsWon}</p>
-        <p>VOTES EARNED {votesEarned}</p>
-        <p>VOTES CAST {votesCast}</p>
-        <p>VALUE CONTRIBUTED {valueContributed}</p>
-        <p>TIPS EARNED {tipsEarned}</p>
+        <TypeOut>ENTRIES MADE {entriesMade}</TypeOut>
+        <TypeOut>COMMISSIONS WON {commissionsWon}</TypeOut>
+        <TypeOut>VOTES EARNED {votesEarned}</TypeOut>
+        <TypeOut>VOTES CAST {votesCast}</TypeOut>
+        <TypeOut>VALUE CONTRIBUTED {valueContributed}</TypeOut>
+        <TypeOut>TIPS EARNED {tipsEarned}</TypeOut>
 
-        {ownEntries.length > 0 && <p>ENTRIES</p>}
+        {ownEntries.length > 0 && <TypeOut>ENTRIES</TypeOut>}
         {ownEntries.slice(0, 3).map((entry: Entry) => (
           <EntrySummary key={entry.id} entry={entry} authorId={id} />
         ))}
-        {ownEntries.length > 3 && <Link href={`/user/${id}/entries`}>SEE ALL ENTRIES</Link>}
+        {ownEntries.length > 3 && (
+          <Link href={`/user/${id}/entries`}>
+            <a>
+              <TypeOut>SEE ALL ENTRIES</TypeOut>
+            </a>
+          </Link>
+        )}
 
-        {votes && votes.length > 0 && <p>VOTES</p>}
+        {votes && votes.length > 0 && <TypeOut>VOTES</TypeOut>}
         {votes && votes.slice(0, 3).map((vote: Vote) => <VoteSummary key={vote.id} vote={vote} />)}
-        {votes && votes.length > 3 && <Link href={`/user/${id}/votes`}>SEE ALL VOTES</Link>}
+        {votes && votes.length > 3 && (
+          <Link href={`/user/${id}/votes`}>
+            <a>
+              <TypeOut>SEE ALL VOTES</TypeOut>
+            </a>
+          </Link>
+        )}
       </Level>
     </div>
   )

@@ -7,6 +7,7 @@ import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
 import { entryDetails } from '../../apollo/queries'
 import VoteForm from '../../components/VoteForm'
+import TypeOut from '../../components/TypeOut'
 import { truncate } from '../../utils'
 import Layout from '../layouts/CRT'
 
@@ -25,22 +26,28 @@ const EntryDetails = () => {
   return (
     <div className="m-2 p-2 crt-border rounded-sm">
       <H>
-        {account === author.id.toLocaleLowerCase() && 'YOUR '}ENTRY {truncate(id)}
+        <TypeOut>
+          {account === author.id.toLocaleLowerCase() && 'YOUR '}ENTRY {truncate(id)}
+        </TypeOut>
       </H>
       <Level>
         <Link href={`/user/${author.id}`}>
-          <p>AUTHOR {author.id}</p>
+          <a>
+            <TypeOut>AUTHOR {author.id}</TypeOut>
+          </a>
         </Link>
-        <p>SUBMITTED {new Date(+timestamp * 1000).toLocaleString()}</p>
-        <p>VOTES {voteAmount}</p>
+        <TypeOut>SUBMITTED {new Date(+timestamp * 1000).toLocaleString()}</TypeOut>
+        <TypeOut>VOTES {voteAmount}</TypeOut>
         <Link href={`/commission/${commission.id}`}>
-          <p>
-            COMMISSION PROMPT <InterplanetaryContent path={commission.prompt} />
-          </p>
+          <a>
+            <TypeOut>COMMISSION PROMPT</TypeOut>
+            <InterplanetaryContent path={commission.prompt} />
+          </a>
         </Link>
-        <p>
-          CONTENT <InterplanetaryContent path={ipfsPath} />
-        </p>
+        <div>
+          <TypeOut>CONTENT</TypeOut>
+          <InterplanetaryContent path={ipfsPath} />
+        </div>
 
         {userCanVote && <VoteForm onSuccess={refetch} entry={entry} commission={commission} />}
 
@@ -55,10 +62,14 @@ const EntryDetails = () => {
 const Contribution = ({ contribution }: { contribution: Contribution }) => (
   <div className="m-2 p-2 crt-border rounded-sm">
     <Link href={`/user/${contribution.vote.voter.id}`}>
-      <H>CONTRIBUTOR {contribution.vote.voter.id}</H>
+      <a>
+        <H>
+          <TypeOut>CONTRIBUTOR {contribution.vote.voter.id}</TypeOut>
+        </H>
+      </a>
     </Link>
     <Level>
-      <p>TOTAL {contribution.total}</p>
+      <TypeOut>TOTAL {contribution.total}</TypeOut>
     </Level>
   </div>
 )

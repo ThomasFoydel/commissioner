@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client'
 import { H, Level } from 'react-accessible-headings'
 import EntrySummary from '../../../components/EntrySummary'
 import { userEntriesQuery } from '../../../apollo/queries'
+import TypeOut from '../../../components/TypeOut'
 import Layout from '../../layouts/CRT'
 
 const UserEntries = () => {
@@ -15,7 +16,9 @@ const UserEntries = () => {
 
   return (
     <div>
-      <H>ALL ENTRIES BY USER {userId}</H>
+      <H>
+        <TypeOut>ALL ENTRIES BY USER {userId}</TypeOut>
+      </H>
       <Level>
         <div>
           {entries.map((entry: Entry) => (

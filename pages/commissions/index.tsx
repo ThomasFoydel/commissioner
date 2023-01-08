@@ -5,6 +5,7 @@ import { H, Level } from 'react-accessible-headings'
 import CommissionSummary from '../../components/CommissionSummary'
 import CommissionForm from '../../components/CommissionForm'
 import { makeCommissionQuery } from '../terminal/utils'
+import TypeOut from '../../components/TypeOut'
 import Layout from '../layouts/CRT'
 
 const Commissions = () => {
@@ -17,7 +18,9 @@ const Commissions = () => {
   const commissions = data?.commissions
   return (
     <div>
-      <H>COMMISSIONS</H>
+      <H>
+        <TypeOut>COMMISSIONS</TypeOut>
+      </H>
       <Level>
         <div>
           {commissions &&
