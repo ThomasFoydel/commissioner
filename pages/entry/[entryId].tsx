@@ -60,18 +60,18 @@ const EntryDetails = () => {
 }
 
 const Contribution = ({ contribution }: { contribution: Contribution }) => (
-  <div className="m-2 p-2 crt-border rounded-sm">
-    <Link href={`/user/${contribution.vote.voter.id}`}>
-      <a>
+  <Link href={`/contribution/${contribution.id}`}>
+    <a>
+      <div className="m-2 p-2 crt-border rounded-sm">
         <H>
           <TypeOut>CONTRIBUTOR {contribution.vote.voter.id}</TypeOut>
         </H>
-      </a>
-    </Link>
-    <Level>
-      <TypeOut>TOTAL {contribution.total}</TypeOut>
-    </Level>
-  </div>
+        <Level>
+          <TypeOut>TOTAL {contribution.total}</TypeOut>
+        </Level>
+      </div>
+    </a>
+  </Link>
 )
 
 EntryDetails.getLayout = function getLayout(page: NextPage) {

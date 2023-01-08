@@ -86,9 +86,6 @@ export const entryFields = `
         author {
             id
         }
-        entry {
-            id
-        }
         vote {
             id
             voter {
@@ -162,4 +159,31 @@ export const entryDetails = gql`
         ${entryFields}
     }
   }
+`
+
+export const contributionDetails = gql`
+    query getContributionDetails($contributionId: String!) {
+        contribution(id: $contributionId) {
+            id
+            transactionHashes
+            author {
+                id
+            }
+            entry {
+                id
+                ipfsPath
+            }
+            total 
+            vote {
+                id
+                voter {
+                    id
+                }
+                commission {
+                    id
+                    prompt
+                }
+            }
+        }
+    }
 `
