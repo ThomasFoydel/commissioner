@@ -7,6 +7,8 @@ import { Interface, parseEther } from 'ethers/lib/utils'
 import factoryABI from '../../utils/ethers/ABIs/factoryABI.json'
 import useGetConfig from '../../utils/customHooks/useGetConfig'
 import TextUpload from '../TextUpload'
+import TypeOut from '../TypeOut'
+import { truncate } from '../../utils'
 
 const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const [path, setPath] = useState('')
@@ -66,57 +68,63 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
 
   return (
     <div className="w-100">
-      <div className="w-50 center bg-card">
-        <H>COMMISSION FORM</H>
-        <Level>
-          <TextUpload setPath={setPath} label="Upload Commission Prompt:" />
-          {path && (
-            <p>
-              IPFS Path:{' '}
-              <a
-                href={`https://ipfs.infura.io/ipfs/${path}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {path}
-              </a>
-            </p>
-          )}
-          <div>
-            <form onSubmit={handleSubmit} className="text-center my-3">
-              <div>
-                <label htmlFor="mintime">Minimum Time (days)</label>
-                <input
-                  type="number"
-                  name="mintime"
-                  onChange={handleMinTime}
-                  value={minTime}
-                  placeholder="minimum time (days)"
-                  min={2}
-                />
-              </div>
+      <H className="text-center">
+        <TypeOut>COMMISSION FORM</TypeOut>
+      </H>
 
-              <div>
-                <label htmlFor="reward">Reward (ETH)</label>
-                <input
-                  type="number"
-                  name="reward"
-                  onChange={handleReward}
-                  value={reward}
-                  placeholder="minimum time (days)"
-                  min="0"
-                  step="any"
-                />
-              </div>
-              <button className={`button ${(!path || processing) && 'disabled'}`} type="submit">
-                Create Commission
-              </button>
-            </form>
-          </div>
-          {(processing || complete) && <p>{complete ? 'Submission complete!' : 'Processing...'}</p>}
-          {txHash && <p>txHash: {txHash}</p>}
-        </Level>
-      </div>
+      <Level>
+        <TextUpload setPath={setPath} label="Upload Commission Prompt:" />
+        {path && (
+          <a
+            href={`https://ipfs.infura.io/ipfs/${path}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-center w-100"
+          >
+            <TypeOut>IPFS Path: {truncate(path)}</TypeOut>
+          </a>
+        )}
+        <div>
+          <form onSubmit={handleSubmit} className="text-center my-3">
+            <div className="flex flex-col items-center my-4">
+              <label htmlFor="mintime" className="mb-2">
+                Minimum Time (days)
+              </label>
+              <input
+                type="number"
+                name="mintime"
+                onChange={handleMinTime}
+                value={minTime}
+                placeholder="minimum time (days)"
+                min={2}
+              />
+            </div>
+
+            <div className="flex flex-col items-center mb-4">
+              <label htmlFor="reward" className="mb-2">
+                Reward (ETH)
+              </label>
+              <input
+                type="number"
+                name="reward"
+                onChange={handleReward}
+                value={reward}
+                placeholder="minimum time (days)"
+                min="0"
+                step="any"
+              />
+            </div>
+            <button className={`button mt-2 ${(!path || processing) && 'disabled'}`} type="submit">
+              Create Commission
+            </button>
+          </form>
+        </div>
+        {txHash && (
+          <TypeOut>
+            <p className="text-center">txHash: {txHash}</p>
+          </TypeOut>
+        )}
+      </Level>
     </div>
   )
 }

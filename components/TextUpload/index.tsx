@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
 import { toast } from 'react-toastify'
+import React, { useState } from 'react'
 import { uploadTextToIpfs } from '../../utils/ipfs/client'
+import { truncateContent } from '../../utils'
 
 const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) => {
   const [text, setText] = useState('')
@@ -31,7 +32,7 @@ const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) =>
         <>
           Uploaded Content:
           <p className="p-3 my-3 center w-90 rounded bg-skin-card" style={{ height: '150px' }}>
-            {text}
+            {truncateContent(text)}
           </p>
         </>
       )}
@@ -49,12 +50,14 @@ const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) =>
           </>
         )}
       </div>
-      <button
-        className={`button text-skin-inverted ${(uploaded || loading) && 'disabled'}`}
-        type="submit"
-      >
-        {loading ? 'Please Wait ...' : 'Upload To IPFS'}
-      </button>
+      {!uploaded && (
+        <button
+          className={`button ${(uploaded || loading) && 'disabled'}`}
+          type="submit"
+        >
+          {loading ? 'Please Wait...' : 'Upload To IPFS'}
+        </button>
+      )}
     </form>
   )
 }

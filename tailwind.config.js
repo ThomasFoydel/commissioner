@@ -17,6 +17,8 @@ module.exports = {
           base: withOpacity('--color-text-base'),
           muted: withOpacity('--color-text-muted'),
           inverted: withOpacity('--color-text-inverted'),
+          'button-accent': withOpacity('--color-button-accent'),
+          'button-muted': withOpacity('--color-button-muted'),
         },
       },
       backgroundColor: {

@@ -21,7 +21,7 @@
 }
 
 .button {
-  @apply bg-skin-button-muted transition-colors hover:bg-skin-button-accent text-white font-bold py-2 px-4 rounded;
+  @apply bg-skin-button-accent hover:bg-skin-button-muted hover:text-skin-button-accent transition-colors font-bold py-2 px-4 rounded;
 }
 
 .center {
@@ -45,13 +45,15 @@
 
 @layer base {
   :root {
-    --color-text-base: 255, 255, 255;
-    --color-text-muted: 199, 210, 254;
-    --color-text-inverted: 79, 70, 229;
-    --color-fill: 67, 56, 202;
-    --color-button-accent: 255, 255, 255;
-    --color-button-accent-hover: 238, 242, 255;
-    --color-button-muted: 99, 102, 241;
+    --color-test: 255, 0, 0;
+    --color-text-base: 25, 175, 25;
+    --color-text-muted: 0, 143, 17;
+    --color-text-inverted: 0, 0, 0;
+    --color-fill: 0, 255, 65;
+    --color-button-accent: 70, 70, 37;
+    --color-button-accent-hover: 254, 242, 242;
+    --color-button-muted: 138, 163, 81;
+    --card-base: 30, 40, 30;
   }
   .dark {
     --color-text-base: 25, 175, 25;
@@ -71,6 +73,15 @@
     --color-button-accent: 36, 52, 3;
     --color-button-accent-hover: 55, 79, 5;
     --color-button-muted: 212, 255, 122;
+  }
+  .old {
+    --color-text-base: 255, 255, 255;
+    --color-text-muted: 199, 210, 254;
+    --color-text-inverted: 79, 70, 229;
+    --color-fill: 67, 56, 202;
+    --color-button-accent: 255, 255, 255;
+    --color-button-accent-hover: 238, 242, 255;
+    --color-button-muted: 99, 102, 241;
   }
 }
 

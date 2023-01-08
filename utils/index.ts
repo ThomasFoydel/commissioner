@@ -3,3 +3,8 @@ export const truncate = (id: string) => {
   const end = id.substring(id.length - 4)
   return begin + '...' + end
 }
+
+export const truncateContent = (content: string, length = 400) => {
+  if (content.length < length) return content
+  return content.substring(0, length) + '...'
+}
