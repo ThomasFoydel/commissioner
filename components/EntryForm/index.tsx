@@ -53,14 +53,8 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
           <TypeOut>ENTRY FORM</TypeOut>
         </H>
         <Level>
-          <TextUpload setPath={setPath} label="Upload Entry:" />
-          {path && (
-            <p className="text-center w-100">
-              <a href={`http://ipfs.io/ipfs/${path}`} target="_blank" rel="noopener noreferrer">
-                <TypeOut>IPFS Path: {truncate(path)}</TypeOut>
-              </a>
-            </p>
-          )}
+          <TextUpload onSuccess={setPath} label="Upload Entry:" />
+
           <div>
             <form onSubmit={handleSubmit} className="text-center my-3">
               <button className={`button ${(!path || processing) && 'disabled'}`} type="submit">
@@ -68,8 +62,11 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
               </button>
             </form>
           </div>
-          {(processing || complete) && <p>{complete ? 'Submission complete!' : 'Processing...'}</p>}
-          {txHash && <p>txHash: {txHash}</p>}
+          {txHash && (
+            <div className="text-center">
+              <TypeOut>txHash: {truncate(txHash)}</TypeOut>
+            </div>
+          )}
         </Level>
       </div>
     </div>

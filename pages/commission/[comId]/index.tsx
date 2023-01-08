@@ -102,6 +102,10 @@ const CommissionDetails = () => {
 
   const handlePublicTrigger = () => handleTrigger(Trigger.public)
   const handleCommissionerTrigger = () => handleTrigger(Trigger.commissioner)
+  const entrySuccess = () => {
+    refetch()
+    setEnterFormOpen(false)
+  }
 
   return (
     <div className="m-2 p-2 crt-border rounded-sm">
@@ -177,7 +181,7 @@ const CommissionDetails = () => {
             <button onClick={() => setEnterFormOpen((o) => !o)}>
               <TypeOut>ENTER COMMISSION</TypeOut>
             </button>
-            {enterFormOpen && <EntryForm id={String(comId)} onComplete={refetch} />}
+            {enterFormOpen && <EntryForm id={String(comId)} onComplete={entrySuccess} />}
           </div>
         )}
       </Level>

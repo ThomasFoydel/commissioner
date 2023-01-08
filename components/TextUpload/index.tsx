@@ -1,9 +1,11 @@
 import { toast } from 'react-toastify'
 import React, { useState } from 'react'
 import { uploadTextToIpfs } from '../../utils/ipfs/client'
-import { truncateContent } from '../../utils'
+import { truncate, truncateContent } from '../../utils'
+import TypeOut from '../TypeOut'
 
-const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) => {
+const TextUpload = ({ onSuccess, label }: { onSuccess: Function; label: string }) => {
+  const [path, setPath] = useState('')
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false)
   const [uploaded, setUploaded] = useState(false)
@@ -16,6 +18,7 @@ const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) =>
     try {
       const path = await uploadTextToIpfs(text)
       setPath(path)
+      onSuccess(path)
       setUploaded(true)
       toast.dismiss()
       toast.success('successful upload to ipfs')
@@ -29,7 +32,7 @@ const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) =>
   return (
     <form onSubmit={uploadText} className="text-center">
       <div>
-        {loading || uploaded ? (
+        {uploaded ? (
           <>
             Uploaded Content:
             <p
@@ -42,6 +45,14 @@ const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) =>
             >
               {truncateContent(text)}
             </p>
+            <a
+              href={`http://ipfs.io/ipfs/${path}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-center w-100 h-[40px]"
+            >
+              <TypeOut>IPFS Path: {truncate(path)}</TypeOut>
+            </a>
           </>
         ) : (
           <>
@@ -49,7 +60,7 @@ const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) =>
             <br />
             <textarea
               value={text}
-              className="p-3 my-3 rounded-[24px] crt-border resize-none h-[150px] w-[80%]"
+              className="p-3 my-3 rounded-[24px] crt-border resize-none h-[150px] w-[80%] focus:outline-inherit"
               style={{
                 boxShadow: 'inset 10px 10px 40px #e6fff814, inset -10px -10px 40px #00000094',
                 background:
@@ -57,14 +68,15 @@ const TextUpload = ({ setPath, label }: { setPath: Function; label: string }) =>
               }}
               onChange={(e) => setText(e.target.value)}
             />
+            <button
+              className={`button h-[40px] ${(uploaded || loading) && 'disabled'}`}
+              type="submit"
+            >
+              Upload To IPFS
+            </button>
           </>
         )}
       </div>
-      {!uploaded && (
-        <button className={`button ${(uploaded || loading) && 'disabled'}`} type="submit">
-          {loading ? 'Please Wait...' : 'Upload To IPFS'}
-        </button>
-      )}
     </form>
   )
 }

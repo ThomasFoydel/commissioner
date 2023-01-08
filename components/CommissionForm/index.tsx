@@ -11,7 +11,7 @@ import { truncate } from '../../utils'
 import TypeOut from '../TypeOut'
 
 const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
-  const [path, setPath] = useState('')
+  const [path, setPath] = useState<string>()
   const [processing, setProcessing] = useState(false)
   const [complete, setComplete] = useState(false)
   const [txHash, setTxHash] = useState('')
@@ -71,19 +71,8 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
       <H className="text-center">
         <TypeOut>COMMISSION FORM</TypeOut>
       </H>
-
       <Level>
-        <TextUpload setPath={setPath} label="Upload Commission Prompt:" />
-        {path && (
-          <a
-            href={`http://ipfs.io/ipfs/${path}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-center w-100"
-          >
-            <TypeOut>IPFS Path: {truncate(path)}</TypeOut>
-          </a>
-        )}
+        <TextUpload onSuccess={setPath} label="Upload Commission Prompt:" />
         <div>
           <form onSubmit={handleSubmit} className="text-center my-3">
             <div className="flex flex-col items-center my-4">
@@ -96,11 +85,10 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
                 onChange={handleMinTime}
                 value={minTime}
                 placeholder="minimum time (days)"
-                className="crt-border p-1"
+                className="crt-border p-1 focus:outline-inherit rounded-[7px]"
                 min={2}
               />
             </div>
-
             <div className="flex flex-col items-center mb-4">
               <label htmlFor="reward" className="mb-2">
                 Reward (ETH)
@@ -112,7 +100,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
                 value={reward}
                 placeholder="minimum time (days)"
                 min="0"
-                className="crt-border p-1"
+                className="crt-border p-1 focus:outline-inherit rounded-[7px]"
                 step="any"
               />
             </div>
@@ -123,7 +111,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
         </div>
         {txHash && (
           <TypeOut>
-            <p className="text-center">txHash: {txHash}</p>
+            <p className="text-center">txHash: {truncate(txHash)}</p>
           </TypeOut>
         )}
       </Level>

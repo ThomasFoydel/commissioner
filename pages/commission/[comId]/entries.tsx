@@ -26,6 +26,11 @@ const Entries = () => {
   const userHasNotSubmittedEntry =
     account && submittedEntries.every((entry: Entry) => entry?.author?.id !== account.toLowerCase())
   const userCanEnter = account && active && commissioner.id !== account && userHasNotSubmittedEntry
+  
+  const entrySuccess = () => {
+    refetch()
+    setEnterFormOpen(false)
+  }
 
   return (
     <div>
@@ -42,7 +47,7 @@ const Entries = () => {
             <button onClick={() => setEnterFormOpen((o) => !o)}>
               <TypeOut>ENTER COMMISSION</TypeOut>
             </button>
-            {enterFormOpen && <EntryForm id={String(comId)} onComplete={refetch} />}
+            {enterFormOpen && <EntryForm id={String(comId)} onComplete={entrySuccess} />}
           </div>
         )}
         {submittedEntries.length === 0 ? (
