@@ -16,7 +16,7 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
   pageProps,
 }: AppLayoutProps) => {
   const getLayout = Component.getLayout || ((page: ReactNode) => page)
-
+  const AnyComponent = Component as any
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <ApolloProvider client={client}>
@@ -27,7 +27,7 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <Header />
-          {getLayout(<Component {...pageProps} />)}
+          {getLayout(<AnyComponent {...pageProps} />)}
         </DappProvider>
       </ApolloProvider>
       <ToastContainer position="bottom-right" />
