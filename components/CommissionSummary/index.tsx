@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { formatEther } from 'ethers/lib/utils'
 import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../InterplanetaryContent'
+import { truncate, truncateContent } from '../../utils'
 import TypeOut from '../TypeOut'
 
 const CommissionSummary = ({
@@ -27,11 +28,11 @@ const CommissionSummary = ({
     <Link href={`/commission/${commission.id}`}>
       <div className="m-2 p-2 crt-border rounded-sm cursor-pointer">
         <H>
-          <TypeOut>COMMISSION {id}</TypeOut>
+          <TypeOut>COMMISSION {truncate(id)}</TypeOut>
         </H>
         <Level>
-          <InterplanetaryContent path={prompt} />
-          <TypeOut>COMMISSIONER: {commissionerId || commissioner.id}</TypeOut>
+          <InterplanetaryContent path={truncateContent(prompt)} />
+          <TypeOut>COMMISSIONER: {truncate(commissionerId || commissioner.id)}</TypeOut>
           <TypeOut>REWARD: {formatEther(reward)} ETH</TypeOut>
           <TypeOut>{active ? 'ACTIVE' : 'COMPLETED'}</TypeOut>
         </Level>
