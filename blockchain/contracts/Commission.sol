@@ -80,7 +80,7 @@ contract Commission {
         return foreRunner;
     }
 
-    function addReward() public payable {
+    function addReward() public payable ongoing {
         if (msg.sender != commissioner && msg.value > 0) canBeCancelled = false;
         reward = reward.add(msg.value);
         factory._rewardAdded(msg.sender, msg.value);
