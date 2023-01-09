@@ -17,7 +17,7 @@ const CountDown = ({
       const timeLeft = endTimestamp - Date.now() / 1000 > 0 ? endTimestamp - Date.now() / 1000 : 0
       setSecondsLeft(timeLeft)
 
-      if (timeLeft <= 0) onCompletion()
+      if (timeLeft <= 0) onCompletion(true)
     }, 1000)
     return () => clearInterval(interval)
   }, [])

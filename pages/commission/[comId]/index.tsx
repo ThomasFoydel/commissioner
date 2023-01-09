@@ -3,7 +3,7 @@ import { NextPage } from 'next'
 import { Contract } from 'ethers'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useEthers } from '@usedapp/core'
 import { useQuery } from '@apollo/client'
 import { H, Level } from 'react-accessible-headings'
@@ -15,6 +15,7 @@ import CountDown from '../../../components/CountDown'
 import EntryForm from '../../../components/EntryForm'
 import { comDetails } from '../../../apollo/queries'
 import TypeOut from '../../../components/TypeOut'
+import { truncate } from '../../../utils'
 import Layout from '../../layouts/CRT'
 
 enum Trigger {
@@ -43,21 +44,21 @@ const CommissionDetails = () => {
     reward,
     active,
   } = commission
-
   const createdDate = new Date(+timestamp * 1000)
+
+  const [commissionerTriggerOpen, setCommissionerTriggerOpen] = useState(false)
+  const [publicTriggerOpen, setPublicTriggerOpen] = useState(false)
+
   const comTriggerTime = +timestamp + +minTime
   const nowSeconds = Date.now() / 1000
-
   const secondsLeftUntilComTrigger = comTriggerTime - nowSeconds
   const publicTriggerTime = comTriggerTime + 172800
   const secondsLeftUntilPublicTriggerOpens = publicTriggerTime - nowSeconds
-
-  const [commissionerTriggerOpen, setCommissionerTriggerOpen] = useState(
-    active && secondsLeftUntilComTrigger <= 0
-  )
-  const [publicTriggerOpen, setPublicTriggerOpen] = useState(
-    active && secondsLeftUntilPublicTriggerOpens <= 0
-  )
+  
+  useEffect(() => {
+    setPublicTriggerOpen(active && secondsLeftUntilPublicTriggerOpens <= 0)
+    setCommissionerTriggerOpen(active && secondsLeftUntilComTrigger <= 0)
+  }, [commission])
 
   if (!data?.commission) return <></>
 
@@ -113,57 +114,53 @@ const CommissionDetails = () => {
   return (
     <div className="m-2 p-2 crt-border rounded-sm">
       <H>
-        <TypeOut>COMMISSION {commission.id}</TypeOut>
+        <TypeOut>COMMISSION {truncate(commission.id)}</TypeOut>
       </H>
       <Level>
         <Link href={`/user/${commissioner.id}`}>
           <a>
-            <TypeOut>COMMISSIONER {commissioner.id}</TypeOut>
+            <TypeOut>COMMISSIONER {truncate(commissioner.id)}</TypeOut>
           </a>
         </Link>
         <TypeOut>REWARD: {formatEther(reward)} ETH</TypeOut>
         <TypeOut>CREATED {createdDate.toLocaleString().toUpperCase()}</TypeOut>
-        {active && <TypeOut>ACTIVE</TypeOut>}
-        {publicTriggerOpen ? (
+        <TypeOut> {active ? 'ACTIVE' : 'COMPLETE'}</TypeOut>
+        {active && commissionerTriggerOpen && !publicTriggerOpen && (
+          <button onClick={handleCommissionerTrigger}>
+            <TypeOut>COMMISSIONER TRIGGER OPEN</TypeOut>
+          </button>
+        )}
+        {active && publicTriggerOpen && (
           <button onClick={handlePublicTrigger}>
             <TypeOut>PUBLIC TRIGGER OPEN</TypeOut>
           </button>
-        ) : commissionerTriggerOpen ? (
-          <div>
-            <button onClick={handleCommissionerTrigger}>COMMISSIONER TRIGGER OPEN</button>
-            <div>
-              <CountDown
-                endTimestamp={publicTriggerTime}
-                onCompletion={() => setPublicTriggerOpen}
-              />{' '}
-              <TypeOut>UNTIL PUBLIC TRIGGER OPENS</TypeOut>
-            </div>
-          </div>
-        ) : active ? (
-          <div>
-            <div>
-              <CountDown
-                endTimestamp={comTriggerTime}
-                onCompletion={() => setCommissionerTriggerOpen(true)}
-              />{' '}
-              <TypeOut>UNTIL COMMISSIONER TRIGGER OPENS</TypeOut>
-            </div>
-            <div>
-              <CountDown
-                endTimestamp={publicTriggerTime}
-                onCompletion={() => setPublicTriggerOpen}
-              />{' '}
-              <TypeOut>UNTIL PUBLIC TRIGGER OPENS</TypeOut>
-            </div>
-          </div>
-        ) : (
-          <TypeOut>COMPLETE</TypeOut>
         )}
+
+        {active && !publicTriggerOpen && (
+          <div>
+            <CountDown endTimestamp={publicTriggerTime} onCompletion={setPublicTriggerOpen} />{' '}
+            <TypeOut>UNTIL PUBLIC TRIGGER OPENS</TypeOut>
+          </div>
+        )}
+
+        {active && !commissionerTriggerOpen && !publicTriggerOpen && (
+          <div>
+            <CountDown endTimestamp={comTriggerTime} onCompletion={setCommissionerTriggerOpen} />{' '}
+            <TypeOut>UNTIL COMMISSIONER TRIGGER OPENS</TypeOut>
+          </div>
+        )}
+
         <div>
           <TypeOut>PROMPT</TypeOut>
           <InterplanetaryContent path={prompt} />
         </div>
-        {winningAuthor && <TypeOut>WINNER: {winningAuthor.id}</TypeOut>}
+        {winningAuthor && (
+          <Link href={`/user/${winningAuthor.id}`}>
+            <a>
+              <TypeOut>WINNER: {truncate(winningAuthor.id)}</TypeOut>
+            </a>
+          </Link>
+        )}
 
         <TypeOut>
           {entryCount} {Number(entryCount) === 1 ? 'ENTRY' : 'ENTRIES'}
