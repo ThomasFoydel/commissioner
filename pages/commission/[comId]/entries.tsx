@@ -6,45 +6,72 @@ import { useEthers } from '@usedapp/core'
 import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import EntrySummary from '../../../components/EntrySummary'
+import EntrySorter from '../../../components/EntrySorter'
 import EntryForm from '../../../components/EntryForm'
-import { comDetails } from '../../../apollo/queries'
+import { comDetails, makeCommissionEntriesQuery } from '../../../apollo/queries'
 import TypeOut from '../../../components/TypeOut'
 import Layout from '../../layouts/CRT'
+import Link from 'next/link'
 
 const Entries = () => {
-  const { account } = useEthers()
   const router = useRouter()
   const { comId } = router.query
-  const { data, refetch } = useQuery(comDetails, { variables: { comId } })
-  const commission = data?.commission
+  const { account } = useEthers()
+  const [page, setPage] = useState(0)
+  const [perPage, setPerPage] = useState(5)
+  const [order, setOrder] = useState('created')
+  const [direction, setDirection] = useState('asc')
+
+  const { data: comData } = useQuery(comDetails, { variables: { comId } })
+  const {
+    data: entriesData,
+    refetch: entriesRefetch,
+    loading,
+  } = useQuery(makeCommissionEntriesQuery(order, direction, page, perPage), {
+    variables: { comId },
+  })
+  const entries = entriesData?.entries
+  const commission = comData?.commission
   const [enterFormOpen, setEnterFormOpen] = useState(false)
 
   if (!commission) return <></>
 
-  const { active, submittedEntries, commissioner } = commission
+  const { active, commissioner } = commission
 
-  const userHasNotSubmittedEntry =
-    account && submittedEntries.every((entry: Entry) => entry?.author?.id !== account.toLowerCase())
+  const userHasAlreadyEntered =
+    account &&
+    entries &&
+    entries.some((entry: Entry) => entry?.author?.id === account.toLowerCase())
+
   const userCanEnter =
-    account && active && commissioner.id !== account.toLowerCase() && userHasNotSubmittedEntry
+    !loading &&
+    account &&
+    active &&
+    commissioner.id !== account.toLowerCase() &&
+    !userHasAlreadyEntered
 
   const entrySuccess = () => {
     setTimeout(() => {
-      refetch()
+      entriesRefetch()
       setEnterFormOpen(false)
     }, 1500)
   }
 
   return (
     <div>
-      <H>
-        <TypeOut>ENTRIES FOR COMMISSION {commission.id}</TypeOut>
-      </H>
+      <Link href={`/commission/${commission.id}`}>
+        <a>
+          <H>
+            <TypeOut>ENTRIES FOR COMMISSION {commission.id}</TypeOut>
+          </H>
+        </a>
+      </Link>
       <Level>
         <div>
           <TypeOut>PROMPT</TypeOut>
           <InterplanetaryContent path={commission.prompt} />
         </div>
+
         {userCanEnter && (
           <div>
             <button onClick={() => setEnterFormOpen((o) => !o)}>
@@ -53,10 +80,19 @@ const Entries = () => {
             {enterFormOpen && <EntryForm id={String(comId)} onComplete={entrySuccess} />}
           </div>
         )}
-        {submittedEntries.length === 0 ? (
-          <p>NO ENTRIES MADE FOR COMMISSION {comId}</p>
-        ) : (
-          submittedEntries.map((entry: Entry) => <EntrySummary key={entry.id} entry={entry} />)
+        <EntrySorter
+          onDirectionChange={setDirection}
+          onOrderChange={setOrder}
+          onPerPageChange={setPerPage}
+        />
+        {entries && !loading && (
+          <>
+            {entries.length === 0 ? (
+              <p>NO ENTRIES MADE FOR THIS COMMISSION</p>
+            ) : (
+              entries.map((entry: Entry) => <EntrySummary key={entry.id} entry={entry} />)
+            )}
+          </>
         )}
       </Level>
     </div>

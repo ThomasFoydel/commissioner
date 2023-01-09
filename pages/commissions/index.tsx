@@ -40,7 +40,7 @@ const Commissions = () => {
 
         <Link href="/create">
           <a
-            className="button block mt-4 w-[200px] center text-center"
+            className="button block mt-4 w-[256px] center text-center"
             style={{ textShadow: 'none' }}
           >
             <TypeOut>CREATE COMMISSION</TypeOut>

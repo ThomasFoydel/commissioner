@@ -31,6 +31,7 @@ html {
   position: relative;
   margin: 0;
   padding: 2rem;
+  padding-bottom: 4rem;
   display: block;
   overflow: hidden;
   box-sizing: border-box;
@@ -43,6 +44,12 @@ html {
   border-radius: 3.4285714286rem;
   box-shadow: 0 0 2.8571428571rem #252925, inset 0 0 2rem 1.4285714286rem #000;
   -webkit-font-smoothing: antialiased;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+.crt::-webkit-scrollbar {
+  display: none;
 }
 
 .pixels {
