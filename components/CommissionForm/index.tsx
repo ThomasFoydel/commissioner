@@ -88,7 +88,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
                 onChange={handleMinTime}
                 value={minTime}
                 placeholder="minimum time (days)"
-                className="crt-border p-1 focus:outline-inherit rounded-[7px]"
+                className="input"
                 min={2}
               />
             </div>
@@ -103,11 +103,14 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
                 value={reward}
                 placeholder="minimum time (days)"
                 min="0"
-                className="crt-border p-1 focus:outline-inherit rounded-[7px]"
+                className="input"
                 step="any"
               />
             </div>
-            <button className={`button mt-2 w-[210px] ${(!path || processing) && 'disabled'}`} type="submit">
+            <button
+              className={`button mt-2 w-[210px] ${(!path || processing) && 'disabled'}`}
+              type="submit"
+            >
               Create Commission
             </button>
           </form>

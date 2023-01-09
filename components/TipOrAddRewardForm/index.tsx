@@ -91,30 +91,30 @@ const TipOrAddRewardForm = ({
     }
     setProcessing(false)
   }
-  return (
-    <div>
-      {tipWinnerFormOpen ? (
-        <form onSubmit={handleTipWinnerSubmit}>
-          <input
-            type="number"
-            step="any"
-            min="0"
-            onChange={handleWinnerTipAmount}
-            value={winnerTipAmount}
-          />
-          <button className="button" type="submit">
-            SUBMIT
-          </button>
-          <button className="button" type="button" onClick={toggleTipWinnerForm}>
-            CANCEL
-          </button>
-        </form>
-      ) : (
-        <button onClick={toggleTipWinnerForm} className="button">
-          {messages[type].button}
-        </button>
-      )}
-    </div>
+  return tipWinnerFormOpen ? (
+    <form className="flex flex-col sm:flex-row my-4" onSubmit={handleTipWinnerSubmit}>
+      <input
+        type="number"
+        step="any"
+        min="0"
+        onChange={handleWinnerTipAmount}
+        value={winnerTipAmount}
+        className="input"
+      />
+      <button className="button my-2 sm:my-0 sm:mx-2" type="submit">
+        SUBMIT
+      </button>
+      <button className="button" type="button" onClick={toggleTipWinnerForm}>
+        CANCEL
+      </button>
+    </form>
+  ) : (
+    <button
+      onClick={toggleTipWinnerForm}
+      className="button center block my-4 sm:ml-0 sm:transform-none w-[200px]"
+    >
+      {messages[type].button}
+    </button>
   )
 }
 

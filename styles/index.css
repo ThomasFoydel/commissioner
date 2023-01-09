@@ -24,6 +24,10 @@
   @apply bg-skin-button-accent hover:bg-skin-button-muted hover:text-skin-button-accent transition-colors font-bold py-2 px-4 rounded;
 }
 
+.input {
+  @apply border-[#d0fc7e] border-[1px] p-1 focus:outline-inherit rounded-[7px];
+}
+
 .center {
   margin-left: 50%;
   transform: translateX(-50%);
