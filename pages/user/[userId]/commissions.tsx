@@ -8,6 +8,7 @@ import CommissionSorter from '../../../components/CommissionSorter'
 import TypeOut from '../../../components/TypeOut'
 import Layout from '../../layouts/CRT'
 import { useState } from 'react'
+import PageSelector from '../../../components/PageSelector'
 
 const UserCommissions = () => {
   const router = useRouter()
@@ -39,6 +40,7 @@ const UserCommissions = () => {
           ))}
         </div>
       </Level>
+      <PageSelector onChange={setPage} page={page} />
     </div>
   )
 }

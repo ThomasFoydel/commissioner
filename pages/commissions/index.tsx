@@ -8,6 +8,7 @@ import CommissionSorter from '../../components/CommissionSorter'
 import { makeCommissionQuery } from '../terminal/utils'
 import TypeOut from '../../components/TypeOut'
 import Layout from '../layouts/CRT'
+import PageSelector from '../../components/PageSelector'
 
 const Commissions = () => {
   const [order, setOrder] = useState('created')
@@ -35,6 +36,7 @@ const Commissions = () => {
               <CommissionSummary key={commission.id} commission={commission} />
             ))}
         </div>
+        <PageSelector onChange={setPage} page={page} />
 
         <Link href="/create">
           <a className="text-center">
