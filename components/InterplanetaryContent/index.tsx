@@ -10,7 +10,7 @@ const InterplanetaryContent = ({ path, label }: { path: string; label?: string }
     const fetchContent = async () => {
       try {
         const text = await readTextFromIpfs(path)
-        if (text && typeof text === 'string') setContent(text)
+        if (text && mounted) setContent(String(text))
         else throw new Error()
       } catch (err) {
         mounted && setContent('Error loading content.')
@@ -21,6 +21,7 @@ const InterplanetaryContent = ({ path, label }: { path: string; label?: string }
       mounted = false
     }
   }, [path])
+
   if (!content) return <></>
   return <TypeOut>{label ? `${label} ${content}` : content}</TypeOut>
 }
