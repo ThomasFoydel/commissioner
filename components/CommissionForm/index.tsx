@@ -1,5 +1,6 @@
 import { Contract } from 'ethers'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import { useEthers } from '@usedapp/core'
 import React, { ChangeEvent, useState } from 'react'
 import { H, Level } from 'react-accessible-headings'
@@ -9,7 +10,6 @@ import useGetConfig from '../../utils/customHooks/useGetConfig'
 import TextUpload from '../TextUpload'
 import { truncate } from '../../utils'
 import TypeOut from '../TypeOut'
-import { useRouter } from 'next/router'
 
 const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const [path, setPath] = useState<string>()

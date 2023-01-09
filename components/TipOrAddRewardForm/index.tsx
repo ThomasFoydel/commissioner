@@ -110,7 +110,7 @@ const TipOrAddRewardForm = ({
   ) : (
     <button
       onClick={toggleTipWinnerForm}
-      className="button center block my-4 sm:ml-0 sm:transform-none w-[200px]"
+      className="button center block my-4 w-full sm:ml-0 sm:transform-none sm:w-[200px]"
     >
       {messages[type].button}
     </button>
