@@ -21,17 +21,16 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const router = useRouter()
   const config = useGetConfig()
   const { account, library } = useEthers()
-  const signer = library && account ? library.getSigner(String(account)) : null
-  const factoryInterface = new Interface(factoryABI)
-
-  const factoryContract = signer
-    ? new Contract(config.factoryAddress, factoryInterface, signer)
-    : null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!library || !account || !path || processing || complete) return
     setProcessing(true)
+
+    const signer = library && account ? library.getSigner(String(account)) : null
+    const factoryInterface = new Interface(factoryABI)
+    const factoryContract = new Contract(config.factoryAddress, factoryInterface, signer)
+
     toast.dismiss()
     toast.info('please approve in metamask')
     try {

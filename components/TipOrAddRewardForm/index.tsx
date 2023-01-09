@@ -48,20 +48,19 @@ const TipOrAddRewardForm = ({
     setWinnerTipAmount(+e.target.value)
   }
 
-  const signer = library.getSigner(String(account))
-  const commissionInterface = new Interface(commissionABI)
-  const commissionContract = new Contract(commissionId, commissionInterface, signer)
-  const { tipWinner, tipCommissioner, addReward } = commissionContract
-  const contractFunction =
-    type === FormType.tipWinner
-      ? tipWinner
-      : type === FormType.tipCommissioner
-      ? tipCommissioner
-      : addReward
-
   const handleTipWinnerSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (!library || !account || processing || complete) return
+    const signer = library.getSigner(String(account))
+    const commissionInterface = new Interface(commissionABI)
+    const commissionContract = new Contract(commissionId, commissionInterface, signer)
+    const { tipWinner, tipCommissioner, addReward } = commissionContract
+    const contractFunction =
+      type === FormType.tipWinner
+        ? tipWinner
+        : type === FormType.tipCommissioner
+        ? tipCommissioner
+        : addReward
     setProcessing(true)
     toast.dismiss()
     toast.info('please approve in metamask')
