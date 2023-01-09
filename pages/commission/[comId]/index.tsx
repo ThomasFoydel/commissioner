@@ -165,6 +165,11 @@ const CommissionDetails = () => {
             <TipOrAddRewardForm type={FormType.tipWinner} commissionId={comId} />
           </>
         )}
+        {active ? (
+          <TipOrAddRewardForm type={FormType.addReward} commissionId={comId} />
+        ) : (
+          <TipOrAddRewardForm type={FormType.tipCommissioner} commissionId={comId} />
+        )}
 
         <TypeOut>
           {entryCount} {Number(entryCount) === 1 ? 'ENTRY' : 'ENTRIES'}
