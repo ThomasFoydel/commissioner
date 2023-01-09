@@ -34,17 +34,23 @@ const CommissionSorter = ({
     <div>
       <select onChange={handleOrder}>
         {orderOptions.map(({ value, label }) => (
-          <option value={value}>{label}</option>
+          <option value={value} key={value}>
+            {label}
+          </option>
         ))}
       </select>
       <select onChange={handleDirection}>
         {directionOptions.map(({ value, label }) => (
-          <option value={value}>{label}</option>
+          <option value={value} key={value}>
+            {label}
+          </option>
         ))}
       </select>
       <select onChange={handlePerPage}>
         {perPageOptions.map(({ value, label }) => (
-          <option value={value}>{label}</option>
+          <option value={value} key={value}>
+            {label}
+          </option>
         ))}
       </select>
     </div>

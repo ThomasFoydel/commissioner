@@ -12,13 +12,13 @@ const Header = () => {
     { path: `/user/${account?.toLowerCase()}`, label: 'profile', hide: !account },
     { path: '/terminal', label: 'terminal' },
   ]
-  
+
   return (
     <div style={{ textShadow: 'none' }} className="text-center flex justify-center h-[30px]">
       {routes
         .filter((route) => !route.hide)
         .map((route) => (
-          <Link href={route.path}>
+          <Link href={route.path} key={route.path}>
             <a className={`mx-3 ${router.asPath.toLowerCase() === route.path ? 'underline' : ''}`}>
               {route.label}
             </a>
