@@ -3,11 +3,12 @@ import { NextPage } from 'next'
 import { Contract } from 'ethers'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
 import { useEthers } from '@usedapp/core'
 import { useQuery } from '@apollo/client'
+import React, { useEffect, useState } from 'react'
 import { H, Level } from 'react-accessible-headings'
 import { formatEther, Interface } from 'ethers/lib/utils'
+import TipOrAddRewardForm, { FormType } from '../../../components/TipOrAddRewardForm'
 import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import commissionABI from '../../../utils/ethers/ABIs/commissionABI.json'
 import EntrySummary from '../../../components/EntrySummary'
@@ -54,7 +55,7 @@ const CommissionDetails = () => {
   const secondsLeftUntilComTrigger = comTriggerTime - nowSeconds
   const publicTriggerTime = comTriggerTime + 172800
   const secondsLeftUntilPublicTriggerOpens = publicTriggerTime - nowSeconds
-  
+
   useEffect(() => {
     setPublicTriggerOpen(active && secondsLeftUntilPublicTriggerOpens <= 0)
     setCommissionerTriggerOpen(active && secondsLeftUntilComTrigger <= 0)
@@ -155,11 +156,14 @@ const CommissionDetails = () => {
           <InterplanetaryContent path={prompt} />
         </div>
         {winningAuthor && (
-          <Link href={`/user/${winningAuthor.id}`}>
-            <a>
-              <TypeOut>WINNER: {truncate(winningAuthor.id)}</TypeOut>
-            </a>
-          </Link>
+          <>
+            <Link href={`/user/${winningAuthor.id}`}>
+              <a>
+                <TypeOut>WINNER: {truncate(winningAuthor.id)}</TypeOut>
+              </a>
+            </Link>
+            <TipOrAddRewardForm type={FormType.tipWinner} commissionId={comId} />
+          </>
         )}
 
         <TypeOut>
