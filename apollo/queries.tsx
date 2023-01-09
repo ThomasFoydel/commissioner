@@ -156,34 +156,54 @@ export const userVotesQuery = gql`
 export const entryDetails = gql`
   query getEntryDetails($entryId: String!) {
     entry(id: $entryId) {
-        ${entryFields}
+      ${entryFields}
     }
   }
 `
 
 export const contributionDetails = gql`
-    query getContributionDetails($contributionId: String!) {
-        contribution(id: $contributionId) {
-            id
-            transactionHashes
-            author {
-                id
-            }
-            entry {
-                id
-                ipfsPath
-            }
-            total 
-            vote {
-                id
-                voter {
-                    id
-                }
-                commission {
-                    id
-                    prompt
-                }
-            }
+  query getContributionDetails($contributionId: String!) {
+    contribution(id: $contributionId) {
+      id
+      transactionHashes
+      author {
+        id
+      }
+      entry {
+        id
+        ipfsPath
+      }
+      total
+      vote {
+        id
+        voter {
+          id
         }
+        commission {
+          id
+          prompt
+        }
+      }
     }
+  }
 `
+
+export const makeCommissionByUserQuery = (
+  order: string,
+  direction: string,
+  page: number,
+  perPage: number
+) => {
+  const noOrder = order === 'none'
+  const orderField = order === 'created' ? 'timestamp' : order
+  const orderText = noOrder ? '' : `orderBy: ${orderField}, orderDirection: ${direction},`
+  const paginationText = `skip: ${perPage * page}, first: ${perPage}`
+  const args = `(where: { commissioner: $userId }, ${orderText}${paginationText})`
+  return gql`
+      query getCommissions($userId: String!) {
+        commissions${args} {
+          ${comFields}
+      }
+    }
+  `
+}

@@ -150,33 +150,33 @@ export const makeCommissionQuery = (
   const paginationText = `skip: ${perPage * page}, first: ${perPage}`
   const args = `(${orderText}${paginationText})`
   return gql`
-        query getCommissions {
-            commissions${args} {
-                id
-                commissioner {
-                    id
-                }
-                submittedEntries {
-                    id
-                    author {
-                        id
-                    }
-                    voteAmount
-                    ipfsPath
-                    timestamp
-                }
-                entryCount
-                prompt
-                winningAuthor {
-                  id
-                }
-                reward
-                timestamp
-                minTime
-                active
-            }
+    query getCommissions {
+      commissions${args} {
+        id
+        commissioner {
+          id
         }
-    `
+        submittedEntries {
+          id
+          author {
+              id
+          }
+          voteAmount
+          ipfsPath
+          timestamp
+        }
+        entryCount
+        prompt
+        winningAuthor {
+          id
+        }
+        reward
+        timestamp
+        minTime
+        active
+      }
+    }
+  `
 }
 
 export const makeEntriesQuery = (
