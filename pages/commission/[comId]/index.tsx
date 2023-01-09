@@ -166,7 +166,7 @@ const CommissionDetails = () => {
           </>
         )}
         {active ? (
-          <TipOrAddRewardForm type={FormType.addReward} commissionId={comId} />
+          <TipOrAddRewardForm type={FormType.addReward} commissionId={comId} onComplete={refetch} />
         ) : (
           <TipOrAddRewardForm type={FormType.tipCommissioner} commissionId={comId} />
         )}
