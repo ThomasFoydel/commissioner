@@ -119,14 +119,6 @@ export const userCommissionsQuery = gql`
     }
 `
 
-export const userEntriesQuery = gql`
-    query getUserEntries($userId: String!) {
-        entries(where: {author: $userId}) {
-            ${entryFields}
-        }
-    }
-`
-
 export const userVotesQuery = gql`
   query getUserVotes($userId: String!) {
     votes(where: { voter: $userId }) {
@@ -206,4 +198,24 @@ export const makeCommissionByUserQuery = (
       }
     }
   `
+}
+
+export const makeUserEntriesQuery = (
+  order: string,
+  direction: string,
+  page: number,
+  perPage: number
+) => {
+  const noOrder = order === 'none'
+  const orderField = order === 'created' ? 'timestamp' : order
+  const orderText = noOrder ? '' : `orderBy: ${orderField}, orderDirection: ${direction},`
+  const paginationText = `skip: ${perPage * page}, first: ${perPage}`
+  const args = `(where: { author: $userId }, ${orderText}${paginationText})`
+  return gql`
+    query getUserEntries($userId: String!) {
+        entries${args} {
+            ${entryFields}
+        }
+    }
+`
 }

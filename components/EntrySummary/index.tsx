@@ -9,6 +9,7 @@ const EntrySummary = ({ entry, authorId }: { entry: Entry; authorId?: string }) 
       <div className="m-2 p-2 crt-border rounded-sm cursor-pointer">
         <TypeOut>ENTRY {truncate(entry.id)}</TypeOut>
         <TypeOut>AUTHOR {truncate(authorId || entry.author.id)}</TypeOut>
+        <TypeOut>CREATED {new Date(+entry.timestamp * 1000).toLocaleString()}</TypeOut>
         <TypeOut>CONTENT</TypeOut>
         <InterplanetaryContent path={entry.ipfsPath} />
         <TypeOut>

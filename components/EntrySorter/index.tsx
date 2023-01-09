@@ -1,22 +1,17 @@
 import React, { ChangeEvent } from 'react'
 
 const orderOptions = [
-  { value: 'reward', label: 'reward' },
-  { value: 'entryCount', label: 'entry count' },
+  { value: 'voteAmount', label: 'votes' },
   { value: 'created', label: 'created' },
-  { value: 'minTime', label: 'min time' },
 ]
+
 const directionOptions = [
   { value: 'asc', label: 'ascending' },
   { value: 'desc', label: 'descending' },
 ]
-const perPageOptions = [
-  { value: '5', label: '5' },
-  { value: '10', label: '10' },
-  { value: '20', label: '20' },
-]
+const perPageOptions = ['5', '10', '20']
 
-const CommissionSorter = ({
+const EntrySorter = ({
   onOrderChange,
   onDirectionChange,
   onPerPageChange,
@@ -46,9 +41,9 @@ const CommissionSorter = ({
         ))}
       </select>
       <select onChange={handlePerPage}>
-        {perPageOptions.map(({ value, label }) => (
-          <option value={value} key={value}>
-            {label}
+        {perPageOptions.map((option) => (
+          <option value={option} key={option}>
+            {option}
           </option>
         ))}
       </select>
@@ -56,4 +51,4 @@ const CommissionSorter = ({
   )
 }
 
-export default CommissionSorter
+export default EntrySorter

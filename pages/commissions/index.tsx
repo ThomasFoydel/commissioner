@@ -5,10 +5,10 @@ import { useQuery } from '@apollo/client'
 import { H, Level } from 'react-accessible-headings'
 import CommissionSummary from '../../components/CommissionSummary'
 import CommissionSorter from '../../components/CommissionSorter'
+import PageSelector from '../../components/PageSelector'
 import { makeCommissionQuery } from '../terminal/utils'
 import TypeOut from '../../components/TypeOut'
 import Layout from '../layouts/CRT'
-import PageSelector from '../../components/PageSelector'
 
 const Commissions = () => {
   const [order, setOrder] = useState('created')
