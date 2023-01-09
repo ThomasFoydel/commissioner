@@ -1,17 +1,18 @@
+import Link from 'next/link'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { H, Level } from 'react-accessible-headings'
+import { comDetails, makeCommissionEntriesQuery } from '../../../apollo/queries'
 import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import EntrySummary from '../../../components/EntrySummary'
+import PageSelector from '../../../components/PageSelector'
 import EntrySorter from '../../../components/EntrySorter'
 import EntryForm from '../../../components/EntryForm'
-import { comDetails, makeCommissionEntriesQuery } from '../../../apollo/queries'
 import TypeOut from '../../../components/TypeOut'
 import Layout from '../../layouts/CRT'
-import Link from 'next/link'
 
 const Entries = () => {
   const router = useRouter()
@@ -94,6 +95,7 @@ const Entries = () => {
             )}
           </>
         )}
+        <PageSelector onChange={setPage} page={page} />
       </Level>
     </div>
   )

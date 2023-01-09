@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client'
 import { H, Level } from 'react-accessible-headings'
 import EntrySummary from '../../../components/EntrySummary'
 import { makeUserEntriesQuery } from '../../../apollo/queries'
+import PageSelector from '../../../components/PageSelector'
 import EntrySorter from '../../../components/EntrySorter'
 import TypeOut from '../../../components/TypeOut'
 import Layout from '../../layouts/CRT'
@@ -17,11 +18,11 @@ const UserEntries = () => {
   const [page, setPage] = useState(0)
   const [perPage, setPerPage] = useState(5)
 
-  const { data } = useQuery(makeUserEntriesQuery(order, direction, page, perPage), {
+  const { data, loading } = useQuery(makeUserEntriesQuery(order, direction, page, perPage), {
     variables: { userId },
   })
   const entries = data?.entries
-  
+
   if (!router?.query?.userId) return <></>
 
   return (
@@ -36,7 +37,10 @@ const UserEntries = () => {
           onPerPageChange={setPerPage}
         />
 
-        {entries && entries.map((entry: Entry) => <EntrySummary key={entry.id} entry={entry} />)}
+        {entries &&
+          !loading &&
+          entries.map((entry: Entry) => <EntrySummary key={entry.id} entry={entry} />)}
+        <PageSelector onChange={setPage} page={page} />
       </Level>
     </div>
   )
