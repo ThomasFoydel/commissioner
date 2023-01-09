@@ -16,7 +16,7 @@ const Commissions = () => {
   const [page, setPage] = useState(0)
   const [perPage, setPerPage] = useState(5)
 
-  const { data } = useQuery(makeCommissionQuery(order, direction, page, perPage))
+  const { data, loading } = useQuery(makeCommissionQuery(order, direction, page, perPage))
   const commissions = data?.commissions
 
   return (
@@ -32,6 +32,7 @@ const Commissions = () => {
         />
         <div>
           {commissions &&
+            !loading &&
             commissions.map((commission: Commission) => (
               <CommissionSummary key={commission.id} commission={commission} />
             ))}

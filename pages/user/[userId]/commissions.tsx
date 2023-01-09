@@ -17,11 +17,10 @@ const UserCommissions = () => {
   const [direction, setDirection] = useState('asc')
   const [page, setPage] = useState(0)
   const [perPage, setPerPage] = useState(5)
-  const { data } = useQuery(makeCommissionByUserQuery(order, direction, page, perPage), {
+  const { data, loading } = useQuery(makeCommissionByUserQuery(order, direction, page, perPage), {
     variables: { userId },
   })
   const commissions = data?.commissions
-  if (!commissions) return <></>
 
   return (
     <div>
@@ -35,9 +34,11 @@ const UserCommissions = () => {
           onPerPageChange={setPerPage}
         />
         <div>
-          {commissions.map((commission: Commission) => (
-            <CommissionSummary key={commission.id} commission={commission} />
-          ))}
+          {commissions &&
+            !loading &&
+            commissions.map((commission: Commission) => (
+              <CommissionSummary key={commission.id} commission={commission} />
+            ))}
         </div>
       </Level>
       <PageSelector onChange={setPage} page={page} />
