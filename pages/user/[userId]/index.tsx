@@ -49,7 +49,7 @@ const UserProfile = () => {
           <CommissionSummary key={commission.id} commission={commission} commissionerId={id} />
         ))}
         {commissions.length > 3 && (
-          <Link href={`/user/commissions/${id}`}>
+          <Link href={`/user/${id}/commissions`}>
             <a>
               <TypeOut>SEE ALL COMMISSIONS</TypeOut>
             </a>
