@@ -3,15 +3,12 @@ import React, { useEffect } from 'react'
 import { useEthers } from '@usedapp/core'
 
 const NetworkErrorDisplay = () => {
-  const { chainId, active, activateBrowserWallet } = useEthers()
+  const { chainId } = useEthers()
 
   useEffect(() => {
-    if (!active) {
-      toast.error('metamask not connected')
-      activateBrowserWallet()
-    }
-    if (chainId && chainId !== 5) toast.error('connect to goerli chain')
-  }, [chainId, active, activateBrowserWallet])
+    if (chainId && chainId !== 5)
+      toast.error(`chain ${chainId} not supported. connect to goerli chain.`)
+  }, [chainId])
 
   return <></>
 }
