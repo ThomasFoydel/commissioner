@@ -1,14 +1,15 @@
 import { NextPage } from 'next'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { H, Level } from 'react-accessible-headings'
 import CommissionSummary from '../../../components/CommissionSummary'
 import { makeCommissionByUserQuery } from '../../../apollo/queries'
 import CommissionSorter from '../../../components/CommissionSorter'
+import PageSelector from '../../../components/PageSelector'
+import LoadingDots from '../../../components/LoadingDots'
 import TypeOut from '../../../components/TypeOut'
 import Layout from '../../layouts/CRT'
-import { useState } from 'react'
-import PageSelector from '../../../components/PageSelector'
 
 const UserCommissions = () => {
   const router = useRouter()
@@ -21,6 +22,10 @@ const UserCommissions = () => {
     variables: { userId },
   })
   const commissions = data?.commissions
+  if (!loading && commissions === undefined) {
+    return <TypeOut>NO COMMISSION DATA FOUND FOR USER {userId}</TypeOut>
+  }
+  if (commissions === undefined) return <LoadingDots />
 
   return (
     <div>
