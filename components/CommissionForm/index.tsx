@@ -75,7 +75,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
         <TypeOut>COMMISSION FORM</TypeOut>
       </H>
       <Level>
-        <TextUpload onSuccess={setPath} label="Upload Commission Prompt:" />
+        <TextUpload onPathChange={setPath} label="Upload Commission Prompt:" />
         <div>
           <form onSubmit={handleSubmit} className="text-center my-3">
             <div className="flex flex-col items-center my-4">

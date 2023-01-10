@@ -55,7 +55,7 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
           <TypeOut>ENTRY FORM</TypeOut>
         </H>
         <Level>
-          <TextUpload onSuccess={setPath} label="Upload Entry:" />
+          <TextUpload onPathChange={setPath} label="Upload Entry:" />
 
           <div>
             <form onSubmit={handleSubmit} className="text-center my-3">
