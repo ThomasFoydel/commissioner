@@ -1,6 +1,7 @@
 export const aboutMessage = `
 Commissioner is a decentralized, censorship-resistant platform.
 - Commissioner is built with Solidity, TypeScript, React, NextJs, and AssemblyScript.
+- You must connect MetaMask to use Commissioner.
 - It uses IPFS to store commission prompts and entry content.
 - Once uploaded to IPFS, the prompt/content cannot be tampered with.
 - The IPFS hash for the prompt/content is stored on the blockchain.
