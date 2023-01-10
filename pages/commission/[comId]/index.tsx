@@ -176,9 +176,9 @@ const CommissionDetails = () => {
           <TipOrAddRewardForm type={FormType.tipCommissioner} commissionId={comId} />
         )}
 
-        <TypeOut>
+        <DynamicTypeOut>
           {entryCount} {Number(entryCount) === 1 ? 'ENTRY' : 'ENTRIES'}
-        </TypeOut>
+        </DynamicTypeOut>
         {entries.slice(0, 3).map((entry: Entry) => (
           <EntrySummary key={entry.id} entry={entry} />
         ))}
