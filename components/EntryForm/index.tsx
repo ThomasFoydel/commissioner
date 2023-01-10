@@ -1,8 +1,8 @@
 import { Contract } from 'ethers'
 import React, { useState } from 'react'
-import { useEthers } from '@usedapp/core'
 import { Interface } from 'ethers/lib/utils'
 import { H, Level } from 'react-accessible-headings'
+import { getChainById, useEthers } from '@usedapp/core'
 import commissionABI from '../../utils/ethers/ABIs/commissionABI.json'
 import TextUpload from '../../components/TextUpload'
 import { toast } from 'react-toastify'
@@ -14,7 +14,8 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
   const [processing, setProcessing] = useState(false)
   const [complete, setComplete] = useState(false)
   const [txHash, setTxHash] = useState('')
-  const { account, library } = useEthers()
+  const { account, library, chainId } = useEthers()
+  const chain = getChainById(Number(chainId))
 
   const commissionInterface = new Interface(commissionABI)
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,7 +71,13 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
           </div>
           {txHash && (
             <div className="text-center">
-              <TypeOut>txHash: {truncate(txHash)}</TypeOut>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={chain.getExplorerTransactionLink(txHash)}
+              >
+                <TypeOut>txHash: {truncate(txHash)}</TypeOut>
+              </a>
             </div>
           )}
         </Level>

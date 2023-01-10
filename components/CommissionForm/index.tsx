@@ -1,14 +1,14 @@
 import { Contract } from 'ethers'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
-import { useEthers } from '@usedapp/core'
 import React, { ChangeEvent, useState } from 'react'
 import { H, Level } from 'react-accessible-headings'
+import { getChainById, useEthers } from '@usedapp/core'
 import { Interface, parseEther } from 'ethers/lib/utils'
 import factoryABI from '../../utils/ethers/ABIs/factoryABI.json'
 import useGetConfig from '../../utils/customHooks/useGetConfig'
-import TextUpload from '../TextUpload'
 import { truncate } from '../../utils'
+import TextUpload from '../TextUpload'
 import TypeOut from '../TypeOut'
 
 const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
@@ -20,7 +20,8 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const [reward, setReward] = useState(0)
   const router = useRouter()
   const config = useGetConfig()
-  const { account, library } = useEthers()
+  const { account, library, chainId } = useEthers()
+  const chain = getChainById(Number(chainId))
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,7 +56,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
         toast.success('new commission created!')
         const comId = receipt?.events[0]?.args?.commission
         if (onComplete) onComplete()
-        else setTimeout(()=> router.push(`/commission/${comId}`), 2000)
+        else setTimeout(() => router.push(`/commission/${comId}`), 2000)
       }
     } catch (err) {
       toast.dismiss()
@@ -116,7 +117,13 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
         </div>
         {txHash && (
           <div className="text-center">
-            <TypeOut>txHash: {truncate(txHash)}</TypeOut>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={chain.getExplorerTransactionLink(txHash)}
+            >
+              <TypeOut>txHash: {truncate(txHash)}</TypeOut>
+            </a>
           </div>
         )}
       </Level>
