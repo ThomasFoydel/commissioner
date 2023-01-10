@@ -11,6 +11,7 @@ import { formatEther, Interface } from 'ethers/lib/utils'
 import TipOrAddRewardForm, { FormType } from '../../../components/TipOrAddRewardForm'
 import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import commissionABI from '../../../utils/ethers/ABIs/commissionABI.json'
+import DynamicTypeOut from '../../../components/DynamicTypeOut'
 import EntrySummary from '../../../components/EntrySummary'
 import CountDown from '../../../components/CountDown'
 import EntryForm from '../../../components/EntryForm'
@@ -29,7 +30,8 @@ const CommissionDetails = () => {
   const comId = String(router.query.comId).toLowerCase()
   const { account, library } = useEthers()
 
-  const { data, refetch } = useQuery(comDetails, { variables: { comId } })
+  const { data } = useQuery(comDetails, { variables: { comId }, pollInterval: 3000 })
+
   const commission: Commission = data?.commission || {}
   const [enterFormOpen, setEnterFormOpen] = useState(false)
   const [processingTrigger, setProcessingTrigger] = useState(false)
@@ -94,7 +96,6 @@ const CommissionDetails = () => {
       await tx.wait()
       toast.dismiss()
       toast.success(`${type} trigger successful`)
-      setTimeout(() => refetch(), 2000)
     } catch (err) {
       toast.dismiss()
       if (err.code === 4001) toast.error('user rejected in metamask')
@@ -105,12 +106,7 @@ const CommissionDetails = () => {
 
   const handlePublicTrigger = () => handleTrigger(Trigger.public)
   const handleCommissionerTrigger = () => handleTrigger(Trigger.commissioner)
-  const entrySuccess = () => {
-    setTimeout(() => {
-      refetch()
-      setEnterFormOpen(false)
-    }, 1500)
-  }
+  const entrySuccess = () => setEnterFormOpen(false)
 
   return (
     <div className="m-2 p-2 crt-border rounded-sm">
@@ -123,7 +119,7 @@ const CommissionDetails = () => {
             <TypeOut>COMMISSIONER {truncate(commissioner.id)}</TypeOut>
           </a>
         </Link>
-        <TypeOut>REWARD: {formatEther(reward)} ETH</TypeOut>
+        <DynamicTypeOut>REWARD: {formatEther(reward)} ETH</DynamicTypeOut>
         <TypeOut>CREATED {createdDate.toLocaleString().toUpperCase()}</TypeOut>
         <TypeOut> {active ? 'ACTIVE' : 'COMPLETE'}</TypeOut>
         {active && commissionerTriggerOpen && !publicTriggerOpen && (
@@ -166,7 +162,10 @@ const CommissionDetails = () => {
           </>
         )}
         {active ? (
-          <TipOrAddRewardForm type={FormType.addReward} commissionId={comId} onComplete={refetch} />
+          <TipOrAddRewardForm
+            type={FormType.addReward}
+            commissionId={comId}
+          />
         ) : (
           <TipOrAddRewardForm type={FormType.tipCommissioner} commissionId={comId} />
         )}

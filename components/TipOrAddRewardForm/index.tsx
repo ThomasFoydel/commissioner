@@ -82,6 +82,7 @@ const TipOrAddRewardForm = ({
         toast.dismiss()
         toast.success(messages[type].success)
         if (onComplete) onComplete()
+        setTipWinnerFormOpen(false)
       }
     } catch (err) {
       toast.dismiss()
