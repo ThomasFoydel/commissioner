@@ -3,13 +3,24 @@ pragma solidity ^0.8.4;
 import "./SafeMath.sol";
 
 interface IFactory {
-    function _voteSubmitted(address _author, address _voter, uint256 _value) external;
+    function _voteSubmitted(
+        address _author,
+        address _voter,
+        uint256 _value
+    ) external;
+
     function _rewardAdded(address _sender, uint256 _value) external;
+
     function _commissionCancelled() external;
+
     function _entrySubmitted(string memory _ipfsPath, address _author) external;
+
     function _winnerChosen(address _winningAuthor, uint256 _reward) external;
+
     function _winnerTipped(address _winningAuthor, uint256 _amount) external;
-    function _commissionerTipped(address _winningAuthor, uint256 _amount) external;
+
+    function _commissionerTipped(address _winningAuthor, uint256 _amount)
+        external;
 }
 
 contract Commission {
@@ -98,10 +109,7 @@ contract Commission {
         factory._commissionCancelled();
     }
 
-    function submitEntry(string memory _ipfsPath)
-        public
-        ongoing
-    {
+    function submitEntry(string memory _ipfsPath) public ongoing {
         require(entered[msg.sender] == false, "You have already entered");
         require(
             msg.sender != commissioner,

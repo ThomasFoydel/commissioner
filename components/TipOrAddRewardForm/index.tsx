@@ -6,9 +6,9 @@ import React, { ChangeEvent, FormEvent, useState } from 'react'
 import commissionABI from '../../utils/ethers/ABIs/commissionABI.json'
 
 export enum FormType {
-  tipWinner = 'TIP_WINNER',
-  tipCommissioner = 'TIP_COMMISSIONER',
-  addReward = 'ADD_REWARD',
+  tipWinner = 'tipWinner',
+  tipCommissioner = 'tipCommissioner',
+  addReward = 'addReward',
 }
 
 const messages = {
@@ -54,13 +54,9 @@ const TipOrAddRewardForm = ({
     const signer = library.getSigner(String(account))
     const commissionInterface = new Interface(commissionABI)
     const commissionContract = new Contract(commissionId, commissionInterface, signer)
-    const { tipWinner, tipCommissioner, addReward } = commissionContract
-    const contractFunction =
-      type === FormType.tipWinner
-        ? tipWinner
-        : type === FormType.tipCommissioner
-        ? tipCommissioner
-        : addReward
+    const contractFunction = commissionContract[type]
+
+    console.log({ contractFunction })
     setProcessing(true)
     toast.dismiss()
     toast.info('please approve in metamask')
@@ -85,6 +81,7 @@ const TipOrAddRewardForm = ({
         setTipWinnerFormOpen(false)
       }
     } catch (err) {
+      console.log({ err })
       toast.dismiss()
       if (err.code === 4001) toast.error('user rejected in metamask')
       else toast.error(messages[type].failure)
