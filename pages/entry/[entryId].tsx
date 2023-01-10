@@ -26,14 +26,15 @@ const EntryDetails = () => {
   return (
     <div className="m-2 p-2 crt-border rounded-sm">
       <H>
-        <TypeOut>
-          {account === author.id.toLocaleLowerCase() && 'YOUR '}ENTRY {truncate(id)}
-        </TypeOut>
+        <TypeOut>ENTRY {truncate(entryId)}</TypeOut>
       </H>
       <Level>
         <Link href={`/user/${author.id}`}>
           <a>
-            <TypeOut>AUTHOR {author.id}</TypeOut>
+            <TypeOut>
+              AUTHOR {truncate(author.id)}{' '}
+              {account && account.toLowerCase() === author.id && '(YOU)'}
+            </TypeOut>
           </a>
         </Link>
         <TypeOut>SUBMITTED {new Date(+timestamp * 1000).toLocaleString()}</TypeOut>
