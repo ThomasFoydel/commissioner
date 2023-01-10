@@ -55,7 +55,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
         toast.success('new commission created!')
         const comId = receipt?.events[0]?.args?.commission
         if (onComplete) onComplete()
-        else router.push(`/commission/${comId}`)
+        else setTimeout(()=> router.push(`/commission/${comId}`), 2000)
       }
     } catch (err) {
       toast.dismiss()
