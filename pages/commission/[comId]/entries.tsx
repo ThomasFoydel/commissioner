@@ -25,13 +25,13 @@ const Entries = () => {
   const [direction, setDirection] = useState('asc')
 
   const { data: comData, loading: comLoading } = useQuery(comDetails, { variables: { comId } })
-  const {
-    data: entriesData,
-    refetch: entriesRefetch,
-    loading,
-  } = useQuery(makeCommissionEntriesQuery(order, direction, page, perPage), {
-    variables: { comId },
-  })
+  const { data: entriesData, loading } = useQuery(
+    makeCommissionEntriesQuery(order, direction, page, perPage),
+    {
+      variables: { comId },
+      pollInterval: 4000,
+    }
+  )
   const entries = entriesData?.entries
   const commission = comData?.commission
   const [enterFormOpen, setEnterFormOpen] = useState(false)
@@ -56,10 +56,7 @@ const Entries = () => {
     !userHasAlreadyEntered
 
   const entrySuccess = () => {
-    setTimeout(() => {
-      entriesRefetch()
-      setEnterFormOpen(false)
-    }, 1500)
+    setEnterFormOpen(false)
   }
 
   return (

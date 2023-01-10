@@ -32,6 +32,7 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
       const receipt = await tx.wait()
       if (receipt) {
         setComplete(true)
+        toast.dismiss()
         toast.success('new entry created!')
         if (onComplete) onComplete()
       }
