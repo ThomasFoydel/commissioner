@@ -26,21 +26,21 @@ const EntrySorter = ({
 
   return (
     <div>
-      <select onChange={handleOrder}>
+      <select className="select mx-1" onChange={handleOrder}>
         {orderOptions.map(({ value, label }) => (
           <option value={value} key={value}>
             {label}
           </option>
         ))}
       </select>
-      <select onChange={handleDirection}>
+      <select className="select mx-1" onChange={handleDirection}>
         {directionOptions.map(({ value, label }) => (
           <option value={value} key={value}>
             {label}
           </option>
         ))}
       </select>
-      <select onChange={handlePerPage}>
+      <select className="select mx-1" onChange={handlePerPage}>
         {perPageOptions.map((option) => (
           <option value={option} key={option}>
             {option}
