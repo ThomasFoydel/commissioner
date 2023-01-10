@@ -75,7 +75,7 @@ const Entries = () => {
 
         {userCanEnter && (
           <div>
-            <button onClick={() => setEnterFormOpen((o) => !o)}>
+            <button className="button" onClick={() => setEnterFormOpen((o) => !o)}>
               <TypeOut>ENTER COMMISSION</TypeOut>
             </button>
             {enterFormOpen && <EntryForm id={String(comId)} onComplete={entrySuccess} />}

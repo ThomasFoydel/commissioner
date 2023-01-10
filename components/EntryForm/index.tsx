@@ -57,7 +57,12 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
 
           <div>
             <form onSubmit={handleSubmit} className="text-center my-3">
-              <button className={`button ${(!path || processing) && 'disabled'}`} type="submit">
+              <button
+                className={`button w-full center sm:ml-0 sm:transform-none sm:w-[210px] ${
+                  (!path || processing) && 'disabled'
+                }`}
+                type="submit"
+              >
                 Create Entry
               </button>
             </form>

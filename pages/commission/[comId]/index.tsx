@@ -151,7 +151,7 @@ const CommissionDetails = () => {
           <TypeOut>PROMPT</TypeOut>
           <InterplanetaryContent path={prompt} maxChars={1500} />
           <a
-            className="button text-center mt-2 block center sm:transform-none sm:ml-0 px-0 w-[200px]"
+            className="button text-center w-full mt-2 block center sm:transform-none sm:ml-0 px-0 sm:w-[200px]"
             style={{ textShadow: 'none' }}
             href={`http://ipfs.io/ipfs/${prompt}`}
             target="_blank"
@@ -192,7 +192,10 @@ const CommissionDetails = () => {
 
         {userCanEnter && (
           <div>
-            <button onClick={() => setEnterFormOpen((o) => !o)}>
+            <button
+              className="button w-full center sm:w-[200px] sm:ml-0 sm:transform-none"
+              onClick={() => setEnterFormOpen((o) => !o)}
+            >
               <TypeOut>ENTER COMMISSION</TypeOut>
             </button>
             {enterFormOpen && <EntryForm id={String(comId)} onComplete={entrySuccess} />}

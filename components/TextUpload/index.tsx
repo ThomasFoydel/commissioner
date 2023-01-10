@@ -68,7 +68,9 @@ const TextUpload = ({ onSuccess, label }: { onSuccess: Function; label: string }
               onChange={(e) => setText(e.target.value)}
             />
             <button
-              className={`block center button w-[210px] ${(path || loading) && 'disabled'}`}
+              className={`button w-full center sm:ml-0 sm:transform-none sm:w-[210px] ${
+                (path || loading) && 'disabled'
+              }`}
               type="submit"
             >
               Upload To IPFS
