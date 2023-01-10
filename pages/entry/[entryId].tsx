@@ -17,7 +17,7 @@ const EntryDetails = () => {
   const router = useRouter()
   const entryId = String(router.query.entryId).toLowerCase()
 
-  const { data, loading, refetch } = useQuery(entryDetails, { variables: { entryId } })
+  const { data, loading } = useQuery(entryDetails, { variables: { entryId }, pollInterval: 4000 })
   const entry: Entry | undefined = data?.entry
 
   if (!loading && entry === undefined) return <TypeOut>ENTRY {entryId} NOT FOUND</TypeOut>
@@ -63,7 +63,7 @@ const EntryDetails = () => {
           </a>
         </div>
 
-        {userCanVote && <VoteForm onSuccess={refetch} entry={entry} commission={commission} />}
+        {userCanVote && <VoteForm entry={entry} commission={commission} />}
 
         {contributions.map((contribution) => (
           <Contribution key={contribution.id} contribution={contribution} />
