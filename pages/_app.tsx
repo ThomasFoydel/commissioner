@@ -4,7 +4,6 @@ import { NextComponentType } from 'next'
 import { ThemeProvider } from 'next-themes'
 import 'react-toastify/dist/ReactToastify.css'
 import { ApolloProvider } from '@apollo/client'
-import { ToastContainer } from 'react-toastify'
 import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app'
 import NetworkErrorDisplay from '../components/NetworkErrorDisplay'
 import DappProvider from '../utils/ethers/DappProvider'
@@ -36,7 +35,6 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
           {getLayout(<AnyComponent {...pageProps} />)}
         </DappProvider>
       </ApolloProvider>
-      <ToastContainer position="bottom-right" />
     </ThemeProvider>
   )
 }
