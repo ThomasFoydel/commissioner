@@ -7,8 +7,9 @@ import { userProfileQuery, userVotesQuery } from '../../../apollo/queries'
 import CommissionSummary from '../../../components/CommissionSummary'
 import EntrySummary from '../../../components/EntrySummary'
 import VoteSummary from '../../../components/VoteSummary'
-import Layout from '../../layouts/CRT'
+import LoadingDots from '../../../components/LoadingDots'
 import TypeOut from '../../../components/TypeOut'
+import Layout from '../../layouts/CRT'
 
 const UserProfile = () => {
   const router = useRouter()
@@ -26,7 +27,8 @@ const UserProfile = () => {
       </TypeOut>
     )
   }
-  if (!user) return <></>
+
+  if (user === undefined) return <LoadingDots />
 
   const {
     id,

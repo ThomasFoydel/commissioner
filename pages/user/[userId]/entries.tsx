@@ -7,6 +7,7 @@ import EntrySummary from '../../../components/EntrySummary'
 import { makeUserEntriesQuery } from '../../../apollo/queries'
 import PageSelector from '../../../components/PageSelector'
 import EntrySorter from '../../../components/EntrySorter'
+import LoadingDots from '../../../components/LoadingDots'
 import TypeOut from '../../../components/TypeOut'
 import Layout from '../../layouts/CRT'
 
@@ -23,7 +24,8 @@ const UserEntries = () => {
   })
   const entries = data?.entries
 
-  if (!router?.query?.userId) return <></>
+  if (entries === undefined && !loading) return <TypeOut>NO ENTRIES FOUND BY USER {userId}</TypeOut>
+  if (entries === undefined) return <LoadingDots />
 
   return (
     <div>

@@ -10,6 +10,7 @@ import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import EntrySummary from '../../../components/EntrySummary'
 import PageSelector from '../../../components/PageSelector'
 import EntrySorter from '../../../components/EntrySorter'
+import LoadingDots from '../../../components/LoadingDots'
 import EntryForm from '../../../components/EntryForm'
 import TypeOut from '../../../components/TypeOut'
 import Layout from '../../layouts/CRT'
@@ -35,7 +36,7 @@ const Entries = () => {
   const commission = comData?.commission
   const [enterFormOpen, setEnterFormOpen] = useState(false)
 
-  if (!commission) return <></>
+  if (commission === undefined || entries === undefined) return <LoadingDots />
 
   const { active, commissioner } = commission
 

@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
+import LoadingDots from '../../components/LoadingDots'
 import { entryDetails } from '../../apollo/queries'
 import VoteForm from '../../components/VoteForm'
 import TypeOut from '../../components/TypeOut'
@@ -18,7 +19,8 @@ const EntryDetails = () => {
 
   const { data, refetch } = useQuery(entryDetails, { variables: { entryId } })
   const entry: Entry | undefined = data?.entry
-  if (!entry) return <></>
+  if (entry === undefined) return <LoadingDots />
+
   const { id, author, voteAmount, commission, ipfsPath, timestamp, contributions } = entry
 
   const userCanVote = account && account.toLowerCase() !== entry.author.id && commission.active

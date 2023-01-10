@@ -1,21 +1,27 @@
 import React from 'react'
+import Link from 'next/link'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { contributionDetails } from '../../apollo/queries'
-import Layout from '../layouts/CRT'
-import TypeOut from '../../components/TypeOut'
-import { truncate } from '../../utils'
-import Link from 'next/link'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
 import ExplorerLink from '../../components/ExplorerLink'
+import LoadingDots from '../../components/LoadingDots'
+import TypeOut from '../../components/TypeOut'
+import { truncate } from '../../utils'
+import Layout from '../layouts/CRT'
 
 const ContributionDetails = () => {
   const router = useRouter()
-  const { contributionId } = router.query
+  const { contributionId, loading } = router.query
   const res = useQuery(contributionDetails, { variables: { contributionId } })
   const contribution = res?.data?.contribution
-  if (!contribution) return <></>
+
+  if (contribution === undefined && !loading) {
+    return <TypeOut>NO DATA FOUND FOR CONTRIBUTION {contributionId}</TypeOut>
+  }
+  if (contribution === undefined) return <LoadingDots />
+
   const { id, author, entry, total, transactionHashes, vote } = contribution
 
   return (

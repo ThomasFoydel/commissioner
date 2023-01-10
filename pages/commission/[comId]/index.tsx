@@ -13,6 +13,7 @@ import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import commissionABI from '../../../utils/ethers/ABIs/commissionABI.json'
 import DynamicTypeOut from '../../../components/DynamicTypeOut'
 import EntrySummary from '../../../components/EntrySummary'
+import LoadingDots from '../../../components/LoadingDots'
 import CountDown from '../../../components/CountDown'
 import EntryForm from '../../../components/EntryForm'
 import { comDetails } from '../../../apollo/queries'
@@ -63,7 +64,7 @@ const CommissionDetails = () => {
     setCommissionerTriggerOpen(active && secondsLeftUntilComTrigger <= 0)
   }, [commission])
 
-  if (!data?.commission) return <></>
+  if (data?.commission === undefined) return <LoadingDots />
 
   const userHasNotSubmittedEntry =
     account && entries.every((entry: Entry) => entry.author.id !== account.toLowerCase())

@@ -4,7 +4,9 @@ import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { H, Level } from 'react-accessible-headings'
 import VoteSummary from '../../../components/VoteSummary'
+import LoadingDots from '../../../components/LoadingDots'
 import { userVotesQuery } from '../../../apollo/queries'
+import TypeOut from '../../../components/TypeOut'
 import Layout from '../../layouts/CRT'
 
 const UserVotes = () => {
@@ -12,9 +14,12 @@ const UserVotes = () => {
   const router = useRouter()
   const userId = String(router.query.userId).toLowerCase()
 
-  const res = useQuery(userVotesQuery, { variables: { userId } })
-  const votes = res?.data?.votes
-  if (!votes) return <></>
+  const { data, loading } = useQuery(userVotesQuery, { variables: { userId } })
+  const votes = data?.votes
+
+  if (votes === undefined && !loading) return <TypeOut>NO VOTES FOUND BY USER {userId}</TypeOut>
+  if (votes === undefined) return <LoadingDots />
+
   return (
     <div>
       <H>{account && userId === account.toLowerCase() ? 'YOUR' : userId} CONTRIBUTIONS</H>
