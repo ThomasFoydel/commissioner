@@ -13,11 +13,19 @@ import TypeOut from '../../../components/TypeOut'
 const UserProfile = () => {
   const router = useRouter()
   const userId = String(router.query.userId).toLowerCase()
-  const { data } = useQuery(userProfileQuery, { variables: { id: userId } })
+  const { data, loading } = useQuery(userProfileQuery, { variables: { id: userId } })
   const user: User | undefined = data?.user
   const res = useQuery(userVotesQuery, { variables: { userId } })
   const votes: Vote[] | undefined = res?.data?.votes
 
+  if (!user && !loading) {
+    return (
+      <TypeOut>
+        NO PROFILE YET FOR {userId}.<br />
+        SUBMIT A TRANSACTION TO GET STARTED.
+      </TypeOut>
+    )
+  }
   if (!user) return <></>
 
   const {
