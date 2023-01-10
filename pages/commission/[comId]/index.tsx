@@ -149,7 +149,7 @@ const CommissionDetails = () => {
 
         <div>
           <TypeOut>PROMPT</TypeOut>
-          <InterplanetaryContent path={prompt} />
+          <InterplanetaryContent path={prompt} maxChars={1500} />
         </div>
         {winningAuthor && (
           <>
@@ -162,10 +162,7 @@ const CommissionDetails = () => {
           </>
         )}
         {active ? (
-          <TipOrAddRewardForm
-            type={FormType.addReward}
-            commissionId={comId}
-          />
+          <TipOrAddRewardForm type={FormType.addReward} commissionId={comId} />
         ) : (
           <TipOrAddRewardForm type={FormType.tipCommissioner} commissionId={comId} />
         )}

@@ -32,7 +32,7 @@ const CommissionSummary = ({
             <TypeOut>COMMISSION {truncate(id)}</TypeOut>
           </H>
           <Level>
-            <InterplanetaryContent path={truncateContent(prompt)} />
+            <InterplanetaryContent path={prompt} maxChars={100} />
             <TypeOut>COMMISSIONER: {truncate(commissionerId || commissioner.id)}</TypeOut>
             <TypeOut>REWARD: {formatEther(reward)} ETH</TypeOut>
             <TypeOut>{active ? 'ACTIVE' : 'COMPLETED'}</TypeOut>

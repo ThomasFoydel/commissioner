@@ -15,7 +15,7 @@ const VoteSummary = ({ vote }: { vote: Vote }) => {
             <TypeOut>COMMISSION {truncate(commission.id)}</TypeOut>
             <div>
               <TypeOut>PROMPT</TypeOut>
-              <InterplanetaryContent path={commission.prompt} />
+              <InterplanetaryContent path={commission.prompt} maxChars={100} />
             </div>
           </div>
         </a>

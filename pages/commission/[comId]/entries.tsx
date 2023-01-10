@@ -70,7 +70,7 @@ const Entries = () => {
       <Level>
         <div>
           <TypeOut>PROMPT</TypeOut>
-          <InterplanetaryContent path={commission.prompt} />
+          <InterplanetaryContent path={commission.prompt} maxChars={100} />
         </div>
 
         {userCanEnter && (

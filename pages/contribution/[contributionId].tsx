@@ -34,7 +34,7 @@ const ContributionDetails = () => {
             <TypeOut>AUTHOR {author.id}</TypeOut>
             <div>
               <TypeOut>CONTENT</TypeOut>
-              <InterplanetaryContent path={entry.ipfsPath} />
+              <InterplanetaryContent path={entry.ipfsPath} maxChars={1500} />
             </div>
           </div>
         </a>
@@ -46,7 +46,7 @@ const ContributionDetails = () => {
             <TypeOut>COMMISSION {vote.commission.id}</TypeOut>
             <div>
               <TypeOut>PROMPT</TypeOut>
-              <InterplanetaryContent path={vote.commission.prompt} />
+              <InterplanetaryContent path={vote.commission.prompt} maxChars={3000} />
             </div>
           </div>
         </a>

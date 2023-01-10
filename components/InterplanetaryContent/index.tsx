@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import { truncateContent } from '../../utils'
 import { readTextFromIpfs } from '../../utils/ipfs/client'
 import TypeOut from '../TypeOut'
 
-const InterplanetaryContent = ({ path, label }: { path: string; label?: string }) => {
+const InterplanetaryContent = ({
+  path,
+  label,
+  maxChars,
+}: {
+  path: string
+  label?: string
+  maxChars?: number
+}) => {
   const [content, setContent] = useState('')
   useEffect(() => {
     if (!path) return
@@ -10,7 +19,8 @@ const InterplanetaryContent = ({ path, label }: { path: string; label?: string }
     const fetchContent = async () => {
       try {
         const text = await readTextFromIpfs(path)
-        if (text && mounted) setContent(String(text))
+        if (text && mounted)
+          setContent(maxChars ? truncateContent(String(text), maxChars) : String(text))
         else throw new Error()
       } catch (err) {
         mounted && setContent('Error loading content.')

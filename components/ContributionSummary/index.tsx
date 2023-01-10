@@ -13,7 +13,7 @@ const ContributionSummary = ({ contribution }: { contribution: Contribution }) =
           <div>
             <TypeOut>ENTRY {truncate(entry.id)}</TypeOut>
             <TypeOut>CONTENT</TypeOut>
-            <InterplanetaryContent path={entry.ipfsPath} />
+            <InterplanetaryContent path={entry.ipfsPath} maxChars={100} />
           </div>
 
           <TypeOut>TOTAL {total}</TypeOut>

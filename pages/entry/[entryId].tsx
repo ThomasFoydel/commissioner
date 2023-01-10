@@ -41,12 +41,12 @@ const EntryDetails = () => {
         <Link href={`/commission/${commission.id}`}>
           <a>
             <TypeOut>COMMISSION PROMPT</TypeOut>
-            <InterplanetaryContent path={commission.prompt} />
+            <InterplanetaryContent path={commission.prompt} maxChars={1500} />
           </a>
         </Link>
         <div>
           <TypeOut>CONTENT</TypeOut>
-          <InterplanetaryContent path={ipfsPath} />
+          <InterplanetaryContent path={ipfsPath} maxChars={3000} />
         </div>
 
         {userCanVote && <VoteForm onSuccess={refetch} entry={entry} commission={commission} />}
