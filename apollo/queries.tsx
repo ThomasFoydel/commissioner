@@ -103,6 +103,26 @@ export const comDetails = gql`
     }
 `
 
+export const commmissionWithoutEntries = gql`
+  query getComDetail($comId: String!) {
+    commission(id: $comId) {
+      id
+      commissioner {
+        id
+      }
+      entryCount
+      prompt
+      winningAuthor {
+        id
+      }
+      reward
+      timestamp
+      minTime
+      active
+    }
+  }
+`
+
 export const userProfileQuery = gql`
     query getUserDetails($id: String!) {
         user(id: $id) {

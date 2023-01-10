@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { H, Level } from 'react-accessible-headings'
-import { comDetails, makeCommissionEntriesQuery } from '../../../apollo/queries'
+import { commmissionWithoutEntries, makeCommissionEntriesQuery } from '../../../apollo/queries'
 import InterplanetaryContent from '../../../components/InterplanetaryContent'
 import EntrySummary from '../../../components/EntrySummary'
 import PageSelector from '../../../components/PageSelector'
@@ -24,7 +24,9 @@ const Entries = () => {
   const [order, setOrder] = useState('created')
   const [direction, setDirection] = useState('asc')
 
-  const { data: comData, loading: comLoading } = useQuery(comDetails, { variables: { comId } })
+  const { data: comData, loading: comLoading } = useQuery(commmissionWithoutEntries, {
+    variables: { comId },
+  })
   const { data: entriesData, loading } = useQuery(
     makeCommissionEntriesQuery(order, direction, page, perPage),
     {
