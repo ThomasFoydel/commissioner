@@ -150,6 +150,15 @@ const CommissionDetails = () => {
         <div>
           <TypeOut>PROMPT</TypeOut>
           <InterplanetaryContent path={prompt} maxChars={1500} />
+          <a
+            className="button text-center mt-2 block center sm:transform-none sm:ml-0 px-0 w-[200px]"
+            style={{ textShadow: 'none' }}
+            href={`http://ipfs.io/ipfs/${prompt}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            SEE ON IPFS
+          </a>
         </div>
         {winningAuthor && (
           <>

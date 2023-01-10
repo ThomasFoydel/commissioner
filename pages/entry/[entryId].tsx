@@ -47,6 +47,15 @@ const EntryDetails = () => {
         <div>
           <TypeOut>CONTENT</TypeOut>
           <InterplanetaryContent path={ipfsPath} maxChars={3000} />
+          <a
+            className="button text-center mt-2 block center sm:transform-none sm:ml-0 px-0 w-[200px]"
+            style={{ textShadow: 'none' }}
+            href={`http://ipfs.io/ipfs/${ipfsPath}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            VIEW ON IPFS
+          </a>
         </div>
 
         {userCanVote && <VoteForm onSuccess={refetch} entry={entry} commission={commission} />}
