@@ -376,7 +376,7 @@ contract('Commission', ([owner, account1, account2, account3, account4, account5
     assert(changeRateDespiteSlippage > 0.99)
   })
 
-  it('Should allow users to tip winning authors', async () => {
+  it('Should allow users to tip winning author', async () => {
     const voteAmount = '10000000000000000'
     const tipAmount = '10000000000000000'
     await commission.submitEntry(ipfsPath, { from: account2 })
@@ -392,6 +392,27 @@ contract('Commission', ([owner, account1, account2, account3, account4, account5
     const balance1 = await web3.eth.getBalance(winner)
     await commission.tipWinner({ from: account3, value: tipAmount })
     const balance2 = await web3.eth.getBalance(winner)
+    const diff = parseInt(balance2) - parseInt(balance1)
+    const changeRateDespiteSlippage = diff / tipAmount
+    assert(changeRateDespiteSlippage > 0.99)
+  })
+
+  it('Should allow users to tip commissioner', async () => {
+    const commissioner = await commission.commissioner()
+    const voteAmount = '10000000000000000'
+    const tipAmount = '10000000000000000'
+    await commission.submitEntry(ipfsPath, { from: account2 })
+    const entryCount = await commission.entryCount()
+    const entry = await commission.entries(entryCount - 1)
+    await commission.vote(entry.author, {
+      from: account3,
+      value: voteAmount,
+    })
+    await advanceFiveDays()
+    await commission.chooseWinner({ from: account1 })
+    const balance1 = await web3.eth.getBalance(commissioner)
+    await commission.tipCommissioner({ from: account3, value: tipAmount })
+    const balance2 = await web3.eth.getBalance(commissioner)
     const diff = parseInt(balance2) - parseInt(balance1)
     const changeRateDespiteSlippage = diff / tipAmount
     assert(changeRateDespiteSlippage > 0.99)
