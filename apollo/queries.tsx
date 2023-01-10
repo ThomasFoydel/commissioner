@@ -75,6 +75,7 @@ export const entryFields = `
     commission {
         prompt
         id
+        active
     }
     author {
         id

@@ -53,7 +53,7 @@ const EntryDetails = () => {
           <TypeOut>CONTENT</TypeOut>
           <InterplanetaryContent path={ipfsPath} maxChars={3000} />
           <a
-            className="button text-center mt-2 block center sm:transform-none sm:ml-0 px-0 w-[200px]"
+            className="button text-center mt-2 block center px-0 w-full sm:w-[200px]"
             style={{ textShadow: 'none' }}
             href={`http://ipfs.io/ipfs/${ipfsPath}`}
             target="_blank"

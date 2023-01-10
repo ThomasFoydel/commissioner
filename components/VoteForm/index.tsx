@@ -58,15 +58,36 @@ const VoteForm = ({
   return (
     <div>
       {formOpen ? (
-        <form onSubmit={handleSubmit}>
-          <H>VOTE FORM</H>
+        <form onSubmit={handleSubmit} className="center w-full sm:w-auto mt-2">
+          <H className="text-center">VOTE FORM</H>
           <Level>
-            <input type="number" step="any" min="0" onChange={handleAmount} value={amount} />
-            <button type="submit">submit</button>
+            <div className="flex flex-col">
+              <input
+                className="button mb-1"
+                type="number"
+                step="any"
+                min="0"
+                onChange={handleAmount}
+                value={amount}
+              />
+              <div className="flex gap-1 flex-col sm:flex-row">
+                <button type="submit" className="button w-full sm:w-1/2">
+                  submit
+                </button>
+                <button type="button" className="button w-full sm:w-1/2" onClick={() => setFormOpen(false)}>
+                  cancel
+                </button>
+              </div>
+            </div>
           </Level>
         </form>
       ) : (
-        <button onClick={() => setFormOpen(true)}>VOTE</button>
+        <button
+          className="button text-center mt-2 block center px-0 w-full sm:w-[200px]"
+          onClick={() => setFormOpen(true)}
+        >
+          VOTE
+        </button>
       )}
     </div>
   )
