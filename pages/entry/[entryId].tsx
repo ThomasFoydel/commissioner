@@ -17,11 +17,13 @@ const EntryDetails = () => {
   const router = useRouter()
   const entryId = String(router.query.entryId).toLowerCase()
 
-  const { data, refetch } = useQuery(entryDetails, { variables: { entryId } })
+  const { data, loading, refetch } = useQuery(entryDetails, { variables: { entryId } })
   const entry: Entry | undefined = data?.entry
+
+  if (!loading && entry === undefined) return <TypeOut>ENTRY {entryId} NOT FOUND</TypeOut>
   if (entry === undefined) return <LoadingDots />
 
-  const { id, author, voteAmount, commission, ipfsPath, timestamp, contributions } = entry
+  const { author, voteAmount, commission, ipfsPath, timestamp, contributions } = entry
 
   const userCanVote = account && account.toLowerCase() !== entry.author.id && commission.active
 

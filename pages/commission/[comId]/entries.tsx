@@ -24,7 +24,7 @@ const Entries = () => {
   const [order, setOrder] = useState('created')
   const [direction, setDirection] = useState('asc')
 
-  const { data: comData } = useQuery(comDetails, { variables: { comId } })
+  const { data: comData, loading: comLoading } = useQuery(comDetails, { variables: { comId } })
   const {
     data: entriesData,
     refetch: entriesRefetch,
@@ -36,6 +36,9 @@ const Entries = () => {
   const commission = comData?.commission
   const [enterFormOpen, setEnterFormOpen] = useState(false)
 
+  if (!loading && !comLoading && commission === undefined && entries === undefined) {
+    return <TypeOut>ENTRY DATA FOR COMMISSION {comId} NOT FOUND</TypeOut>
+  }
   if (commission === undefined || entries === undefined) return <LoadingDots />
 
   const { active, commissioner } = commission

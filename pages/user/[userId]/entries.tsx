@@ -24,7 +24,7 @@ const UserEntries = () => {
   })
   const entries = data?.entries
 
-  if (entries === undefined && !loading) return <TypeOut>NO ENTRIES FOUND BY USER {userId}</TypeOut>
+  if (!loading && entries === undefined) return <TypeOut>NO ENTRIES FOUND BY USER {userId}</TypeOut>
   if (entries === undefined) return <LoadingDots />
 
   return (

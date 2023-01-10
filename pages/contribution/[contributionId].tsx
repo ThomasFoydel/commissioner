@@ -17,7 +17,7 @@ const ContributionDetails = () => {
   const res = useQuery(contributionDetails, { variables: { contributionId } })
   const contribution = res?.data?.contribution
 
-  if (contribution === undefined && !loading) {
+  if (!loading && contribution === undefined) {
     return <TypeOut>NO DATA FOUND FOR CONTRIBUTION {contributionId}</TypeOut>
   }
   if (contribution === undefined) return <LoadingDots />

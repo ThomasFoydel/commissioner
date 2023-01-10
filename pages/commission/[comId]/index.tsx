@@ -31,7 +31,7 @@ const CommissionDetails = () => {
   const comId = String(router.query.comId).toLowerCase()
   const { account, library } = useEthers()
 
-  const { data } = useQuery(comDetails, { variables: { comId }, pollInterval: 3000 })
+  const { data, loading } = useQuery(comDetails, { variables: { comId }, pollInterval: 3000 })
 
   const commission: Commission = data?.commission || {}
   const [enterFormOpen, setEnterFormOpen] = useState(false)
@@ -64,6 +64,9 @@ const CommissionDetails = () => {
     setCommissionerTriggerOpen(active && secondsLeftUntilComTrigger <= 0)
   }, [commission])
 
+  if (!loading && data?.commission === undefined) {
+    return <TypeOut>COMMISSION {comId} NOT FOUND</TypeOut>
+  }
   if (data?.commission === undefined) return <LoadingDots />
 
   const userHasNotSubmittedEntry =
