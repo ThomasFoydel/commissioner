@@ -151,7 +151,7 @@ export function handleVoteSubmitted(event: VoteSubmitted): void {
   const voteId = `${commissionId}${voterId}`
 
   const commission = getCommission(commissionId)
-  const onepercent = event.params.amount.div(new BigInt(100))
+  const onepercent = event.params.amount.div(BigInt.fromI32(100))
   commission.reward = commission.reward.plus(onepercent)
 
   const vote = getVote(voteId)
