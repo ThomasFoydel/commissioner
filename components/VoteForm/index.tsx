@@ -20,34 +20,36 @@ const VoteForm = ({
   const [formOpen, setFormOpen] = useState(false)
   const [processing, setProcessing] = useState(false)
 
-  const signer = library && account ? library.getSigner(String(account)) : null
-  const commissionInterface = new Interface(commissionAbi)
-  const commissionFactory = new Contract(commission.id, commissionInterface, signer)
-
   const handleAmount = (e: ChangeEvent<HTMLInputElement>) => setAmount(+e.target.value)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (processing) return
     toast.dismiss()
+    if (!library || !account) return toast.error('not connected to metamask')
     if (amount <= 0) return toast.error('amount must be greater than zero')
     setProcessing(true)
     toast.info('please approve in metamask...')
+
+    const signer = library.getSigner(String(account))
+    const commissionInterface = new Interface(commissionAbi)
+    const commissionFactory = new Contract(commission.id, commissionInterface, signer)
 
     try {
       const options = {
         value: parseEther(amount.toFixed(18)),
       }
       const tx = await commissionFactory.vote(entry?.author?.id, options)
-      toast.info('submitting your vote...')
+      toast.info('submitting your vote. sit tight...', { autoClose: false })
 
       await tx.wait()
 
       toast.success('vote contributed successfully')
       setAmount(0)
       setFormOpen(false)
-      onSuccess()
+      if (onSuccess) onSuccess()
     } catch (err) {
+      console.log({ err })
       toast.dismiss()
       if (err.code === 4001) toast.error('user rejected in metamask')
       else toast.error('vote failed')
@@ -58,7 +60,7 @@ const VoteForm = ({
   return (
     <div>
       {formOpen ? (
-        <form onSubmit={handleSubmit} className="center w-full sm:w-auto mt-2">
+        <form onSubmit={handleSubmit} className="center w-full sm:w-4/5 md:w-3/4 lg:w-1/2 mt-2">
           <H className="text-center">VOTE FORM</H>
           <Level>
             <div className="flex flex-col">
@@ -72,10 +74,14 @@ const VoteForm = ({
               />
               <div className="flex gap-1 flex-col sm:flex-row">
                 <button type="submit" className="button w-full sm:w-1/2">
-                  submit
+                  SUBMIT
                 </button>
-                <button type="button" className="button w-full sm:w-1/2" onClick={() => setFormOpen(false)}>
-                  cancel
+                <button
+                  type="button"
+                  className="button w-full sm:w-1/2"
+                  onClick={() => setFormOpen(false)}
+                >
+                  CANCEL
                 </button>
               </div>
             </div>

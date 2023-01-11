@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../../components/InterplanetaryContent'
+import DynamicTypeOut from '../../components/DynamicTypeOut'
 import LoadingDots from '../../components/LoadingDots'
 import { entryDetails } from '../../apollo/queries'
 import VoteForm from '../../components/VoteForm'
@@ -32,17 +33,19 @@ const EntryDetails = () => {
       <H>
         <TypeOut>ENTRY {truncate(entryId)}</TypeOut>
       </H>
+
       <Level>
         <Link href={`/user/${author.id}`}>
           <a>
             <TypeOut>
-              AUTHOR {truncate(author.id)}{' '}
-              {account && account.toLowerCase() === author.id && '(YOU)'}
+              {`AUTHOR ${truncate(author.id)}${
+                account && account.toLowerCase() === author.id ? ' (YOU)' : ''
+              }`}
             </TypeOut>
           </a>
         </Link>
         <TypeOut>SUBMITTED {new Date(+timestamp * 1000).toLocaleString()}</TypeOut>
-        <TypeOut>VOTES {voteAmount}</TypeOut>
+        <DynamicTypeOut>VOTES {voteAmount}</DynamicTypeOut>
         <Link href={`/commission/${commission.id}`}>
           <a>
             <TypeOut>COMMISSION PROMPT</TypeOut>
@@ -65,9 +68,10 @@ const EntryDetails = () => {
 
         {userCanVote && <VoteForm entry={entry} commission={commission} />}
 
-        {contributions.map((contribution) => (
-          <Contribution key={contribution.id} contribution={contribution} />
-        ))}
+        {contributions &&
+          contributions.map((contribution) => (
+            <Contribution key={contribution.id} contribution={contribution} />
+          ))}
       </Level>
     </div>
   )
