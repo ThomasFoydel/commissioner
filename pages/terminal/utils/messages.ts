@@ -38,7 +38,7 @@ You can use commands to navigate around this terminal. Here are some of them:
     - "details [index number]" displays the details for a commission when on the commissions page
     - "sort [field name]" sorts entries or commissions by a specific field
     - "next" and "previous" navigate through pages of commissions or entries
-    - "go [page number]" navigates to a specific page
+    - "page [page number]" navigates to a specific page
     - "return" returns to the previous page or the home page
     - "home" returns to the home page
     - "create" starts the process of making a new commission
