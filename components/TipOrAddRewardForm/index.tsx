@@ -56,7 +56,6 @@ const TipOrAddRewardForm = ({
     const commissionContract = new Contract(commissionId, commissionInterface, signer)
     const contractFunction = commissionContract[type]
 
-    console.log({ contractFunction })
     setProcessing(true)
     toast.dismiss()
     toast.info('please approve in metamask')
@@ -81,7 +80,6 @@ const TipOrAddRewardForm = ({
         setTipWinnerFormOpen(false)
       }
     } catch (err) {
-      console.log({ err })
       toast.dismiss()
       if (err.code === 4001) toast.error('user rejected in metamask')
       else toast.error(messages[type].failure)

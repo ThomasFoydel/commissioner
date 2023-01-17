@@ -42,7 +42,6 @@ import {
   handleEntriesNextPage,
   handleEntriesDirection,
   handleDisplayCommissionDetailsById,
-  handleDisplayUserCommissions,
 } from './commands'
 
 const bannerText = `
@@ -78,7 +77,7 @@ const Terminal = () => {
   const [sortEntriesBy, setSortEntriesBy] = useState('none')
   const [sortEntriesDirection, setSortEntriesDirection] = useState('asc')
   const { print, clear, loading, lock, focus } = eventQueue.handlers
-  const [selectedUser, setSelectedUser] = useState<User>()
+  const [selectedUser, setSelectedUser] = useState<User | null>()
 
   const printLine = (content: string) => print([line(content)])
 
@@ -105,7 +104,8 @@ const Terminal = () => {
     orderCommissionsBy,
     orderCommissionsDirection,
     commissionPagination,
-    commissionsPerPage
+    commissionsPerPage,
+    selectedUser
   )
 
   // const changePage = (page: string) => {
@@ -139,8 +139,14 @@ const Terminal = () => {
   const returnToPreviousPage = () => {
     clear()
     if (page === 'details') {
-      displayCommissions(null, commissionPagination)
-      return setPage('commissions')
+      if (selectedUser) {
+        displayUserCommissions(selectedUser)
+        setPage('user-commissions')
+      } else {
+        displayCommissions(null, commissionPagination)
+        setPage('commissions')
+      }
+      return
     }
     if (page === 'entries') {
       setPage('details')
@@ -163,17 +169,25 @@ const Terminal = () => {
   const commissionsPage = () => {
     clear()
     setPage('commissions')
+    setSelectedUser(null)
     displayCommissions(null, commissionPagination)
   }
 
-  const displayCommissions = (query: DocumentNode | null, page: number) =>
-    handleDisplayCommissions(
-      printLine,
-      loading,
-      setCommissionsDisplayed,
-      query || getCommissionsQuery,
-      page
+  const displayCommissions = (query: DocumentNode | null, page: number, user?: User) => {
+    const q = makeCommissionQuery(
+      orderCommissionsBy,
+      orderCommissionsDirection,
+      commissionPagination,
+      commissionsPerPage,
+      user
     )
+    handleDisplayCommissions(printLine, loading, setCommissionsDisplayed, query || q, page, user)
+  }
+
+  const displayUserCommissions = (user: User) => {
+    setPage('user-commissions')
+    displayCommissions(getCommissionsQuery, commissionPagination, user)
+  }
 
   const displayCommissionDetails = (com: Commission) =>
     handleDisplayCommissionDetails(printLine, loading, com, account)
@@ -309,7 +323,8 @@ const Terminal = () => {
       makeCommissionQuery,
       orderCommissionsBy,
       setCommissionPagination,
-      displayCommissions
+      displayCommissions,
+      selectedUser
     )
 
   const sortCommissions = (command: string) =>
@@ -322,10 +337,11 @@ const Terminal = () => {
       makeCommissionQuery,
       orderCommissionsDirection,
       setCommissionPagination,
-      displayCommissions
+      displayCommissions,
+      selectedUser
     )
 
-  const commissionsNext = () =>
+  const commissionsNext = () => {
     handleCommissionsNext(
       clear,
       loading,
@@ -334,10 +350,12 @@ const Terminal = () => {
       orderCommissionsDirection,
       commissionPagination,
       setCommissionPagination,
-      displayCommissions
+      displayCommissions,
+      selectedUser
     )
+  }
 
-  const commissionsBack = () =>
+  const commissionsBack = () => {
     handleCommissionsBack(
       commissionPagination,
       printLine,
@@ -347,8 +365,10 @@ const Terminal = () => {
       orderCommissionsBy,
       orderCommissionsDirection,
       setCommissionPagination,
-      displayCommissions
+      displayCommissions,
+      selectedUser
     )
+  }
 
   const commissionsPageSelect = (pageNumber: number) =>
     handleCommissionsPageSelect(
@@ -360,7 +380,8 @@ const Terminal = () => {
       orderCommissionsBy,
       orderCommissionsDirection,
       setCommissionPagination,
-      displayCommissions
+      displayCommissions,
+      selectedUser
     )
 
   const entriesSort = (field: string) =>
@@ -437,15 +458,6 @@ const Terminal = () => {
 
   const displayUserProfile = async (user?: string) =>
     handleDisplayUser(user || account, printLine, setSelectedUser, setPage)
-
-  const displayUserCommissions = (user: User) =>
-    handleDisplayUserCommissions(
-      user,
-      loading,
-      printLine,
-      setCommissionsDisplayed,
-      setPage
-    )
 
   return (
     <Display

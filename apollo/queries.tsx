@@ -132,14 +132,6 @@ export const userProfileQuery = gql`
     }
 `
 
-export const userCommissionsQuery = gql`
-    query getUserComs($userId: String!) {
-        commissions(where: {commissioner: $userId}) {
-            ${comFields}
-        }
-    }
-`
-
 export const userVotesQuery = gql`
   query getUserVotes($userId: String!) {
     votes(where: { voter: $userId }) {

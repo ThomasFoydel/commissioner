@@ -166,6 +166,27 @@ const Display = ({
           const pageNumber = Number(lcCommand.split('page ')[1]) - 1
           return commissionsPageSelect(pageNumber)
         }
+        if (page === 'user-commissions' && lcCommand.startsWith('next')) {
+          return commissionsNext()
+        }
+        if (page === 'user-commissions' && lcCommand.startsWith('back')) {
+          return commissionsBack()
+        }
+        if (page === 'user-commissions' && lcCommand.startsWith('page')) {
+          const pageNumber = Number(lcCommand.split('page ')[1]) - 1
+          return commissionsPageSelect(pageNumber)
+        }
+        if (page === 'user-commissions' && lcCommand.startsWith('sort')) {
+          return sortCommissions(command)
+        }
+        if (page === 'user-commissions' && lcCommand.startsWith('direction')) {
+          const direction = command.split('direction ')[1]?.trim()
+          return commissionsDirection(direction)
+        }
+        if (page === 'user-commissions' && lcCommand.startsWith('details')) {
+          const index = Number(lcCommand.split(' ')[1])
+          return commissionDetails(index)
+        }
         /* COMMISSION DETAILS PAGE  COMMISSION DETAILS PAGE  COMMISSION DETAILS PAGE */
         /* COMMISSION DETAILS PAGE  COMMISSION DETAILS PAGE  COMMISSION DETAILS PAGE */
 

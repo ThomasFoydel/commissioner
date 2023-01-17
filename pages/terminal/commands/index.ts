@@ -19,21 +19,20 @@ import {
   fetchCommission,
   fetchCommissions,
   makeCommissionString,
-  getUserCommissions,
 } from '../utils'
-import { userCommissionsQuery } from '../../../apollo/queries'
 
 export const handleDisplayCommissions = async (
   printLine: Function,
   loading: Function,
   setCommissionsDisplayed: Function,
   getCommissionsQuery: DocumentNode,
-  page: number
+  page: number,
+  user?: User
 ) => {
   loading(true)
-  printLine('COMMISSIONS')
+  printLine(`COMMISSIONS${user ? ` BY USER ${user.id}` : ''}`)
   printLine(`page ${page + 1}`)
-  const coms = await fetchCommissions(getCommissionsQuery)
+  const coms = await fetchCommissions(getCommissionsQuery, user)
   setCommissionsDisplayed(coms)
   const comStrings = coms.map((com, i) => makeCommissionString(com, i + 1, false))
   comStrings.forEach((com) => printLine(com))
@@ -613,7 +612,8 @@ export const handleCommissionsDirection = async (
   makeCommissionQuery: Function,
   orderCommissionsBy: string,
   setCommissionPagination: Function,
-  displayCommissions: Function
+  displayCommissions: Function,
+  selectedUser?: User
 ) => {
   if (!directions.includes(direction)) {
     return printLine('invalid direction. valid directions: asc, desc')
@@ -625,10 +625,11 @@ export const handleCommissionsDirection = async (
     orderCommissionsBy,
     direction,
     0,
-    commissionsPerPage
+    commissionsPerPage,
+    selectedUser
   )
   setCommissionPagination(0)
-  displayCommissions(getCommissionsQuery, 0)
+  displayCommissions(getCommissionsQuery, 0, selectedUser)
   loading(false)
 }
 
@@ -641,7 +642,8 @@ export const handleSortCommissions = async (
   makeCommissionQuery: Function,
   orderCommissionsDirection: string,
   setCommissionPagination: Function,
-  displayCommissions: Function
+  displayCommissions: Function,
+  selectedUser?: User
 ) => {
   const field = command.split('sort ')[1]?.trim()
   if (!commissionOrderFields.includes(field)) {
@@ -654,10 +656,11 @@ export const handleSortCommissions = async (
     field,
     orderCommissionsDirection,
     0,
-    commissionsPerPage
+    commissionsPerPage,
+    selectedUser
   )
   setCommissionPagination(0)
-  displayCommissions(getCommissionsQuery, 0)
+  displayCommissions(getCommissionsQuery, 0, selectedUser)
   loading(false)
 }
 
@@ -669,7 +672,8 @@ export const handleCommissionsNext = async (
   orderCommissionsDirection: string,
   commissionPagination: number,
   setCommissionPagination: Function,
-  displayCommissions: Function
+  displayCommissions: Function,
+  selectedUser?: User
 ) => {
   clear()
   loading(true)
@@ -677,10 +681,11 @@ export const handleCommissionsNext = async (
     orderCommissionsBy,
     orderCommissionsDirection,
     commissionPagination + 1,
-    commissionsPerPage
+    commissionsPerPage,
+    selectedUser
   )
   setCommissionPagination((p: number) => p + 1)
-  displayCommissions(getCommissionsQuery, commissionPagination + 1)
+  displayCommissions(getCommissionsQuery, commissionPagination + 1, selectedUser)
   loading(false)
 }
 
@@ -693,7 +698,8 @@ export const handleCommissionsBack = async (
   orderCommissionsBy: string,
   orderCommissionsDirection: string,
   setCommissionPagination: Function,
-  displayCommissions: Function
+  displayCommissions: Function,
+  selectedUser: User
 ) => {
   if (commissionPagination === 0) return printLine('already at page one')
   clear()
@@ -702,10 +708,11 @@ export const handleCommissionsBack = async (
     orderCommissionsBy,
     orderCommissionsDirection,
     commissionPagination - 1,
-    commissionsPerPage
+    commissionsPerPage,
+    selectedUser
   )
   setCommissionPagination((p) => p - 1)
-  displayCommissions(getCommissionsQuery, commissionPagination - 1)
+  displayCommissions(getCommissionsQuery, commissionPagination - 1, selectedUser)
   loading(false)
 }
 
@@ -718,7 +725,8 @@ export const handleCommissionsPageSelect = async (
   orderCommissionsBy: string,
   orderCommissionsDirection: string,
   setCommissionPagination: Function,
-  displayCommissions: Function
+  displayCommissions: Function,
+  selectedUser?: User
 ) => {
   if (pageNumber < 0 || isNaN(pageNumber)) return printLine('invalid page number')
   clear()
@@ -727,10 +735,11 @@ export const handleCommissionsPageSelect = async (
     orderCommissionsBy,
     orderCommissionsDirection,
     pageNumber,
-    commissionsPerPage
+    commissionsPerPage,
+    selectedUser
   )
   setCommissionPagination(pageNumber)
-  displayCommissions(getCommissionsQuery, pageNumber)
+  displayCommissions(getCommissionsQuery, pageNumber, selectedUser)
   loading(false)
 }
 
@@ -905,23 +914,4 @@ export const handleEntriesDirection = (
   setEntriesPagination(0)
   const query = makeEntriesQuery(sortEntriesBy, direction, 0, entriesPerPage)
   displayEntries(selectedCommission, query)
-}
-
-export const handleDisplayUserCommissions = async (
-  user: User,
-  loading: Function,
-  printLine: Function,
-  setCommissionsDisplayed: Function,
-  setPage: Function
-) => {
-  loading(true)
-  printLine('COMMISSIONS BY ' + user.id)
-  setPage('user commissions')
-  const coms = await getUserCommissions(user.id)
-  setCommissionsDisplayed(coms)
-  const comStrings = coms.map((com, i) => makeCommissionString(com, i + 1, false))
-  comStrings.forEach((com) => printLine(com))
-  printLine('\n\n')
-  printLine('commands: sort (field), details (index#)')
-  loading(false)
 }

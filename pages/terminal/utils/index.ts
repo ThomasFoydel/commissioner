@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
 import { formatEther } from 'ethers/lib/utils'
 import { textLine, textWord } from 'crt-terminal'
-import { comDetails, userCommissionsQuery, userProfileQuery } from '../../../apollo/queries'
+import { comDetails, userProfileQuery } from '../../../apollo/queries'
 import { readTextFromIpfs } from '../../../utils/ipfs/client'
 import { client } from '../../../apollo/client'
 
@@ -119,8 +119,13 @@ export const addCommissionPromptContent = async (commissions: Commission[]) => {
   return commissionsWithIps
 }
 
-export const fetchCommissions = async (getCommissionsQuery: DocumentNode) => {
-  const res = await client.query({ query: getCommissionsQuery, fetchPolicy: 'no-cache' })
+export const fetchCommissions = async (getCommissionsQuery: DocumentNode, user?: User) => {
+  const q = {
+    query: getCommissionsQuery,
+    fetchPolicy: 'no-cache',
+  }
+  if (user) q['variables'] = { userId: user.id }
+  const res = await client.query(q as any)
   const commissions = res?.data?.commissions
   const commissionsWithPromptContent = await addCommissionPromptContent(commissions)
   return commissionsWithPromptContent
@@ -142,15 +147,18 @@ export const makeCommissionQuery = (
   order: string,
   direction: string,
   page: number,
-  perPage: number
+  perPage: number,
+  user?: User
 ) => {
   const noOrder = order === 'none'
   const orderField = order === 'created' ? 'timestamp' : order
   const orderText = noOrder ? '' : `orderBy: ${orderField}, orderDirection: ${direction},`
   const paginationText = `skip: ${perPage * page}, first: ${perPage}`
-  const args = `(${orderText}${paginationText})`
+  const userArg = user ? `where: {commissioner: $userId},` : ''
+  const args = `(${userArg}${orderText}${paginationText})`
+  const userArgTypes = user ? '($userId: String)' : ''
   return gql`
-    query getCommissions {
+    query getCommissions${userArgTypes} {
       commissions${args} {
         id
         commissioner {
@@ -220,15 +228,4 @@ export const makeEntriesQuery = (
 export const getUser = async (user: string) => {
   const res = await client.query({ query: userProfileQuery, variables: { id: user.toLowerCase() } })
   return res?.data?.user
-}
-
-export const getUserCommissions = async (userId: string) => {
-  const res = await client.query({
-    query: userCommissionsQuery,
-    variables: { userId },
-    fetchPolicy: 'no-cache',
-  })
-  const commissions = res?.data?.commissions
-  const commissionsWithPromptContent = await addCommissionPromptContent(commissions)
-  return commissionsWithPromptContent
 }

@@ -49,7 +49,6 @@ const VoteForm = ({
       setFormOpen(false)
       if (onSuccess) onSuccess()
     } catch (err) {
-      console.log({ err })
       toast.dismiss()
       if (err.code === 4001) toast.error('user rejected in metamask')
       else toast.error('vote failed')
