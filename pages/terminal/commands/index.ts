@@ -291,13 +291,17 @@ const getEntryContent = async (entry: Entry) => {
 }
 
 export const handleDisplayEntries = async (
-  commission: Commission,
   printLine: Function,
   setDisplayedEntries: Function,
-  getEntriesQuery: DocumentNode
+  getEntriesQuery: DocumentNode,
+  commission?: Commission,
+  selectedUser?: User
 ) => {
-  printLine(`ENTRIES FOR COMMISSION ${commission.id}`)
-  const variables = { id: commission.id }
+  if (selectedUser) printLine(`ENTRIES BY USER ${selectedUser.id}`)
+  else printLine(`ENTRIES FOR COMMISSION ${commission.id}`)
+  const variables = {}
+  if (commission) variables['id'] = commission.id
+  if (selectedUser) variables['userId'] = selectedUser.id
   const res = await client.query({
     query: getEntriesQuery,
     variables,
@@ -477,16 +481,17 @@ export const handleViewEntries = async (
   clear: Function,
   setPage: Function,
   setEntriesPagination: Function,
-  displayEntries: Function
+  displayEntries: Function,
+  selectedUser?: User
 ) => {
   if (!selectedCommission) return printLine('no commission selected')
   if (Number(selectedCommission.entryCount) === 0)
     return printLine('no entries yet. be the first...')
   loading(true)
   clear()
-  setPage('entries')
+  setPage(selectedUser ? 'user-entries' : 'entries')
   setEntriesPagination(0)
-  await displayEntries(selectedCommission, null)
+  await displayEntries(selectedCommission, null, selectedUser)
   loading(false)
 }
 
@@ -751,14 +756,15 @@ export const handleEntriesSort = async (
   setSortEntriesBy: Function,
   makeEntriesQuery: Function,
   sortEntriesDirection: string,
-  displayEntries: Function
+  displayEntries: Function,
+  selectedUser?: User
 ) => {
-  if (!selectedCommission) return printLine('no commission selected')
+  if (!selectedCommission && !selectedUser) return printLine('no commission or user selected')
   if (!entrySortFields.includes(field))
     return printLine(`invalid field "${field}". valid entry fields: ${entrySortFields.join(', ')}`)
   setEntriesPagination(0)
   setSortEntriesBy(field)
-  const query = makeEntriesQuery(field, sortEntriesDirection, 0, entriesPerPage)
+  const query = makeEntriesQuery(field, sortEntriesDirection, 0, entriesPerPage, selectedUser)
   displayEntries(selectedCommission, query)
 }
 
@@ -772,13 +778,20 @@ export const handleEntriesPageSelect = async (
   sortEntriesBy: string,
   sortEntriesDirection: string,
   setEntriesPagination: Function,
-  displayEntries: Function
+  displayEntries: Function,
+  selectedUser?: User
 ) => {
   if (!selectedCommission) return printLine('no selected commission')
   if (pageNumber < 0 || isNaN(pageNumber)) return printLine('invalid page number')
   clear()
   loading(true)
-  const query = makeEntriesQuery(sortEntriesBy, sortEntriesDirection, pageNumber, entriesPerPage)
+  const query = makeEntriesQuery(
+    sortEntriesBy,
+    sortEntriesDirection,
+    pageNumber,
+    entriesPerPage,
+    selectedUser
+  )
   setEntriesPagination(pageNumber)
   displayEntries(selectedCommission, query)
   loading(false)
@@ -853,7 +866,8 @@ export const handleEntriesBackPage = (
   sortEntriesBy: string,
   sortEntriesDirection: string,
   setEntriesPagination: Function,
-  displayEntries: Function
+  displayEntries: Function,
+  selectedUser?: User
 ) => {
   if (entriesPagination === 0) return printLine('already at page one')
   if (!selectedCommission) return printLine('no selected commission')
@@ -863,7 +877,8 @@ export const handleEntriesBackPage = (
     sortEntriesBy,
     sortEntriesDirection,
     entriesPagination - 1,
-    entriesPerPage
+    entriesPerPage,
+    selectedUser
   )
   setEntriesPagination((p) => p - 1)
   displayEntries(selectedCommission, query)
@@ -880,7 +895,8 @@ export const handleEntriesNextPage = (
   sortEntriesDirection: string,
   entriesPagination: number,
   setEntriesPagination: Function,
-  displayEntries: Function
+  displayEntries: Function,
+  selectedUser?: User
 ) => {
   if (!selectedCommission) return printLine('no selected commission')
   clear()
@@ -889,7 +905,8 @@ export const handleEntriesNextPage = (
     sortEntriesBy,
     sortEntriesDirection,
     entriesPagination + 1,
-    entriesPerPage
+    entriesPerPage,
+    selectedUser
   )
   setEntriesPagination((p) => p + 1)
   displayEntries(selectedCommission, query)
@@ -904,14 +921,15 @@ export const handleEntriesDirection = (
   setEntriesPagination: Function,
   makeEntriesQuery: Function,
   sortEntriesBy: string,
-  displayEntries: Function
+  displayEntries: Function,
+  selectedUser?: User
 ) => {
-  if (!selectedCommission) return printLine('no commission selected')
+  if (!selectedCommission && !selectedUser) return printLine('no commission or user selected')
   if (!directions.includes(direction)) {
     return printLine('invalid direction. valid directions: asc, desc')
   }
   setSortEntriesDirection(direction)
   setEntriesPagination(0)
-  const query = makeEntriesQuery(sortEntriesBy, direction, 0, entriesPerPage)
+  const query = makeEntriesQuery(sortEntriesBy, direction, 0, entriesPerPage, selectedUser)
   displayEntries(selectedCommission, query)
 }

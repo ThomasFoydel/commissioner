@@ -198,23 +198,25 @@ const Display = ({
         }
         /* ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE */
         /* ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE */
-        if (page === 'entries' && lcCommand.startsWith('sort')) {
-          const field = command.split('sort ')[1]
-          return entriesSort(field)
-        }
-        if (page === 'entries' && lcCommand.startsWith('direction')) {
-          const direction = command.split('direction ')[1]
-          return entriesDirection(direction)
-        }
-        if (page === 'entries' && lcCommand.startsWith('next')) {
-          return entriesNextPage()
-        }
-        if (page === 'entries' && lcCommand.startsWith('back')) {
-          return entriesBackPage()
-        }
-        if (page === 'entries' && lcCommand.startsWith('page')) {
-          const pageNumber = Number(lcCommand.split('page ')[1]) - 1
-          return entriesPageSelect(pageNumber)
+        if (page === 'entries' || page === 'user entries') {
+          if (lcCommand.startsWith('sort')) {
+            const field = command.split('sort ')[1]
+            return entriesSort(field)
+          }
+          if (lcCommand.startsWith('direction')) {
+            const direction = command.split('direction ')[1]
+            return entriesDirection(direction)
+          }
+          if (lcCommand.startsWith('next')) {
+            return entriesNextPage()
+          }
+          if (lcCommand.startsWith('back')) {
+            return entriesBackPage()
+          }
+          if (lcCommand.startsWith('page')) {
+            const pageNumber = Number(lcCommand.split('page ')[1]) - 1
+            return entriesPageSelect(pageNumber)
+          }
         }
         if (lcCommand.startsWith('profile')) {
           setPage('profile')
@@ -238,6 +240,10 @@ const Display = ({
 
         if (page === 'profile' && lcCommand === 'user commissions') {
           return displayUserCommissions(stateVals.selectedUser)
+        }
+
+        if (page === 'profile' && lcCommand.includes('user entries')) {
+          return viewEntries()
         }
 
         printLine(`command "${command}" not recognized`)

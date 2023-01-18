@@ -191,15 +191,18 @@ export const makeEntriesQuery = (
   field: string,
   direction: string,
   page: number,
-  perPage: number
+  perPage: number,
+  selectedUser?: User
 ) => {
   const noSort = field === 'none'
   let fieldName = field === 'created' ? 'timestamp' : 'vote' ? 'voteAmount' : field
   const sortText = noSort ? '' : `orderBy: ${fieldName}, orderDirection: ${direction}, `
   const paginationText = `skip: ${perPage * page}, first: ${perPage}, `
+  const argType = selectedUser? '$userId' : '$id'
+  const queryArg = selectedUser ? '{ author: $userId }':'{ commission: $id }'
   return gql`
-        query getEntries($id: String) {
-            entries(${sortText}${paginationText}where: { commission: $id }) {
+        query getEntries(${argType}: String) {
+            entries(${sortText}${paginationText}where: ${queryArg}) {
                 id
                 timestamp
                 contributions {

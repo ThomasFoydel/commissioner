@@ -97,7 +97,8 @@ const Terminal = () => {
     sortEntriesBy,
     sortEntriesDirection,
     entriesPagination,
-    entriesPerPage
+    entriesPerPage,
+    selectedUser
   )
 
   const getCommissionsQuery = makeCommissionQuery(
@@ -156,6 +157,10 @@ const Terminal = () => {
     if (page === 'entry-details') {
       if (selectedCommission) displayEntries(selectedCommission, null)
       return setPage('entries')
+    }
+    if (page === 'user-entries') {
+      setPage('profile')
+      return displayUserProfile()
     }
     if (page === 'vote') {
       if (selectedEntry) refetchAndDisplayEntryDetails()
@@ -219,7 +224,13 @@ const Terminal = () => {
     setPage('details')
   }
   const displayEntries = (com: Commission, query: DocumentNode | null) =>
-    handleDisplayEntries(com, printLine, setDisplayedEntries, query || getEntriesQuery)
+    handleDisplayEntries(
+      printLine,
+      setDisplayedEntries,
+      query || getEntriesQuery,
+      com,
+      selectedUser
+    )
 
   const createEntryPage = () =>
     handleCreateEntryPage(account, printLine, selectedCommission, setPage)
@@ -245,7 +256,8 @@ const Terminal = () => {
       clear,
       setPage,
       setEntriesPagination,
-      displayEntries
+      displayEntries,
+      selectedUser
     )
 
   const entryDetails = (command: string) =>
@@ -393,7 +405,8 @@ const Terminal = () => {
       setSortEntriesBy,
       makeEntriesQuery,
       sortEntriesDirection,
-      displayEntries
+      displayEntries,
+      selectedUser
     )
 
   const entriesDirection = (direction: string) =>
@@ -405,7 +418,8 @@ const Terminal = () => {
       setEntriesPagination,
       makeEntriesQuery,
       sortEntriesBy,
-      displayEntries
+      displayEntries,
+      selectedUser
     )
 
   const entriesNextPage = () =>
@@ -419,7 +433,8 @@ const Terminal = () => {
       sortEntriesDirection,
       entriesPagination,
       setEntriesPagination,
-      displayEntries
+      displayEntries,
+      selectedUser
     )
 
   const entriesBackPage = () =>
@@ -433,7 +448,8 @@ const Terminal = () => {
       sortEntriesBy,
       sortEntriesDirection,
       setEntriesPagination,
-      displayEntries
+      displayEntries,
+      selectedUser
     )
 
   const entriesPageSelect = (pageNumber: number) =>
@@ -447,7 +463,8 @@ const Terminal = () => {
       sortEntriesBy,
       sortEntriesDirection,
       setEntriesPagination,
-      displayEntries
+      displayEntries,
+      selectedUser
     )
 
   const cancelCommission = async () =>
