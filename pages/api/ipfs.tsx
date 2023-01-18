@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (typeof text !== 'string') {
       return res.status(400).json({ status: 'error', message: 'content is invalid' })
     }
-    if (text.length > 10000) {
+    if (text.length > 20_000) {
       return res.status(400).json({ status: 'error', message: 'content is too large' })
     }
     try {
