@@ -85,11 +85,6 @@ const Display = ({
           return commissionsPage()
         }
 
-        if (lcCommand.startsWith('details') && page === 'commissions') {
-          const index = Number(lcCommand.split(' ')[1])
-          return commissionDetails(index)
-        }
-
         if (lcCommand === 'view commissioner') {
           return displayUserProfile(stateVals.selectedCommission.commissioner.id)
         }
@@ -148,55 +143,34 @@ const Display = ({
           return confirmVoteInput(lcCommand)
         }
         /* COMMISSIONS PAGE  COMMISSIONS PAGE  COMMISSIONS PAGE  COMMISSIONS PAGE  COMMISSIONS PAGE */
-        /* COMMISSIONS PAGE  COMMISSIONS PAGE  COMMISSIONS PAGE  COMMISSIONS PAGE  COMMISSIONS PAGE */
-        if (page === 'commissions' && lcCommand.startsWith('sort')) {
-          return sortCommissions(command)
-        }
-        if (page === 'commissions' && lcCommand.startsWith('direction')) {
-          const direction = command.split('direction ')[1]?.trim()
-          return commissionsDirection(direction)
-        }
-        if (page === 'commissions' && lcCommand.startsWith('next')) {
-          return commissionsNext()
-        }
-        if (page === 'commissions' && lcCommand.startsWith('back')) {
-          return commissionsBack()
-        }
-        if (page === 'commissions' && lcCommand.startsWith('page')) {
-          const pageNumber = Number(lcCommand.split('page ')[1]) - 1
-          return commissionsPageSelect(pageNumber)
-        }
-        if (page === 'user-commissions' && lcCommand.startsWith('next')) {
-          return commissionsNext()
-        }
-        if (page === 'user-commissions' && lcCommand.startsWith('back')) {
-          return commissionsBack()
-        }
-        if (page === 'user-commissions' && lcCommand.startsWith('page')) {
-          const pageNumber = Number(lcCommand.split('page ')[1]) - 1
-          return commissionsPageSelect(pageNumber)
-        }
-        if (page === 'user-commissions' && lcCommand.startsWith('sort')) {
-          return sortCommissions(command)
-        }
-        if (page === 'user-commissions' && lcCommand.startsWith('direction')) {
-          const direction = command.split('direction ')[1]?.trim()
-          return commissionsDirection(direction)
-        }
-        if (page === 'user-commissions' && lcCommand.startsWith('details')) {
-          const index = Number(lcCommand.split(' ')[1])
-          return commissionDetails(index)
+        if (page === 'commissions' || page === 'user-commissions') {
+          if (lcCommand.startsWith('sort')) {
+            return sortCommissions(command)
+          }
+          if (lcCommand.startsWith('direction')) {
+            const direction = command.split('direction ')[1]?.trim()
+            return commissionsDirection(direction)
+          }
+          if (lcCommand.startsWith('next')) {
+            return commissionsNext()
+          }
+          if (lcCommand.startsWith('back')) {
+            return commissionsBack()
+          }
+          if (lcCommand.startsWith('page')) {
+            const pageNumber = Number(lcCommand.split('page ')[1]) - 1
+            return commissionsPageSelect(pageNumber)
+          }
         }
         /* COMMISSION DETAILS PAGE  COMMISSION DETAILS PAGE  COMMISSION DETAILS PAGE */
-        /* COMMISSION DETAILS PAGE  COMMISSION DETAILS PAGE  COMMISSION DETAILS PAGE */
-
-        if (page === 'details' && lcCommand.startsWith('cancel')) {
-          return cancelCommission()
+        if (page === 'details') {
+          if (lcCommand.startsWith('cancel')) {
+            return cancelCommission()
+          }
+          if (lcCommand.startsWith('select winner')) {
+            return chooseWinner()
+          }
         }
-        if (page === 'details' && lcCommand.startsWith('select winner')) {
-          return chooseWinner()
-        }
-        /* ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE */
         /* ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE */
         if (page === 'entries' || page === 'user entries') {
           if (lcCommand.startsWith('sort')) {
@@ -218,6 +192,17 @@ const Display = ({
             return entriesPageSelect(pageNumber)
           }
         }
+
+        if (page === 'profile') {
+          if (lcCommand === 'user commissions') {
+            return displayUserCommissions(stateVals.selectedUser)
+          }
+
+          if (lcCommand.includes('user entries')) {
+            return viewEntries()
+          }
+        }
+
         if (lcCommand.startsWith('profile')) {
           setPage('profile')
           const id = command.split(' ')[1]
@@ -236,14 +221,6 @@ const Display = ({
           clear()
           const id = command.split(' ')[1]
           return displayCommissionDetailsById(id)
-        }
-
-        if (page === 'profile' && lcCommand === 'user commissions') {
-          return displayUserCommissions(stateVals.selectedUser)
-        }
-
-        if (page === 'profile' && lcCommand.includes('user entries')) {
-          return viewEntries()
         }
 
         printLine(`command "${command}" not recognized`)
