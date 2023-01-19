@@ -6,6 +6,6 @@ export const uploadTextToIpfs = async (text: string) => {
 }
 
 export const readTextFromIpfs = async (path: string) => {
-  const res = await axios(`http://ipfs.io/ipfs/${path}`)
-  return res?.data
+  const res = await axios(`/api/ipfs/${path}`)
+  return res?.data?.content
 }
