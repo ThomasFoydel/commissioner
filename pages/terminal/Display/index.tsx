@@ -161,6 +161,10 @@ const Display = ({
             const pageNumber = Number(lcCommand.split('page ')[1]) - 1
             return commissionsPageSelect(pageNumber)
           }
+          if (lcCommand.startsWith('details')) {
+            const index = Number(lcCommand.split(' ')[1])
+            return commissionDetails(index)
+          }
         }
         /* COMMISSION DETAILS PAGE  COMMISSION DETAILS PAGE  COMMISSION DETAILS PAGE */
         if (page === 'details') {
