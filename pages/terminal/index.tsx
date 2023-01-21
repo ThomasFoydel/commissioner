@@ -44,6 +44,7 @@ import {
   handleDisplayCommissionDetailsById,
   handleAddReward,
   handleTipWinner,
+  handleTipCommissioner,
 } from './commands'
 
 const bannerText = `
@@ -492,6 +493,16 @@ const Terminal = () => {
       signer,
       refetchAndDisplayCommission
     )
+
+  const tipCommissioner = (input: string) =>
+    handleTipCommissioner(
+      selectedCommission,
+      input,
+      printLine,
+      setPage,
+      signer,
+      refetchAndDisplayCommission
+    )
   return (
     <Display
       props={{
@@ -540,6 +551,7 @@ const Terminal = () => {
         displayUserCommissions,
         addReward,
         tipWinner,
+        tipCommissioner,
       }}
     />
   )

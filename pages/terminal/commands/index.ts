@@ -665,6 +665,31 @@ export const handleTipWinner = async (
   loading(false)
 }
 
+export const handleTipCommissioner = async (
+  commission: Commission,
+  input: string,
+  printLine: Function,
+  loading: Function,
+  signer: JsonRpcSigner,
+  refetchAndDisplayCommission: Function
+) => {
+  const numInput = Number(input)
+  if (Number.isNaN(numInput)) return printLine('enter a valid number')
+  const commissionContract = new Contract(commission.id, commissionInterface, signer)
+  printLine('approve in metamask...')
+  try {
+    const tx = await commissionContract.tipCommissioner(input)
+    loading(true)
+    printLine('processing transaction. sit tight for a minute...')
+    await tx.wait()
+    printLine('tip commissioner transaction successful')
+    refetchAndDisplayCommission()
+  } catch (err) {
+    printLine('tip commissoner transaction failed')
+  }
+  loading(false)
+}
+
 export const handleCommissionsDirection = async (
   direction: string,
   printLine: Function,
