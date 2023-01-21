@@ -30,7 +30,7 @@ export const handleDisplayCommissions = async (
   user?: User
 ) => {
   loading(true)
-  printLine(`COMMISSIONS${user ? ` BY USER ${user.id}` : ''}`)
+  printLine(`\nCOMMISSIONS${user ? ` BY USER ${user.id}` : ''}`)
   printLine(`page ${page + 1}`)
   const coms = await fetchCommissions(getCommissionsQuery, user)
   setCommissionsDisplayed(coms)
@@ -304,8 +304,8 @@ export const handleDisplayEntries = async (
   commission?: Commission,
   selectedUser?: User
 ) => {
-  if (selectedUser) printLine(`ENTRIES BY USER ${selectedUser.id}`)
-  else printLine(`ENTRIES FOR COMMISSION ${commission.id}`)
+  if (selectedUser) printLine(`\nENTRIES BY USER ${selectedUser.id}`)
+  else printLine(`\nENTRIES FOR COMMISSION ${commission.id}`)
   const variables = {}
   if (commission) variables['id'] = commission.id
   if (selectedUser) variables['userId'] = selectedUser.id
@@ -348,7 +348,7 @@ export const handleDisplayEntryDetails = async (
   const entryWithContent = await getEntryContent(entry)
   setSelectedEntry(entryWithContent)
   const entryText = processEntry(entryWithContent, null)
-  printLine(`DETAILS FOR ENTRY ${entryWithContent.id}`)
+  printLine(`\nDETAILS FOR ENTRY ${entryWithContent.id}`)
   printLine(entryText)
   printLine('commands: vote, return')
   return true
