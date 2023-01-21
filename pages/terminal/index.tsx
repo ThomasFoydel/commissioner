@@ -47,10 +47,7 @@ import {
   handleTipCommissioner,
 } from './commands'
 
-const bannerText = `
-COMMISSIONER
-commissions create help man about profile
-`
+const bannerText = `\nCOMMISSIONER\ncommissions create help man about profile`
 
 const commands = {
   home: 'commissions, create, help, man, about, profile',
@@ -506,7 +503,7 @@ const Terminal = () => {
 
   const viewEntryAuthor = () =>
     handleDisplayUser(selectedEntry.author.id, printLine, setSelectedUser, setPage)
-    
+
   return (
     <Display
       props={{

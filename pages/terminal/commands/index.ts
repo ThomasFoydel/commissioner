@@ -277,11 +277,7 @@ const processEntry = (entry: Entry, i: number | null) => {
   const displayVoters = voters.length > 0 ? voters.join(',') : 'no voters yet'
   const displayContent =
     content.length < 120 || i === null ? content.slice(0, 888) : `${content.slice(0, 120)}...`
-  const index =
-    typeof i === 'number'
-      ? `
-INDEX ${i + 1}`
-      : ''
+  const index = typeof i === 'number' ? `\nINDEX ${i + 1}` : ''
   return `${index}
     ID: ${id}
     TIMESTAMP: ${timestamp}

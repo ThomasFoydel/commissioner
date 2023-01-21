@@ -66,8 +66,7 @@ export const makeCommissionString = (
   const creation = new Date(Number(timestamp) * 1000)
   const winner = `${
     winningAuthor
-      ? `
-    WINNING AUTHOR: ${winningAuthor.id}`
+      ? `\n    WINNING AUTHOR: ${winningAuthor.id}`
       : ''
   }`
 
@@ -86,7 +85,7 @@ export const makeCommissionString = (
           )}UNTIL COMMISSIONER TRIGGER OPENS.\n    ${timeStringFromSeconds(
             172800 + Number(timestamp) + Number(minTime) - Date.now() / 1000
           )}UNTIL PUBLIC TRIGGER OPENS.`
-    }
+      }
     `
 
   const characters = `
