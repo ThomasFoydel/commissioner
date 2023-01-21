@@ -37,7 +37,9 @@ export const handleDisplayCommissions = async (
   const comStrings = coms.map((com, i) => makeCommissionString(com, i + 1, false))
   comStrings.forEach((com) => printLine(com))
   printLine('\n\n')
-  printLine('commands: next, back, sort (field), details (index#), page (page#)')
+  printLine(
+    'commands: next, back, sort (field), direction(asc/desc), details (index#), page (page#)'
+  )
   loading(false)
 }
 
