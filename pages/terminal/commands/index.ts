@@ -615,6 +615,31 @@ export const handleDisplayCommissionDetailsById = async (
   handleDisplayCommissionDetails(printLine, loading, commission, account)
 }
 
+export const handleAddReward = async (
+  commission: Commission,
+  input: string,
+  printLine: Function,
+  loading: Function,
+  signer: JsonRpcSigner,
+  refetchAndDisplayCommission: Function
+) => {
+  const numInput = Number(input)
+  if (Number.isNaN(numInput)) return printLine('enter a valid number')
+  const commissionContract = new Contract(commission.id, commissionInterface, signer)
+  printLine('approve in metamask...')
+  try {
+    const tx = await commissionContract.addReward(input)
+    loading(true)
+    printLine('processing transaction. sit tight for a minute...')
+    await tx.wait()
+    printLine('add reward transaction successful')
+    refetchAndDisplayCommission()
+  } catch (err) {
+    printLine('add reward transaction failed')
+  }
+  loading(false)
+}
+
 export const handleCommissionsDirection = async (
   direction: string,
   printLine: Function,

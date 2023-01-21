@@ -47,6 +47,7 @@ const Display = ({
     handleEntryIpfs,
     displayCommissionDetailsById,
     displayUserCommissions,
+    addReward
   },
 }) => (
   <div style={{ width: '100vw', height: 'calc(100vh - 30px)' }}>
@@ -174,6 +175,13 @@ const Display = ({
           if (lcCommand.startsWith('select winner')) {
             return chooseWinner()
           }
+          if (lcCommand.startsWith('add reward')) {
+            printLine('enter amount')
+            return setPage('add-reward')
+          }
+        }
+        if (page === "add-reward") {
+          addReward(lcCommand)
         }
         /* ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE */
         if (page === 'entries' || page === 'user entries') {

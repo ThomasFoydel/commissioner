@@ -1,4 +1,4 @@
-import { Contract } from 'ethers'
+import { Contract, Signer } from 'ethers'
 import { DocumentNode } from 'graphql'
 import { useEthers } from '@usedapp/core'
 import { Interface } from 'ethers/lib/utils'
@@ -42,6 +42,7 @@ import {
   handleEntriesNextPage,
   handleEntriesDirection,
   handleDisplayCommissionDetailsById,
+  handleAddReward,
 } from './commands'
 
 const bannerText = `
@@ -471,6 +472,15 @@ const Terminal = () => {
   const displayUserProfile = async (user?: string) =>
     handleDisplayUser(user || account, printLine, setSelectedUser, setPage)
 
+  const addReward = (input: string) =>
+    handleAddReward(
+      selectedCommission,
+      input,
+      printLine,
+      setPage,
+      signer,
+      refetchAndDisplayCommission
+    )
   return (
     <Display
       props={{
@@ -517,6 +527,7 @@ const Terminal = () => {
         handleEntryIpfs,
         displayCommissionDetailsById,
         displayUserCommissions,
+        addReward,
       }}
     />
   )
