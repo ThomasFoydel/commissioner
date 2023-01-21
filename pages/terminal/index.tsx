@@ -109,11 +109,6 @@ const Terminal = () => {
     selectedUser
   )
 
-  // const changePage = (page: string) => {
-  //   printLine(`moved to ${page}. commands: ${commands[page as keyof typeof commands]}`)
-  //   setPage(page)
-  // }
-
   const stateVals = {
     sortEntriesDirection,
     sortEntriesBy,

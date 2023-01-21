@@ -21,6 +21,7 @@ type Commission @entity {
   cancelled: Boolean!
   active: Boolean!
   complete: Boolean!
+  canBeCancelled: Boolean!
 }
 
 # for a specific entry to a specific commission

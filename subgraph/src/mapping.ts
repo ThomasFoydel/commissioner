@@ -39,6 +39,7 @@ export function getCommission(id: string): Commission {
     commission.active = true
     commission.complete = false
     commission.winningAuthor = null
+    commission.canBeCancelled = true
   }
   return commission
 }
@@ -75,9 +76,9 @@ export function handleCommissionCancelled(event: CommissionCancelled): void {
   const commissionId = event.params.commission.toHex()
   const commission = getCommission(commissionId)
   const commissioner = getUser(commission.commissioner)
-
   commissioner.commissionsCreated = commissioner.commissionsCreated.minus(ONE)
   commissioner.valueContributed = commissioner.valueContributed.minus(commission.reward)
+  commission.canBeCancelled = false
   commission.cancelled = true
 
   commissioner.save()
@@ -117,6 +118,7 @@ export function handleEntrySubmitted(event: EntrySubmitted): void {
   entry.timestamp = event.block.timestamp
   const commission = getCommission(commissionId)
   commission.entryCount = commission.entryCount.plus(ONE)
+  commission.canBeCancelled = false
 
   entry.save()
   author.save()
@@ -131,6 +133,7 @@ export function handleRewardAdded(event: RewardAdded): void {
   commission.reward = commission.reward.plus(event.params.value)
   const sender = getUser(senderId)
   sender.valueContributed = event.params.value
+  if (sender.id !== commission.commissioner) commission.canBeCancelled = false
 
   commission.save()
   sender.save()
