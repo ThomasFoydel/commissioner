@@ -56,7 +56,7 @@ const Display = ({
       queue={eventQueue}
       banner={[line(bannerText)]}
       onCommand={async (command) => {
-        const lcCommand = command.toLowerCase()
+        const lcCommand = command.toLowerCase().trim()
         if (lcCommand === 'home') {
           return homePage()
         }
