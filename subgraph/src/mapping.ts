@@ -157,6 +157,8 @@ export function handleVoteSubmitted(event: VoteSubmitted): void {
   const onepercent = event.params.amount.div(BigInt.fromI32(100))
   commission.reward = commission.reward.plus(onepercent)
 
+  commission.forerunner = event.params.forerunner.toHex()
+
   const vote = getVote(voteId)
   vote.voter = voterId
   vote.commission = commissionId
@@ -175,6 +177,7 @@ export function handleVoteSubmitted(event: VoteSubmitted): void {
   entry.voteAmount = entry.voteAmount.plus(event.params.amount)
   entry.commission = commissionId
 
+  commission.save()
   entry.save()
   contribution.save()
   vote.save()

@@ -60,7 +60,8 @@ contract Factory {
         address indexed author,
         address indexed voter,
         uint256 amount,
-        address indexed commission
+        address indexed commission,
+        address forerunner
     );
 
     function createCommission(string memory prompt, uint256 _minTime)
@@ -96,9 +97,10 @@ contract Factory {
     function _voteSubmitted(
         address _author,
         address _voter,
-        uint256 _value
+        uint256 _value,
+        address _forerunner
     ) external commissionOnly {
-        emit VoteSubmitted(_author, _voter, _value, msg.sender);
+        emit VoteSubmitted(_author, _voter, _value, msg.sender, _forerunner);
     }
 
     function _rewardAdded(address _sender, uint256 _value)

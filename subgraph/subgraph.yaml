@@ -31,7 +31,7 @@ dataSources:
           handler: handleEntrySubmitted
         - event: RewardAdded(indexed address,indexed uint256,indexed address)
           handler: handleRewardAdded
-        - event: VoteSubmitted(indexed address,indexed address,uint256,indexed address)
+        - event: VoteSubmitted(indexed address,indexed address,uint256,indexed address,address)
           handler: handleVoteSubmitted
         - event: WinnerChosen(indexed address,indexed uint256,indexed address)
           handler: handleWinnerChosen

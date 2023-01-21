@@ -184,15 +184,15 @@ const Display = ({
             return chooseWinner()
           }
           if (lcCommand.startsWith('add reward')) {
-            printLine('enter amount')
+            printLine('enter amount (in ETH)')
             return setPage('add-reward')
           }
           if (lcCommand.startsWith('tip winner')) {
-            printLine('enter amount')
+            printLine('enter amount (in ETH)')
             return setPage('tip-winner')
           }
           if (lcCommand.startsWith('tip commissioner')) {
-            printLine('enter amount')
+            printLine('enter amount (in ETH)')
             return setPage('tip-commissioner')
           }
         }

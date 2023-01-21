@@ -6,7 +6,8 @@ interface IFactory {
     function _voteSubmitted(
         address _author,
         address _voter,
-        uint256 _value
+        uint256 _value,
+        address forerunner
     ) external;
 
     function _rewardAdded(address _sender, uint256 _value) external;
@@ -32,7 +33,7 @@ contract Commission {
 
     address payable public commissioner;
     address payable winningAuthor;
-    address payable foreRunner;
+    address payable forerunner;
     uint256 highestVoteSoFar;
     uint256 creation;
     uint256 minTime;
@@ -86,9 +87,9 @@ contract Commission {
         _;
     }
 
-    function getForerunner() public view returns (address) {
+    function getforerunner() public view returns (address) {
         require(highestVoteSoFar > 0, "No votes yet");
-        return foreRunner;
+        return forerunner;
     }
 
     function addReward() public payable ongoing {
@@ -136,12 +137,12 @@ contract Commission {
 
     function _carryOutChooseWinner(address caller) internal ongoing {
         require(
-            foreRunner != address(0),
+            forerunner != address(0),
             "No forerunner"
         );
         active = false;
         uint256 tenpercent = reward.div(10);
-        winningAuthor = foreRunner;
+        winningAuthor = forerunner;
         reward = reward.sub(tenpercent);
         factory._winnerChosen(winningAuthor, reward);
         payable(caller).transfer(tenpercent);
@@ -169,9 +170,9 @@ contract Commission {
         votes[_author] = votes[_author].add(msg.value);
         if (votes[_author] > highestVoteSoFar) {
             highestVoteSoFar = votes[_author];
-            foreRunner = payable(_author);
+            forerunner = payable(_author);
         }
-        factory._voteSubmitted(_author, msg.sender, msg.value);
+        factory._voteSubmitted(_author, msg.sender, msg.value, forerunner);
         uint256 onepercent = msg.value.div(100);
         uint256 voteAfterFees = msg.value.sub(onepercent.mul(2));
         reward = reward.add(onepercent);

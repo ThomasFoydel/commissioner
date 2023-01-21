@@ -22,6 +22,7 @@ type Commission @entity {
   active: Boolean!
   complete: Boolean!
   canBeCancelled: Boolean!
+  forerunner: String
 }
 
 # for a specific entry to a specific commission
