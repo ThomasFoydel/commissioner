@@ -628,13 +628,14 @@ export const handleAddReward = async (
   const commissionContract = new Contract(commission.id, commissionInterface, signer)
   printLine('approve in metamask...')
   try {
-    const tx = await commissionContract.addReward(input)
+    const tx = await commissionContract.addReward({ value: parseEther(input) })
     loading(true)
     printLine('processing transaction. sit tight for a minute...')
     await tx.wait()
     printLine('add reward transaction successful')
     refetchAndDisplayCommission()
   } catch (err) {
+    console.log(err)
     printLine('add reward transaction failed')
   }
   loading(false)
@@ -653,7 +654,7 @@ export const handleTipWinner = async (
   const commissionContract = new Contract(commission.id, commissionInterface, signer)
   printLine('approve in metamask...')
   try {
-    const tx = await commissionContract.tipWinner(input)
+    const tx = await commissionContract.tipWinner({ value: parseEther(input) })
     loading(true)
     printLine('processing transaction. sit tight for a minute...')
     await tx.wait()
@@ -678,7 +679,7 @@ export const handleTipCommissioner = async (
   const commissionContract = new Contract(commission.id, commissionInterface, signer)
   printLine('approve in metamask...')
   try {
-    const tx = await commissionContract.tipCommissioner(input)
+    const tx = await commissionContract.tipCommissioner({ value: parseEther(input) })
     loading(true)
     printLine('processing transaction. sit tight for a minute...')
     await tx.wait()
