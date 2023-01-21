@@ -53,24 +53,24 @@ export const handleDisplayCommissionDetails = async (
   printLine(characters)
   printLine('\n')
 
-  const { commissioner, timestamp, minTime, canBeCancelled, winningAuthor } = commission
+  const { commissioner, timestamp, minTime, canBeCancelled, winningAuthor, active } = commission
   const now = Date.now() / 1000
   const secondsPassed = now - Number(timestamp)
   const userIsCommissioner = commissioner.id === account.toLowerCase()
   const comTriggerOpen = secondsPassed > Number(minTime)
-  const commissionerOptions = `${canBeCancelled ? 'cancel, ' : ''}${
-    comTriggerOpen ? 'select winner, ' : ''
-  }`
+  const cancelOption = canBeCancelled && userIsCommissioner ? 'cancel, ' : ''
   const minTimePlusTwoDays = Number(minTime) + 172_800
   const publicTriggerOpen = secondsPassed > minTimePlusTwoDays
-  const publicTriggerOption = publicTriggerOpen ? 'select winner, ' : ''
-  const tipOptions = winningAuthor ? 'tip winner, tip commissioner, ' : ''
-  const nonCommissionerOptions = `${publicTriggerOption}${tipOptions}`
-  printLine(
-    `commands: view entries, create-entry, ${
-      userIsCommissioner ? commissionerOptions : nonCommissionerOptions
-    }view commissioner, return`
-  )
+  const addRewardOption = active ? 'add reward, ' : ''
+  const tipWinnerOption = winningAuthor ? 'tip winner, ' : ''
+  const tipCommissionerOption = winningAuthor && !userIsCommissioner ? 'tip commissioner, ' : ''
+  const triggerOption =
+    (comTriggerOpen && userIsCommissioner) || publicTriggerOpen ? 'select winner, ' : ''
+
+  const tipOptions = `${tipWinnerOption}${tipCommissionerOption}`
+  const options = `${tipOptions}${triggerOption}${addRewardOption}${cancelOption}`
+
+  printLine(`commands: view entries, create-entry, ${options}view commissioner, return`)
   loading(false)
 }
 
