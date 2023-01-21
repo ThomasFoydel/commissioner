@@ -5,6 +5,7 @@ enum Type {
   submit = 'submit',
   reset = 'reset',
 }
+
 const Button = ({
   className,
   type,

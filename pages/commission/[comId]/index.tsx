@@ -20,6 +20,7 @@ import { comDetails } from '../../../apollo/queries'
 import TypeOut from '../../../components/TypeOut'
 import { truncate } from '../../../utils'
 import Layout from '../../layouts/CRT'
+import Button from '../../../components/Button'
 
 enum Trigger {
   public = 'public',
@@ -39,6 +40,7 @@ const CommissionDetails = () => {
 
   const {
     submittedEntries: entries,
+    canBeCancelled,
     winningAuthor,
     commissioner,
     entryCount,
@@ -59,6 +61,27 @@ const CommissionDetails = () => {
   const publicTriggerTime = comTriggerTime + 172800
   const secondsLeftUntilPublicTriggerOpens = publicTriggerTime - nowSeconds
 
+  const [cancelInProgress, setCancelInProgress] = useState(false)
+  const handleCancel = async () => {
+    if (cancelInProgress || !library || !account) return
+    setCancelInProgress(true)
+    try {
+      toast.dismiss()
+      toast.info('approve in metamask')
+      const signer = library.getSigner(String(account))
+      const commissionContract = new Contract(comId, commissionInterface, signer)
+      const tx = await commissionContract.cancel()
+      toast.dismiss()
+      toast.info('cancelling commission. sit tight...', { autoClose: false })
+      await tx.wait()
+      toast.dismiss()
+      toast.success('commission cancelled')
+    } catch (err) {
+      toast.error('commission cancelation failed')
+    }
+    setCancelInProgress(false)
+  }
+
   useEffect(() => {
     setPublicTriggerOpen(active && secondsLeftUntilPublicTriggerOpens <= 0)
     setCommissionerTriggerOpen(active && secondsLeftUntilComTrigger <= 0)
@@ -71,8 +94,10 @@ const CommissionDetails = () => {
 
   const userHasNotSubmittedEntry =
     account && entries.every((entry: Entry) => entry.author.id !== account.toLowerCase())
-  const userCanEnter =
-    account && active && commissioner.id !== account.toLowerCase() && userHasNotSubmittedEntry
+
+  const userIsCommissioner = account && commissioner.id === account.toLowerCase()
+
+  const userCanEnter = account && active && !userIsCommissioner && userHasNotSubmittedEntry
 
   const commissionInterface = new Interface(commissionABI)
 
@@ -126,30 +151,6 @@ const CommissionDetails = () => {
         <DynamicTypeOut>REWARD: {formatEther(reward)} ETH</DynamicTypeOut>
         <TypeOut>CREATED {createdDate.toLocaleString().toUpperCase()}</TypeOut>
         <TypeOut> {active ? 'ACTIVE' : 'COMPLETE'}</TypeOut>
-        {active && commissionerTriggerOpen && !publicTriggerOpen && (
-          <button onClick={handleCommissionerTrigger}>
-            <TypeOut>COMMISSIONER TRIGGER OPEN</TypeOut>
-          </button>
-        )}
-        {active && publicTriggerOpen && (
-          <button onClick={handlePublicTrigger}>
-            <TypeOut>PUBLIC TRIGGER OPEN</TypeOut>
-          </button>
-        )}
-
-        {active && !publicTriggerOpen && (
-          <div>
-            <CountDown endTimestamp={publicTriggerTime} onCompletion={setPublicTriggerOpen} />{' '}
-            <TypeOut>UNTIL PUBLIC TRIGGER OPENS</TypeOut>
-          </div>
-        )}
-
-        {active && !commissionerTriggerOpen && !publicTriggerOpen && (
-          <div>
-            <CountDown endTimestamp={comTriggerTime} onCompletion={setCommissionerTriggerOpen} />{' '}
-            <TypeOut>UNTIL COMMISSIONER TRIGGER OPENS</TypeOut>
-          </div>
-        )}
 
         <div>
           <TypeOut>PROMPT</TypeOut>
@@ -174,6 +175,37 @@ const CommissionDetails = () => {
             <TipOrAddRewardForm type={FormType.tipWinner} commissionId={comId} />
           </>
         )}
+
+        {canBeCancelled && userIsCommissioner && (
+          <Button onClick={handleCancel}>
+            <TypeOut>CANCEL</TypeOut>
+          </Button>
+        )}
+        {active && commissionerTriggerOpen && !publicTriggerOpen && (
+          <Button className="button" onClick={handleCommissionerTrigger}>
+            <TypeOut>COMMISSIONER TRIGGER</TypeOut>
+          </Button>
+        )}
+        {active && publicTriggerOpen && (
+          <Button className="button" onClick={handlePublicTrigger}>
+            <TypeOut>PUBLIC TRIGGER</TypeOut>
+          </Button>
+        )}
+
+        {active && !publicTriggerOpen && (
+          <div>
+            <CountDown endTimestamp={publicTriggerTime} onCompletion={setPublicTriggerOpen} />{' '}
+            <TypeOut>UNTIL PUBLIC TRIGGER OPENS</TypeOut>
+          </div>
+        )}
+
+        {active && !commissionerTriggerOpen && !publicTriggerOpen && (
+          <div>
+            <CountDown endTimestamp={comTriggerTime} onCompletion={setCommissionerTriggerOpen} />{' '}
+            <TypeOut>UNTIL COMMISSIONER TRIGGER OPENS</TypeOut>
+          </div>
+        )}
+
         {active ? (
           <TipOrAddRewardForm type={FormType.addReward} commissionId={comId} />
         ) : (
@@ -196,12 +228,9 @@ const CommissionDetails = () => {
 
         {userCanEnter && (
           <div>
-            <button
-              className="button w-full center sm:w-[200px] sm:ml-0 sm:transform-none"
-              onClick={() => setEnterFormOpen((o) => !o)}
-            >
+            <Button onClick={() => setEnterFormOpen((o) => !o)}>
               <TypeOut>ENTER COMMISSION</TypeOut>
-            </button>
+            </Button>
             {enterFormOpen && <EntryForm id={String(comId)} onComplete={entrySuccess} />}
           </div>
         )}
