@@ -350,7 +350,7 @@ export const handleDisplayEntryDetails = async (
   const entryText = processEntry(entryWithContent, null)
   printLine(`\nDETAILS FOR ENTRY ${entryWithContent.id}`)
   printLine(entryText)
-  printLine('commands: vote, return')
+  printLine('commands: vote, view author, return')
   return true
 }
 
