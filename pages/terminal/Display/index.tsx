@@ -50,6 +50,7 @@ const Display = ({
     addReward,
     tipWinner,
     tipCommissioner,
+    viewEntryAuthor,
   },
 }) => (
   <div style={{ width: '100vw', height: 'calc(100vh - 30px)' }}>
@@ -136,8 +137,13 @@ const Display = ({
         if (lcCommand.includes('entry details')) {
           return entryDetails(lcCommand)
         }
-        if (lcCommand === 'vote') {
-          return startVote()
+        if (page === 'entry-details') {
+          if (lcCommand === 'vote') {
+            return startVote()
+          }
+          if (lcCommand === 'view author') {
+            return viewEntryAuthor()
+          }
         }
         if (page === 'vote-input') {
           return voteAmountInput(command)

@@ -503,6 +503,10 @@ const Terminal = () => {
       signer,
       refetchAndDisplayCommission
     )
+
+  const viewEntryAuthor = () =>
+    handleDisplayUser(selectedEntry.author.id, printLine, setSelectedUser, setPage)
+    
   return (
     <Display
       props={{
@@ -552,6 +556,7 @@ const Terminal = () => {
         addReward,
         tipWinner,
         tipCommissioner,
+        viewEntryAuthor,
       }}
     />
   )
