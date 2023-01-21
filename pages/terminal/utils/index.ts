@@ -67,7 +67,7 @@ export const makeCommissionString = (
   const winner = `${
     winningAuthor
       ? `
-    WINNING AUTHOR: ${winningAuthor}`
+    WINNING AUTHOR: ${winningAuthor.id}`
       : ''
   }`
 
