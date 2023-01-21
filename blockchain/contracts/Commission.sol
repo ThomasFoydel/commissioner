@@ -134,14 +134,18 @@ contract Commission {
         _carryOutChooseWinner(msg.sender);
     }
 
-    function _carryOutChooseWinner(address caller) internal {
+    function _carryOutChooseWinner(address caller) internal ongoing {
+        require(
+            foreRunner != address(0),
+            "No forerunner"
+        );
         active = false;
         uint256 tenpercent = reward.div(10);
-        payable(caller).transfer(tenpercent);
         winningAuthor = foreRunner;
         reward = reward.sub(tenpercent);
-        winningAuthor.transfer(reward);
         factory._winnerChosen(winningAuthor, reward);
+        payable(caller).transfer(tenpercent);
+        winningAuthor.transfer(reward);
     }
 
     function tipWinner() public payable finished {

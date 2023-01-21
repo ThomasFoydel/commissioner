@@ -207,6 +207,20 @@ contract('Commission', ([owner, account1, account2, account3, account4, account5
     assert(winner === account2)
   })
 
+  it('Should prevent winning trigger if there is no forerunner', async () => {
+    await commission.submitEntry(ipfsPath, { from: account2 })
+    await advanceFiveDays()
+    let reverted = false
+    try {
+      await commission.chooseWinner({ from: account1 })
+      await commission.getWinningAuthor()
+    } catch (err) {
+      assert(err.reason === "No forerunner")
+      reverted = true
+    }
+    assert(reverted)
+  })
+
   it('Should block non-commissioner users from choosing winner', async () => {
     await commission.submitEntry(ipfsPath, { from: account2 })
     const entryCount = await commission.entryCount()
