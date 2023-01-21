@@ -43,6 +43,7 @@ import {
   handleEntriesDirection,
   handleDisplayCommissionDetailsById,
   handleAddReward,
+  handleTipWinner,
 } from './commands'
 
 const bannerText = `
@@ -481,6 +482,16 @@ const Terminal = () => {
       signer,
       refetchAndDisplayCommission
     )
+
+  const tipWinner = (input: string) =>
+    handleTipWinner(
+      selectedCommission,
+      input,
+      printLine,
+      setPage,
+      signer,
+      refetchAndDisplayCommission
+    )
   return (
     <Display
       props={{
@@ -528,6 +539,7 @@ const Terminal = () => {
         displayCommissionDetailsById,
         displayUserCommissions,
         addReward,
+        tipWinner,
       }}
     />
   )

@@ -47,7 +47,8 @@ const Display = ({
     handleEntryIpfs,
     displayCommissionDetailsById,
     displayUserCommissions,
-    addReward
+    addReward,
+    tipWinner
   },
 }) => (
   <div style={{ width: '100vw', height: 'calc(100vh - 30px)' }}>
@@ -179,9 +180,16 @@ const Display = ({
             printLine('enter amount')
             return setPage('add-reward')
           }
+          if (lcCommand.startsWith('tip winner')) {
+            printLine('enter amount')
+            return setPage('tip-winner')
+          }
         }
         if (page === "add-reward") {
-          addReward(lcCommand)
+          return addReward(lcCommand)
+        }
+        if (page === 'tip-winner') {
+          return tipWinner(lcCommand)
         }
         /* ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE  ENTRIES PAGE */
         if (page === 'entries' || page === 'user entries') {
