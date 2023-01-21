@@ -77,6 +77,7 @@ const CommissionDetails = () => {
       toast.dismiss()
       toast.success('commission cancelled')
     } catch (err) {
+      toast.dismiss()
       toast.error('commission cancelation failed')
     }
     setCancelInProgress(false)
