@@ -937,13 +937,14 @@ export const handleChooseWinner = async (
   printLine(`processing transaction... transaction hash: ${tx.hash}`)
   try {
     await tx.wait()
-    printLine(`transaction ${tx.hash} successful`)
-    printLine(`commission ${selectedCommission.id} complete`)
-    printLine(`thank you for your commission, user ${account}`)
+    printLine(`\ntransaction ${tx.hash} successful`)
+    printLine(`\ncommission ${selectedCommission.id} complete`)
+    if (publicTrigger) printLine(`\nthank you for pulling the trigger, user ${account}`)
+    else printLine(`\nthank you for your commission, user ${account}`)
   } catch (err) {
     printLine('transaction error')
   }
-  loading(true)
+  loading(false)
 }
 
 export const handleEntriesBackPage = (
