@@ -53,7 +53,7 @@ export const handleDisplayCommissionDetails = async (
   printLine(characters)
   printLine('\n')
 
-  const { commissioner, timestamp, minTime, canBeCancelled } = commission
+  const { commissioner, timestamp, minTime, canBeCancelled, winningAuthor } = commission
   const now = Date.now() / 1000
   const secondsPassed = now - Number(timestamp)
   const userIsCommissioner = commissioner.id === account.toLowerCase()
@@ -63,8 +63,9 @@ export const handleDisplayCommissionDetails = async (
   }`
   const minTimePlusTwoDays = Number(minTime) + 172_800
   const publicTriggerOpen = secondsPassed > minTimePlusTwoDays
-  const nonCommissionerOptions = publicTriggerOpen ? 'select winner, ' : ''
-
+  const publicTriggerOption = publicTriggerOpen ? 'select winner, ' : ''
+  const tipOptions = winningAuthor ? 'tip winner, tip commissioner, ' : ''
+  const nonCommissionerOptions = `${publicTriggerOption}${tipOptions}`
   printLine(
     `commands: view entries, create-entry, ${
       userIsCommissioner ? commissionerOptions : nonCommissionerOptions
@@ -837,19 +838,24 @@ export const handleChooseWinner = async (
   signer: JsonRpcSigner,
   loading: Function
 ) => {
+  const publicTrigger = account !== selectedCommission.commissioner.id
   const now = Date.now() / 1000
   const secondsPassed = now - Number(selectedCommission.timestamp)
-  if (account !== selectedCommission.commissioner.id) {
+  if (publicTrigger) {
     if (secondsPassed < 2 * 24 * 60 * 60) {
       return printLine('only the commissioner may select winner')
     }
   }
-  if (secondsPassed < Number(selectedCommission.minTime))
+  if (secondsPassed < Number(selectedCommission.minTime)) {
     return printLine('minimum time has not passed')
+  }
   if (selectedCommission.entryCount < 1) return printLine('no entries yet')
   const commissionContract = new Contract(selectedCommission.id, commissionInterface, signer)
   loading(true)
-  const tx = await commissionContract.chooseWinner()
+  const triggerFunction = publicTrigger
+    ? commissionContract.chooseWinnerPublic
+    : commissionContract.chooseWinner
+  const tx = await triggerFunction()
   printLine(`processing transaction... transaction hash: ${tx.hash}`)
   try {
     await tx.wait()
