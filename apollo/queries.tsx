@@ -6,6 +6,7 @@ const comFields = `
     commissioner {
         id
     }
+    canBeCancelled
     submittedEntries {
         id
         author {
@@ -111,6 +112,7 @@ export const commmissionWithoutEntries = gql`
       commissioner {
         id
       }
+      canBeCancelled
       entryCount
       prompt
       winningAuthor {

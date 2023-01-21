@@ -161,6 +161,7 @@ export const makeCommissionQuery = (
     query getCommissions${userArgTypes} {
       commissions${args} {
         id
+        canBeCancelled
         commissioner {
           id
         }
@@ -198,8 +199,8 @@ export const makeEntriesQuery = (
   let fieldName = field === 'created' ? 'timestamp' : 'vote' ? 'voteAmount' : field
   const sortText = noSort ? '' : `orderBy: ${fieldName}, orderDirection: ${direction}, `
   const paginationText = `skip: ${perPage * page}, first: ${perPage}, `
-  const argType = selectedUser? '$userId' : '$id'
-  const queryArg = selectedUser ? '{ author: $userId }':'{ commission: $id }'
+  const argType = selectedUser ? '$userId' : '$id'
+  const queryArg = selectedUser ? '{ author: $userId }' : '{ commission: $id }'
   return gql`
         query getEntries(${argType}: String) {
             entries(${sortText}${paginationText}where: ${queryArg}) {

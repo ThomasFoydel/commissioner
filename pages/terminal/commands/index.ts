@@ -53,13 +53,14 @@ export const handleDisplayCommissionDetails = async (
   printLine(characters)
   printLine('\n')
 
-  const { commissioner, timestamp, minTime } = commission
+  const { commissioner, timestamp, minTime, canBeCancelled } = commission
   const now = Date.now() / 1000
   const secondsPassed = now - Number(timestamp)
   const userIsCommissioner = commissioner.id === account.toLowerCase()
   const comTriggerOpen = secondsPassed > Number(minTime)
-  const canBeCancelled = false // todo: actually compute this
-  const commissionerOptions = `${canBeCancelled ? "cancel, ":""}${comTriggerOpen ? 'select winner, ' : ''}`
+  const commissionerOptions = `${canBeCancelled ? 'cancel, ' : ''}${
+    comTriggerOpen ? 'select winner, ' : ''
+  }`
   const minTimePlusTwoDays = Number(minTime) + 172_800
   const publicTriggerOpen = secondsPassed > minTimePlusTwoDays
   const nonCommissionerOptions = publicTriggerOpen ? 'select winner, ' : ''
