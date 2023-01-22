@@ -12,7 +12,7 @@ import Display from './Display'
 import {
   handleDisplayCommissionDetails,
   handleDisplayCommissions,
-  fetchEntriesOfCommission,
+  fetchEntry,
   handleCreateCommission,
   handleEntryIpfs,
   handleIPFSInput,
@@ -62,7 +62,7 @@ const Terminal = () => {
   const [page, setPage] = useState('home')
   const [commissionPagination, setCommissionPagination] = useState(0)
   const [commissionsDisplayed, setCommissionsDisplayed] = useState<[Commission]>()
-  const [displayedEntries, setDisplayedEntries] = useState<[Entry]>()
+  const [displayedEntries, setDisplayedEntries] = useState<Entry[]>()
   const [selectedCommission, setSelectedCommission] = useState<Commission>()
   const [selectedEntry, setSelectedEntry] = useState<Entry>()
   const [voteAmount, setVoteAmount] = useState<string>()
@@ -158,7 +158,7 @@ const Terminal = () => {
       return displayUserProfile()
     }
     if (page === 'vote') {
-      if (selectedEntry) refetchAndDisplayEntryDetails()
+      if (selectedEntry) refetchAndDisplayEntryDetails(false)
       return setPage('entry-details')
     }
     if (page === 'confirm-entry') {
@@ -191,20 +191,40 @@ const Terminal = () => {
 
   const displayCommissionDetails = (com: Commission) =>
     handleDisplayCommissionDetails(printLine, loading, com, account)
+
   const displayEntryDetails = (entry: Entry) =>
     handleDisplayEntryDetails(entry, setSelectedEntry, printLine)
-  const refetchAndDisplayEntryDetails = async () => {
+
+  const refetchAndDisplayEntryDetails = async (pollForVoteChange = true) => {
     if (!selectedCommission) return printLine('error: no selected commission')
     if (!selectedEntry) return printLine('error: no selected entry')
-    const entries = await fetchEntriesOfCommission(
-      selectedCommission,
-      setDisplayedEntries,
-      getEntriesQuery
-    )
-    const newSelectedEntry = entries.filter((e) => e.id === selectedEntry.id)[0]
-    setSelectedEntry(newSelectedEntry)
-    handleDisplayEntryDetails(newSelectedEntry, setSelectedEntry, printLine)
+    setPage('entry-details')
+    printLine('fetching updated entry data...')
+    const updateAndDisplayState = (newEntry: Entry) => {
+      const updatedEntries: Entry[] = displayedEntries.map((entry) =>
+        entry.id === newEntry.id ? newEntry : entry
+      )
+      setDisplayedEntries(updatedEntries)
+      setSelectedEntry(newEntry)
+      clear()
+      handleDisplayEntryDetails(newEntry, setSelectedEntry, printLine)
+    }
+
+    let updatedEntry = await fetchEntry(selectedEntry.id)
+
+    const pollForIt = async () => {
+      updatedEntry = await fetchEntry(selectedEntry.id)
+      if (updatedEntry.voteAmount === selectedEntry.voteAmount) {
+        setTimeout(pollForIt, 1000)
+      } else {
+        updateAndDisplayState(updatedEntry)
+      }
+    }
+
+    if (pollForVoteChange) pollForIt()
+    else updateAndDisplayState(updatedEntry)
   }
+
   const refetchAndDisplayCommission = async () => {
     if (!selectedCommission) return printLine('error: no selected commission')
     const commission = await fetchCommission(selectedCommission.id)
@@ -278,7 +298,8 @@ const Terminal = () => {
       printLine,
       signer,
       voteAmount,
-      loading
+      loading,
+      refetchAndDisplayEntryDetails
     )
   const handleReward = async (command: string) => {
     const proceed = await handleRewardInput(command, setReward, printLine, loading)

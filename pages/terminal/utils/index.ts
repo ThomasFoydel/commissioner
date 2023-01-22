@@ -100,7 +100,9 @@ ${index ? `index ${index}` : ''}
       : `
     `
   }REWARD: ${formatEther(reward)} ETH
-    PROMPT: ${!includeDetails && content.length > 140 ? content.slice(0, 140) + '...' : content}${winner}${winningEntryData}
+    PROMPT: ${
+      !includeDetails && content.length > 140 ? content.slice(0, 140) + '...' : content
+    }${winner}${winningEntryData}
 `
   return characters
 }

@@ -20,6 +20,7 @@ import {
   fetchCommissions,
   makeCommissionString,
 } from '../utils'
+import { entryDetails } from '../../../apollo/queries'
 
 export const handleDisplayCommissions = async (
   printLine: Function,
@@ -180,7 +181,7 @@ export const handleCreateCommission = async (
     const minTimeSeconds = numberDays * 24 * 60 * 60
     try {
       const tx = await factoryContract.createCommission(path, minTimeSeconds, options)
-      printLine(`creating your commission... transaction hash ${tx.hash}`)
+      printLine(`creating your commission... \ntransaction hash ${tx.hash}`)
       setTransactionHash(tx.hash)
       printLine('hang tight this will take a minute...')
       const receipt = await tx.wait()
@@ -251,11 +252,9 @@ export const handleCreateEntry = async (
       const tx = await commissionContract.submitEntry(entryPath)
       printLine(`creating entry...`)
       printLine(`transaction hash: ${tx.hash}`)
-      const receipt = await tx.wait()
-      if (receipt) {
-        printLine(`entry created`)
-        return true
-      }
+      await tx.wait()
+      printLine(`entry created`)
+      return true
     } catch (err) {
       printLine('transaction failed.')
       if (err instanceof MetaMaskError) {
@@ -323,20 +322,16 @@ export const handleDisplayEntries = async (
   printLine('commands: next, create-entry, previous, entry details (index#)')
 }
 
-export const fetchEntriesOfCommission = async (
-  commission: Commission,
-  setDisplayedEntries: Function,
-  getEntriesQuery: DocumentNode
-) => {
-  const variables = { id: commission.id }
+export const fetchEntry = async (entryId: string) => {
+  const variables = { entryId }
   const res = await client.query({
-    query: getEntriesQuery,
+    query: entryDetails,
     variables,
     fetchPolicy: 'no-cache',
   })
-  const entries = res?.data?.entries
-  const entriesWithContent = await Promise.all(entries.map(getEntryContent))
-  setDisplayedEntries(entriesWithContent)
+
+  const entry = res?.data?.entry
+  const entriesWithContent = await getEntryContent(entry)
   return entriesWithContent
 }
 
@@ -389,7 +384,7 @@ export const handleVote = async (
     const tx = await commissionFactory.vote(entry?.author?.id, options)
     if (tx) {
       loading(true)
-      printLine(`processing vote... transaction hash: ${tx.hash}`)
+      printLine(`processing vote... \ntransaction hash: ${tx.hash}`)
     }
     const receipt = await tx.wait()
     if (receipt) printLine(`vote successful. transaction hash: ${tx.hash}`)
@@ -559,7 +554,8 @@ export const handleConfirmVote = async (
   printLine: Function,
   signer: JsonRpcSigner,
   voteAmount: string,
-  loading: Function
+  loading: Function,
+  refetchAndDisplayEntryDetails: Function
 ) => {
   if (command === 'yes') {
     if (!selectedEntry || !selectedCommission)
@@ -573,6 +569,7 @@ export const handleConfirmVote = async (
       selectedCommission,
       loading
     )
+    refetchAndDisplayEntryDetails()
   } else {
     printLine('okay. what would you like to do?')
   }

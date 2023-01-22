@@ -30,13 +30,11 @@ const EntryForm = ({ id, onComplete }: { id: string; onComplete?: Function }) =>
       const tx = await commissionContract.submitEntry(path)
       toast.info('submitting entry. this will take a minute...', { autoClose: false })
       setTxHash(tx.hash)
-      const receipt = await tx.wait()
-      if (receipt) {
-        setComplete(true)
-        toast.dismiss()
-        toast.success('new entry created!')
-        if (onComplete) onComplete()
-      }
+      await tx.wait()
+      setComplete(true)
+      toast.dismiss()
+      toast.success('new entry created!')
+      if (onComplete) onComplete()
     } catch (err) {
       toast.dismiss()
       if (err.code === 4001) {
