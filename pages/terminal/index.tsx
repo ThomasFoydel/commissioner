@@ -211,8 +211,10 @@ const Terminal = () => {
     }
 
     let updatedEntry = await fetchEntry(selectedEntry.id)
-
+    let attempts = 0
     const pollForIt = async () => {
+      attempts++
+      if (attempts > 100) return printLine("error fetching updated data")
       updatedEntry = await fetchEntry(selectedEntry.id)
       if (updatedEntry.voteAmount === selectedEntry.voteAmount) {
         setTimeout(pollForIt, 1000)
