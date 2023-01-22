@@ -343,7 +343,12 @@ const Terminal = () => {
     )
     if (comId) {
       clear()
-      displayCommissionDetailsById(comId.toLowerCase())
+      setPage('details')
+      try {
+        displayCommissionDetailsById(comId.toLowerCase())
+      } catch (err) {
+        printLine(err.message)
+      }
     }
   }
 

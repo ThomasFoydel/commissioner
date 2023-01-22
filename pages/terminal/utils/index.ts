@@ -89,7 +89,7 @@ export const makeCommissionString = async (
   const details = `
     COMMISSIONER: ${commissioner.id}
     ENTRY COUNT: ${entryCount}
-    ${active ? triggerDetails : ''}`
+    ${active ? triggerDetails : ''}\n    `
 
   const characters = `
 ${index ? `index ${index}` : ''}
@@ -135,15 +135,24 @@ export const fetchCommissions = async (getCommissionsQuery: DocumentNode, user?:
 }
 
 export const fetchCommission = async (comId: string) => {
-  const res = await client.query({
-    query: comDetails,
-    variables: { comId },
-    fetchPolicy: 'no-cache',
-  })
-  const commission = res?.data?.commission
-
-  const ipfsData = await getIpfsText(commission.prompt)
-  return { ...commission, content: ipfsData }
+  let attempts = 0
+  const pollForIt = async () => {
+    attempts++
+    if (attempts > 100) throw Error('failed to fetch commission data')
+    const res = await client.query({
+      query: comDetails,
+      variables: { comId },
+      fetchPolicy: 'no-cache',
+    })
+    const commission = res?.data?.commission
+    if (!commission) {
+      setTimeout(pollForIt, 1000)
+    } else {
+      const ipfsData = await getIpfsText(commission.prompt)
+      return { ...commission, content: ipfsData }
+    }
+  }
+  return pollForIt()
 }
 
 export const makeCommissionQuery = (
