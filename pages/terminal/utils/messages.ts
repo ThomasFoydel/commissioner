@@ -24,6 +24,7 @@ Commissioner is a decentralized, censorship-resistant platform.
 - In this case, that user gets the kickback.
 - All of these actions are indexed by the subgraph, and easily queried through graphql.
 - Users profiles contain the commissions and entries they have made, the votes they have contributed, the votes they have earned, and the commissions they have won.
+- In short: Say anything, and let the market decide.
 `
 
 export const manualMessage = `
