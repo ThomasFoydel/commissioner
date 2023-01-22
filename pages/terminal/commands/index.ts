@@ -188,7 +188,7 @@ export const handleCreateCommission = async (
       if (receipt) printLine('successfully uploaded')
       const comId = receipt.events[0].args.commission
       printLine(`commission address: ${comId}`)
-      setPage('commission-success')
+      return comId
     } catch (err) {
       if (err instanceof ErrorResponse) {
         if (err.code === 4001)

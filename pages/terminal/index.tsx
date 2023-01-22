@@ -214,7 +214,7 @@ const Terminal = () => {
     let attempts = 0
     const pollForIt = async () => {
       attempts++
-      if (attempts > 100) return printLine("error fetching updated data")
+      if (attempts > 100) return printLine('error fetching updated data')
       updatedEntry = await fetchEntry(selectedEntry.id)
       if (updatedEntry.voteAmount === selectedEntry.voteAmount) {
         setTimeout(pollForIt, 1000)
@@ -328,9 +328,9 @@ const Terminal = () => {
   const displayCommissionDetailsById = (id: string) =>
     handleDisplayCommissionDetailsById(printLine, loading, id, setSelectedCommission, account)
 
-  const handleCommissionInput = (command: string) => {
+  const handleCommissionInput = async (command: string) => {
     if (!library || !account) return printLine('metamask not connected')
-    handleCreateCommission(
+    const comId = await handleCreateCommission(
       command,
       reward,
       minTime,
@@ -341,6 +341,10 @@ const Terminal = () => {
       printLine,
       setTransactionHash
     )
+    if (comId) {
+      clear()
+      displayCommissionDetailsById(comId.toLowerCase())
+    }
   }
 
   const commissionsDirection = (direction: string) =>
