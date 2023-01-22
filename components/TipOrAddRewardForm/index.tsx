@@ -43,9 +43,9 @@ const TipOrAddRewardForm = ({
   const [complete, setComplete] = useState(false)
   const [tipWinnerFormOpen, setTipWinnerFormOpen] = useState(false)
   const toggleTipWinnerForm = () => setTipWinnerFormOpen((o) => !o)
-  const [winnerTipAmount, setWinnerTipAmount] = useState(0)
+  const [winnerTipAmount, setWinnerTipAmount] = useState('0')
   const handleWinnerTipAmount = (e: ChangeEvent<HTMLInputElement>) => {
-    setWinnerTipAmount(+e.target.value)
+    setWinnerTipAmount(e.target.value)
   }
 
   const handleTipWinnerSubmit = async (e: FormEvent) => {
@@ -60,14 +60,7 @@ const TipOrAddRewardForm = ({
     toast.dismiss()
     toast.info('please approve in metamask')
     try {
-      const options = {
-        value: parseEther(
-          winnerTipAmount.toLocaleString('fullwide', {
-            useGrouping: false,
-            maximumSignificantDigits: 20,
-          })
-        ).toString(),
-      }
+      const options = { value: parseEther(winnerTipAmount) }
 
       const tx = await contractFunction(options)
       toast.info('sit tight. this will take a minute...', { autoClose: false })

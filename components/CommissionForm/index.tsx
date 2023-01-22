@@ -17,7 +17,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   const [complete, setComplete] = useState(false)
   const [txHash, setTxHash] = useState('')
   const [minTime, setMinTime] = useState(2)
-  const [reward, setReward] = useState(0)
+  const [reward, setReward] = useState('0')
   const router = useRouter()
   const config = useGetConfig()
   const { account, library, chainId } = useEthers()
@@ -35,20 +35,11 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
     toast.dismiss()
     toast.info('please approve in metamask')
     try {
-      const options = {
-        value: parseEther(
-          reward.toLocaleString('fullwide', {
-            useGrouping: false,
-            maximumSignificantDigits: 20,
-          })
-        ).toString(),
-      }
+      const options = { value: parseEther(reward) }
       const minTimeSeconds = minTime * 86400
       const tx = await factoryContract.createCommission(path, minTimeSeconds, options)
       toast.info('creating commission. this will take a minute...', { autoClose: false })
-      if (tx) {
-        setTxHash(tx.hash)
-      }
+      if (tx) setTxHash(tx.hash)
       const receipt = await tx.wait()
       if (receipt) {
         setComplete(true)
@@ -67,7 +58,7 @@ const CommissionForm = ({ onComplete }: { onComplete?: Function }) => {
   }
 
   const handleMinTime = (e: ChangeEvent<HTMLInputElement>) => setMinTime(+e.target.value)
-  const handleReward = (e: ChangeEvent<HTMLInputElement>) => setReward(+e.target.value)
+  const handleReward = (e: ChangeEvent<HTMLInputElement>) => setReward(e.target.value)
 
   return (
     <div className="w-100">

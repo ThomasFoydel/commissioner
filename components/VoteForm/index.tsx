@@ -16,18 +16,18 @@ const VoteForm = ({
   commission: Commission
 }) => {
   const { library, account } = useEthers()
-  const [amount, setAmount] = useState(0)
+  const [amount, setAmount] = useState('0')
   const [formOpen, setFormOpen] = useState(false)
   const [processing, setProcessing] = useState(false)
 
-  const handleAmount = (e: ChangeEvent<HTMLInputElement>) => setAmount(+e.target.value)
+  const handleAmount = (e: ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (processing) return
     toast.dismiss()
     if (!library || !account) return toast.error('not connected to metamask')
-    if (amount <= 0) return toast.error('amount must be greater than zero')
+    if (Number(amount) <= 0) return toast.error('amount must be greater than zero')
     setProcessing(true)
     toast.info('please approve in metamask...')
 
@@ -36,16 +36,14 @@ const VoteForm = ({
     const commissionFactory = new Contract(commission.id, commissionInterface, signer)
 
     try {
-      const options = {
-        value: parseEther(amount.toFixed(18)),
-      }
+      const options = { value: parseEther(amount) }
       const tx = await commissionFactory.vote(entry?.author?.id, options)
       toast.info('submitting your vote. sit tight...', { autoClose: false })
 
       await tx.wait()
 
       toast.success('vote contributed successfully')
-      setAmount(0)
+      setAmount('0')
       setFormOpen(false)
       if (onSuccess) onSuccess()
     } catch (err) {

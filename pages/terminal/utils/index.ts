@@ -5,6 +5,7 @@ import { textLine, textWord } from 'crt-terminal'
 import { comDetails, userProfileQuery } from '../../../apollo/queries'
 import { readTextFromIpfs } from '../../../utils/ipfs/client'
 import { client } from '../../../apollo/client'
+import axios from 'axios'
 
 export const getIpfsText = async (path: string) => {
   try {
@@ -47,7 +48,7 @@ export const timeStringFromSeconds = (secondsRemaining: number, full = true, exa
   if (s > 0) return `${s} second${s > 1 ? 's' : ''}`
 }
 
-export const makeCommissionString = (
+export const makeCommissionString = async (
   commission: Commission,
   index: number | null,
   includeDetails: boolean
@@ -62,31 +63,33 @@ export const makeCommissionString = (
     commissioner,
     minTime,
     active,
+    submittedEntries,
   } = commission
   const creation = new Date(Number(timestamp) * 1000)
-  const winner = `${
-    winningAuthor
-      ? `\n    WINNING AUTHOR: ${winningAuthor.id}`
-      : ''
-  }`
+  const winner = `${winningAuthor ? `\n    WINNING AUTHOR: ${winningAuthor.id}` : ''}`
+  const winningEntry = submittedEntries.find((entry) => entry.author.id === winningAuthor?.id)
+  const winningEntryContent = winningEntry
+    ? (await axios(`/api/ipfs/${winningEntry.ipfsPath}`))?.data?.content
+    : ''
+
+  const winningEntryData = winningEntry ? `\n    WINNING ENTRY CONTENT: ${winningEntryContent}` : ''
+  const triggerDetails =
+    Number(timestamp) + Number(minTime) + 172800 < Date.now() / 1000 && active
+      ? 'PUBLIC TRIGGER OPEN'
+      : Number(timestamp) + Number(minTime) < Date.now() / 1000 && active
+      ? `COMMISSIONER TRIGGER OPEN.\n${timeStringFromSeconds(
+          172800 + Number(timestamp) + Number(minTime) - Date.now() / 1000
+        )} UNTIL PUBLIC TRIGGER.`
+      : `${timeStringFromSeconds(
+          Number(timestamp) + Number(minTime) - Date.now() / 1000
+        )}UNTIL COMMISSIONER TRIGGER OPENS.\n    ${timeStringFromSeconds(
+          172800 + Number(timestamp) + Number(minTime) - Date.now() / 1000
+        )}UNTIL PUBLIC TRIGGER OPENS.`
 
   const details = `
     COMMISSIONER: ${commissioner.id}
     ENTRY COUNT: ${entryCount}
-    ${
-      Number(timestamp) + Number(minTime) + 172800 < Date.now() / 1000 && active
-        ? 'PUBLIC TRIGGER OPEN'
-        : Number(timestamp) + Number(minTime) < Date.now() / 1000 && active
-        ? `COMMISSIONER TRIGGER OPEN.\n${timeStringFromSeconds(
-            172800 + Number(timestamp) + Number(minTime) - Date.now() / 1000
-          )} UNTIL PUBLIC TRIGGER.`
-        : `${timeStringFromSeconds(
-            Number(timestamp) + Number(minTime) - Date.now() / 1000
-          )}UNTIL COMMISSIONER TRIGGER OPENS.\n    ${timeStringFromSeconds(
-            172800 + Number(timestamp) + Number(minTime) - Date.now() / 1000
-          )}UNTIL PUBLIC TRIGGER OPENS.`
-      }
-    `
+    ${active ? triggerDetails : ''}`
 
   const characters = `
 ${index ? `index ${index}` : ''}
@@ -96,9 +99,8 @@ ${index ? `index ${index}` : ''}
       ? details
       : `
     `
-  }REWARD: ${formatEther(reward)} ETH${winner}
-    PROMPT: ${!includeDetails && content.length > 140 ? content.slice(0, 140) + '...' : content}
-  
+  }REWARD: ${formatEther(reward)} ETH
+    PROMPT: ${!includeDetails && content.length > 140 ? content.slice(0, 140) + '...' : content}${winner}${winningEntryData}
 `
   return characters
 }

@@ -34,11 +34,13 @@ export const handleDisplayCommissions = async (
   printLine(`page ${page + 1}`)
   const coms = await fetchCommissions(getCommissionsQuery, user)
   setCommissionsDisplayed(coms)
-  const comStrings = coms.map((com, i) => makeCommissionString(com, i + 1, false))
+  const comStrings = await Promise.all(
+    coms.map(async (com, i) => await makeCommissionString(com, i + 1, false))
+  )
   comStrings.forEach((com) => printLine(com))
   printLine('\n\n')
   printLine(
-    'commands: next, back, sort (field), direction(asc/desc), details (index#), page (page#)'
+    'commands: next, back, sort (field), direction (asc/desc), details (index#), page (page#)'
   )
   loading(false)
 }
@@ -50,7 +52,7 @@ export const handleDisplayCommissionDetails = async (
   account: string
 ) => {
   loading(true)
-  const characters = makeCommissionString(commission, null, true)
+  const characters = await makeCommissionString(commission, null, true)
   loading(false)
   printLine(characters)
   printLine('\n')
@@ -67,7 +69,7 @@ export const handleDisplayCommissionDetails = async (
   const tipWinnerOption = winningAuthor ? 'tip winner, ' : ''
   const tipCommissionerOption = winningAuthor && !userIsCommissioner ? 'tip commissioner, ' : ''
   const triggerOption =
-    (comTriggerOpen && userIsCommissioner) || publicTriggerOpen ? 'select winner, ' : ''
+    active && ((comTriggerOpen && userIsCommissioner) || publicTriggerOpen) ? 'select winner, ' : ''
 
   const tipOptions = `${tipWinnerOption}${tipCommissionerOption}`
   const options = `${tipOptions}${triggerOption}${addRewardOption}${cancelOption}`
