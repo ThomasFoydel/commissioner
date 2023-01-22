@@ -1,13 +1,13 @@
-const factoryAddress = '0xf7869Ae40d6ABC0844c626BE38B8B884F81621f7'
+const factoryAddress = '0x3745E372055eF5E0266B850B6bd414C15fA5f3f0'
 
 export const config = { factoryAddress }
 
 const chains = {
   1: {
-    factoryAddress: '0xf7869Ae40d6ABC0844c626BE38B8B884F81621f7', // goerli address, need to replace
+    factoryAddress: '0x3745E372055eF5E0266B850B6bd414C15fA5f3f0', // goerli address, need to replace
   },
   5: {
-    factoryAddress: '0xf7869Ae40d6ABC0844c626BE38B8B884F81621f7',
+    factoryAddress: '0x3745E372055eF5E0266B850B6bd414C15fA5f3f0',
   },
 }
 const getConfig = (chainId: number) => {
