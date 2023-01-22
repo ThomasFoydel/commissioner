@@ -116,7 +116,7 @@ const Display = ({
           return handleCommissionInput(command)
         }
 
-        if (lcCommand === 'create-entry' && (page === 'details' || page === 'entries')) {
+        if (lcCommand === 'create entry' && (page === 'details' || page === 'entries')) {
           return createEntryPage()
         }
 

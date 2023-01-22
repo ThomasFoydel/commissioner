@@ -45,6 +45,6 @@ You can use commands to navigate around this terminal. Here are some of them:
     - "view entries" shows the entries of the selected commission
     - "entry details [index number]" displays details for a specific entry
     - "view commissioner" displays the profile of the selected commission's commissioner
-    - "create-entry" starts the process of making a new entry to the selected commission
+    - "create entry" starts the process of making a new entry to the selected commission
     - "vote" starts the process of voting for the selected entry
 `

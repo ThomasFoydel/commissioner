@@ -75,7 +75,7 @@ export const handleDisplayCommissionDetails = async (
   const tipOptions = `${tipWinnerOption}${tipCommissionerOption}`
   const options = `${tipOptions}${triggerOption}${addRewardOption}${cancelOption}`
 
-  printLine(`commands: view entries, create-entry, ${options}view commissioner, return`)
+  printLine(`commands: view entries, create entry, ${options}view commissioner, return`)
   loading(false)
 }
 
@@ -319,7 +319,7 @@ export const handleDisplayEntries = async (
   const entryStrings = entriesWithContent.map(processEntry)
   entryStrings.forEach((entry) => printLine(entry))
   if (entryStrings.length === 0) printLine('empty page')
-  printLine('commands: next, create-entry, previous, entry details (index#)')
+  printLine('commands: next, create entry, previous, entry details (index#)')
 }
 
 export const fetchEntry = async (entryId: string) => {
