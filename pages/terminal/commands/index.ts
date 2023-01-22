@@ -275,7 +275,13 @@ export const handleCreateEntry = async (
 const processEntry = (entry: Entry, i: number | null) => {
   const { id, contributions, author, voteAmount, content, ipfsPath, timestamp } = entry
   const voters = contributions.map((v) => v?.vote?.voter?.id)
-  const displayVoters = voters.length > 0 ? voters.join(',') : 'no voters yet'
+  const displayVoters =
+    voters.length > 0
+      ? voters.join(',\n            ')
+      : voters.length > 40
+      ? voters.slice(0, 40).join(',\n            ') +
+        `\n            and ${voters.length - 40} more...`
+      : 'no voters yet'
   const displayContent =
     content.length < 120 || i === null ? content.slice(0, 888) : `${content.slice(0, 120)}...`
   const index = typeof i === 'number' ? `\nINDEX ${i + 1}` : ''
@@ -607,9 +613,21 @@ export const handleDisplayCommissionDetailsById = async (
   setSelectedCommission: Function,
   account: string
 ) => {
-  const commission = await fetchCommission(id)
-  setSelectedCommission(commission)
-  handleDisplayCommissionDetails(printLine, loading, commission, account)
+  try {
+    let attempts = 0
+    const pollForIt = async () => {
+      attempts++
+      if (attempts > 100) return printLine('error fetching commission data')
+      const commission = await fetchCommission(id)
+      if (commission) {
+        setSelectedCommission(commission)
+        handleDisplayCommissionDetails(printLine, loading, commission, account)
+      } else setTimeout(pollForIt, 1000)
+    }
+    pollForIt()
+  } catch (err) {
+    printLine('error displaying commission details')
+  }
 }
 
 export const handleAddReward = async (
@@ -632,7 +650,6 @@ export const handleAddReward = async (
     printLine('add reward transaction successful')
     refetchAndDisplayCommission()
   } catch (err) {
-    console.log(err)
     printLine('add reward transaction failed')
   }
   loading(false)

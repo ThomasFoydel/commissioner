@@ -256,7 +256,6 @@ const Display = ({
           const id = command.split(' ')[1]
           return displayCommissionDetailsById(id)
         }
-   
 
         printLine(`command "${command}" not recognized`)
       }}
