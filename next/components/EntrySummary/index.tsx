@@ -10,7 +10,7 @@ const EntrySummary = ({ entry, authorId }: { entry: Entry; authorId?: string }) 
       <TypeOut>AUTHOR {truncate(authorId || entry.author.id)}</TypeOut>
       <TypeOut>CREATED {new Date(+entry.timestamp * 1000).toLocaleString()}</TypeOut>
       <TypeOut>CONTENT</TypeOut>
-      <InterplanetaryContent path={entry.ipfsPath} maxChars={1000} />
+      <InterplanetaryContent path={entry.ipfsPath} maxChars={200} />
       <TypeOut>
         {entry.voteAmount} {Number(entry.voteAmount) === 1 ? 'VOTE' : 'VOTES'}
       </TypeOut>

@@ -66,13 +66,13 @@ const MobileDrawer = ({
       >
         {routes.map((route) => (
           <Link onClick={() => setDrawerOpen(false)} href={route.path} key={route.path}>
-            <p
+            <span
               className={`hover:text-skin-button-muted transition my-2 ml-2 ${
                 routerPath === route.path ? 'underline' : ''
               }`}
             >
               {route.label}
-            </p>
+            </span>
           </Link>
         ))}
       </div>

@@ -3,15 +3,7 @@ import { truncateContent } from '../../utils'
 import { readTextFromIpfs } from '../../utils/ipfs/client'
 import TypeOut from '../TypeOut'
 
-const InterplanetaryContent = ({
-  path,
-  label,
-  maxChars,
-}: {
-  path: string
-  label?: string
-  maxChars?: number
-}) => {
+const InterplanetaryContent = ({ path, maxChars }: { path: string; maxChars?: number }) => {
   const [content, setContent] = useState('')
   useEffect(() => {
     if (!path) return
@@ -33,7 +25,14 @@ const InterplanetaryContent = ({
   }, [path])
 
   if (!content) return <></>
-  return <TypeOut>{label ? `${label} ${content}` : content}</TypeOut>
+
+  return (
+    <>
+      {content.split('\n').map((line, i) => (
+        <TypeOut key={i}>{line.length === 0 ? <span>&nbsp;</span> : line}</TypeOut>
+      ))}
+    </>
+  )
 }
 
 export default InterplanetaryContent
