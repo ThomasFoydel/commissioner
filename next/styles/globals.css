@@ -1,0 +1,76 @@
+@import './index.css';
+@import './toast.css';
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+html {
+  font-family: 'Courier New', courier, monospace;
+  text-shadow: 0 0 1.1428571429rem #d0fc7e, 0 0 1.7142857143rem #d0fc7e;
+  color: #d0fc7e;
+}
+
+.crt-border {
+  border: 1px solid #d0fc7e;
+}
+
+.Typist .Cursor {
+  display: inline-block;
+  width: 0;
+}
+
+.crt {
+  font-family: 'Courier New', courier, monospace;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-shadow: 0 0 1.1428571429rem #d0fc7e, 0 0 1.7142857143rem #d0fc7e;
+  color: #d0fc7e;
+  position: relative;
+  margin: 0;
+  padding: 2rem;
+  padding-bottom: 4rem;
+  display: block;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100vw;
+  height: calc(100vh - 30px);
+  max-height: calc(100vh - 30px);
+  overflow-y: scroll;
+  background: radial-gradient(50% 50% at 50% 50%, #354228 0, #0f140a 100%);
+  border: 1.1428571429rem solid #111010;
+  border-radius: 3.4285714286rem;
+  box-shadow: 0 0 2.8571428571rem #252925, inset 0 0 2rem 1.4285714286rem #000;
+  -webkit-font-smoothing: antialiased;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+.crt::-webkit-scrollbar {
+  display: none;
+}
+
+.pixels {
+  position: fixed;
+  z-index: 2;
+  right: 0;
+  left: 1.1428571429rem;
+  bottom: 1.1428571429rem;
+  display: block;
+  pointer-events: none;
+  background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.21) 0),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.055), rgba(0, 255, 0, 0.03), rgba(0, 0, 255, 0.055));
+  background-position-y: 0.0714285714rem;
+  background-size: 100% 0.2142857143rem, 0.2857142857rem 100%;
+  height: calc(100vh - 30px - 2.2857142858rem);
+  width: calc(100vw - 2.2857142858rem);
+  border-radius: 3.4285714286rem;
+}

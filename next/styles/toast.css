@@ -1,0 +1,35 @@
+.Toastify__toast-container {
+  z-index: 2 !important;
+}
+.Toastify__progress-bar {
+    background:  #d0fc7e !important;
+}
+.Toastify__toast--info,
+.Toastify__toast--error,
+.Toastify__toast--success {
+  border: 1px solid #d0fc7e;
+  color: #d0fc7e;
+  text-shadow: none;
+  background: #111010 !important;
+  font-family: 'Courier New', Courier, monospace;
+  box-shadow: 7px 7px 32px #d0fc7e47;
+  right: 30px;
+}
+
+.Toastify__toast--info svg,
+.Toastify__toast--error svg,
+.Toastify__toast--success svg {
+  fill: #d0fc7e;
+}
+
+.Toastify__toast-body {
+  /* color: #444c63; */
+  font-size: 16px;
+  line-height: 20px;
+  padding: 0px;
+  font-weight: 400;
+  margin-left: 10px !important;
+}
+.Toastify__toast > button > svg {
+  display: none;
+}

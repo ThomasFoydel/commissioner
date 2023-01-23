@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .theme-light {
+    --text: theme(colors.gray.900);
+    --bg-color: theme(colors.white);
+    --primary: theme(colors.purple.600);
+    --accent: (colors.pink.300);
+}
+
+.theme-dark {
+    --text: theme(colors.gray.100);
+    --bg-color: theme(colors.gray.900);
+    --primary: theme(colors.purple.700);
+    --accent: theme(colors.pink.300);
+} */
+
+.card {
+  @apply max-w-sm rounded overflow-hidden shadow-lg;
+}
+
+.button {
+  @apply bg-skin-button-accent hover:bg-skin-button-muted hover:text-skin-button-accent transition-colors font-bold py-2 px-4 rounded;
+}
+
+.input,
+.select {
+  @apply border-[#d0fc7e] border-[1px] p-1 focus:outline-inherit rounded-[7px];
+}
+
+.center {
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+.w-50 {
+  width: 50%;
+}
+.w-90 {
+  width: 90%;
+}
+.w-100 {
+  width: 100%;
+}
+.disabled {
+  opacity: 0.7;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+@layer base {
+  :root {
+    --color-test: 255, 0, 0;
+    --color-text-base: 25, 175, 25;
+    --color-text-muted: 0, 143, 17;
+    --color-text-inverted: 0, 0, 0;
+    --color-fill: 0, 255, 65;
+    --color-button-accent: 70, 70, 37;
+    --color-button-accent-hover: 254, 242, 242;
+    --color-button-muted: 138, 163, 81;
+    --card-base: 30, 40, 30;
+  }
+  .dark {
+    --color-text-base: 25, 175, 25;
+    --color-text-muted: 0, 143, 17;
+    --color-text-inverted: 0, 0, 0;
+    --color-fill: 0, 255, 65;
+    --color-button-accent: 0, 59, 0;
+    --color-button-accent-hover: 254, 242, 242;
+    --color-button-muted: 118, 255, 124;
+    --card-base: 30, 40, 30;
+  }
+  .light {
+    --color-text-base: 17, 24, 2;
+    --color-text-muted: 47, 67, 6;
+    --color-text-inverted: 235, 250, 204;
+    --color-fill: 179, 255, 23;
+    --color-button-accent: 36, 52, 3;
+    --color-button-accent-hover: 55, 79, 5;
+    --color-button-muted: 212, 255, 122;
+  }
+  .old {
+    --color-text-base: 255, 255, 255;
+    --color-text-muted: 199, 210, 254;
+    --color-text-inverted: 79, 70, 229;
+    --color-fill: 67, 56, 202;
+    --color-button-accent: 255, 255, 255;
+    --color-button-accent-hover: 238, 242, 255;
+    --color-button-muted: 99, 102, 241;
+  }
+}
+
+html {
+  font-family: Courier;
+}
