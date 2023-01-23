@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useEthers } from '@usedapp/core'
-import Hamburger from './assets/hamburger'
+import Hamburger from './assets/Hamburger'
 
 const Header = () => {
   const { account } = useEthers()

@@ -58,7 +58,8 @@ export const handleDisplayCommissionDetails = async (
   printLine(characters)
   printLine('\n')
 
-  const { commissioner, timestamp, minTime, canBeCancelled, winningAuthor, active } = commission
+  const { commissioner, timestamp, minTime, canBeCancelled, winningAuthor, active, forerunner } =
+    commission
   const now = Date.now() / 1000
   const secondsPassed = now - Number(timestamp)
   const userIsCommissioner = commissioner.id === account.toLowerCase()
@@ -70,7 +71,9 @@ export const handleDisplayCommissionDetails = async (
   const tipWinnerOption = winningAuthor ? 'tip winner, ' : ''
   const tipCommissionerOption = winningAuthor && !userIsCommissioner ? 'tip commissioner, ' : ''
   const triggerOption =
-    active && ((comTriggerOpen && userIsCommissioner) || publicTriggerOpen) ? 'select winner, ' : ''
+    active && forerunner && ((comTriggerOpen && userIsCommissioner) || publicTriggerOpen)
+      ? 'select winner, '
+      : ''
 
   const tipOptions = `${tipWinnerOption}${tipCommissionerOption}`
   const options = `${tipOptions}${triggerOption}${addRewardOption}${cancelOption}`
@@ -928,6 +931,7 @@ export const handleChooseWinner = async (
   signer: JsonRpcSigner,
   loading: Function
 ) => {
+  if (!selectedCommission.forerunner) return printLine('no forerunner')
   const publicTrigger = account !== selectedCommission.commissioner.id
   const now = Date.now() / 1000
   const secondsPassed = now - Number(selectedCommission.timestamp)
