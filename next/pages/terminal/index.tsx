@@ -1,4 +1,4 @@
-import { Contract, Signer } from 'ethers'
+import { Contract } from 'ethers'
 import { DocumentNode } from 'graphql'
 import { useEthers } from '@usedapp/core'
 import { Interface } from 'ethers/lib/utils'
@@ -8,7 +8,7 @@ import { fetchCommission, line, makeCommissionQuery, makeEntriesQuery } from '..
 import { commissionsPerPage, entriesPerPage } from '../../utils/constants'
 import factoryABI from '../../utils/ethers/ABIs/factoryABI.json'
 import useGetConfig from '../../utils/customHooks/useGetConfig'
-import Display from './Display'
+import Display from '../../components/TerminalDisplay'
 import {
   handleDisplayCommissionDetails,
   handleDisplayCommissions,
