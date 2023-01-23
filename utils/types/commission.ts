@@ -53,4 +53,5 @@ export interface CommissionType {
   minTime: string
   active: boolean
   canBeCancelled: boolean
+  forerunner: string
 }

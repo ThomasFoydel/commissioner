@@ -7,6 +7,7 @@ const comFields = `
         id
     }
     canBeCancelled
+    forerunner
     submittedEntries {
         id
         author {
@@ -113,6 +114,7 @@ export const commmissionWithoutEntries = gql`
         id
       }
       canBeCancelled
+      forerunner
       entryCount
       prompt
       winningAuthor {

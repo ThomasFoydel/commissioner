@@ -44,6 +44,7 @@ const CommissionDetails = () => {
     winningAuthor,
     commissioner,
     entryCount,
+    forerunner,
     timestamp,
     minTime,
     prompt,
@@ -182,12 +183,12 @@ const CommissionDetails = () => {
             <TypeOut>CANCEL</TypeOut>
           </Button>
         )}
-        {active && commissionerTriggerOpen && !publicTriggerOpen && (
+        {active && commissionerTriggerOpen && !publicTriggerOpen && forerunner && (
           <Button className="button" onClick={handleCommissionerTrigger}>
             <TypeOut>COMMISSIONER TRIGGER</TypeOut>
           </Button>
         )}
-        {active && publicTriggerOpen && (
+        {active && publicTriggerOpen && forerunner && (
           <Button className="button" onClick={handlePublicTrigger}>
             <TypeOut>PUBLIC TRIGGER</TypeOut>
           </Button>
