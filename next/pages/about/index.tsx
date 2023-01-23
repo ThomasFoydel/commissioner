@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import { H, Level } from 'react-accessible-headings'
-import { aboutMessage } from '../terminal/utils/messages'
+import { aboutMessage } from '../../utils/terminal/messages'
 import TypeOut from '../../components/TypeOut'
 import Layout from '../layouts/CRT'
 

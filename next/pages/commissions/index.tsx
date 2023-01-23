@@ -39,12 +39,10 @@ const Commissions = () => {
         </div>
         <PageSelector onChange={setPage} page={page} />
 
-        <Link
-          className="button block mt-4 w-[256px] center text-center"
-          style={{ textShadow: 'none' }}
-          href="/create"
-        >
-          <TypeOut>CREATE COMMISSION</TypeOut>
+        <Link style={{ textShadow: 'none' }} href="/create">
+          <TypeOut>
+            <p className="button block mt-4 w-[256px] center text-center">CREATE COMMISSION</p>
+          </TypeOut>
         </Link>
       </Level>
     </div>

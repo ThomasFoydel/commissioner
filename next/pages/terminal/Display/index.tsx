@@ -1,6 +1,6 @@
 import { Terminal } from 'crt-terminal'
-import { line } from '../../../utils/terminal'
 import { aboutMessage, manualMessage } from '../../../utils/terminal/messages'
+import { line } from '../../../utils/terminal'
 
 const Display = ({
   props: {

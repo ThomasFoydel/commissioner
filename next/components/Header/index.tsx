@@ -25,14 +25,14 @@ const Header = () => {
         {routes
           .filter((route) => !route.hide)
           .map((route) => (
-            <Link
-              className={`hover:text-skin-button-muted transition mx-3 ${
-                router.asPath.toLowerCase() === route.path ? 'underline' : ''
-              }`}
-              href={route.path}
-              key={route.path}
-            >
-              {route.label}
+            <Link href={route.path} key={route.path}>
+              <span
+                className={`hover:text-skin-button-muted transition mx-3 ${
+                  router.asPath.toLowerCase() === route.path ? 'underline' : ''
+                }`}
+              >
+                {route.label}
+              </span>
             </Link>
           ))}
       </div>
@@ -65,15 +65,14 @@ const MobileDrawer = ({
         }}
       >
         {routes.map((route) => (
-          <Link
-            onClick={() => setDrawerOpen(false)}
-            className={`hover:text-skin-button-muted transition my-2 ml-2 ${
-              routerPath === route.path ? 'underline' : ''
-            }`}
-            href={route.path}
-            key={route.path}
-          >
-            {route.label}
+          <Link onClick={() => setDrawerOpen(false)} href={route.path} key={route.path}>
+            <p
+              className={`hover:text-skin-button-muted transition my-2 ml-2 ${
+                routerPath === route.path ? 'underline' : ''
+              }`}
+            >
+              {route.label}
+            </p>
           </Link>
         ))}
       </div>

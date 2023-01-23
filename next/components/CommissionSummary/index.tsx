@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { formatEther } from 'ethers/lib/utils'
 import { H, Level } from 'react-accessible-headings'
 import InterplanetaryContent from '../InterplanetaryContent'
-import { truncate, truncateContent } from '../../utils'
+import { truncate } from '../../utils'
 import TypeOut from '../TypeOut'
 
 const CommissionSummary = ({
