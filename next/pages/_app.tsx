@@ -30,6 +30,34 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
               content="Decentralized and censorship-resistant written content commissioning."
             />
             <link rel="icon" href="/favicon.ico" />
+
+            {/* Primary Meta Tags  */}
+            <title>Commissioner</title>
+            <meta name="title" content="Commissioner" />
+            <meta
+              name="description"
+              content="Decentralized, censorship-resistant, and market-driven written content."
+            />
+
+            {/* Open Graph / Facebook */}
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://commissioner.vercel.app" />
+            <meta property="og:title" content="Commissioner" />
+            <meta
+              property="og:description"
+              content="Decentralized, censorship-resistant, and market-driven written content."
+            />
+            <meta property="og:image" content="https://commissioner.vercel.app/preview.png" />
+
+            {/* Twitter  */}
+            <meta property="twitter:card" content="summary_large_image" />
+            <meta property="twitter:url" content="https://commissioner.vercel.app" />
+            <meta property="twitter:title" content="Commissioner" />
+            <meta
+              property="twitter:description"
+              content="Decentralized, censorship-resistant, and market-driven written content."
+            />
+            <meta property="twitter:image" content="https://commissioner.vercel.app/preview.png" />
           </Head>
           <Header />
           {getLayout(<AnyComponent {...pageProps} />)}
