@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { timeStringFromSeconds } from '../../pages/terminal/utils'
+import { timeStringFromSeconds } from '../../utils/terminal'
 
 const CountDown = ({
   endTimestamp,

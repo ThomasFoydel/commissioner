@@ -2,9 +2,9 @@ import { gql } from '@apollo/client'
 import { DocumentNode } from 'graphql'
 import { formatEther } from 'ethers/lib/utils'
 import { textLine, textWord } from 'crt-terminal'
-import { comDetails, userProfileQuery } from '../../../apollo/queries'
-import { readTextFromIpfs } from '../../../utils/ipfs/client'
-import { client } from '../../../apollo/client'
+import { comDetails, userProfileQuery } from '../../apollo/queries'
+import { readTextFromIpfs } from '../ipfs/client'
+import { client } from '../../apollo/client'
 import axios from 'axios'
 
 export const getIpfsText = async (path: string) => {

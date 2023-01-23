@@ -4,7 +4,7 @@ import { useEthers } from '@usedapp/core'
 import { Interface } from 'ethers/lib/utils'
 import { useEventQueue } from 'crt-terminal'
 import React, { useState, useEffect } from 'react'
-import { fetchCommission, line, makeCommissionQuery, makeEntriesQuery } from './utils'
+import { fetchCommission, line, makeCommissionQuery, makeEntriesQuery } from '../../utils/terminal'
 import { commissionsPerPage, entriesPerPage } from '../../utils/constants'
 import factoryABI from '../../utils/ethers/ABIs/factoryABI.json'
 import useGetConfig from '../../utils/customHooks/useGetConfig'
@@ -45,7 +45,7 @@ import {
   handleAddReward,
   handleTipWinner,
   handleTipCommissioner,
-} from './commands'
+} from '../../utils/terminal/commands'
 
 const bannerText = `\nCOMMISSIONER\ncommissions create help man about profile`
 

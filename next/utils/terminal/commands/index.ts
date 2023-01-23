@@ -2,9 +2,9 @@ import { Contract } from 'ethers'
 import { DocumentNode } from 'graphql'
 import { Interface, parseEther } from 'ethers/lib/utils'
 import { JsonRpcSigner } from '@ethersproject/providers'
-import commissionAbi from '../../../utils/ethers/ABIs/commissionABI.json'
-import { ErrorResponse, MetaMaskError } from '../../../utils/types/error'
-import { uploadTextToIpfs } from '../../../utils/ipfs/client'
+import commissionAbi from '../../ethers/ABIs/commissionABI.json'
+import { ErrorResponse, MetaMaskError } from '../../types/error'
+import { uploadTextToIpfs } from '../../ipfs/client'
 import { client } from '../../../apollo/client'
 import {
   directions,
@@ -12,14 +12,14 @@ import {
   entrySortFields,
   commissionsPerPage,
   commissionOrderFields,
-} from '../../../utils/constants'
+} from '../../constants'
 import {
   getUser,
   getIpfsText,
   fetchCommission,
   fetchCommissions,
   makeCommissionString,
-} from '../utils'
+} from '..'
 import { entryDetails } from '../../../apollo/queries'
 
 export const handleDisplayCommissions = async (
