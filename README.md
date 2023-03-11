@@ -1,8 +1,12 @@
 # COMMISSIONER
 
+<a href="https://commissioner.vercel.app/">
 <img src="./next/public/preview.png" alt="preview of the commissions page">
+</a>
 
-Commissioner is a decentralized, censorship-resistant platform.
+## Commissioner is a decentralized, censorship-resistant platform.
+
+Check out the live app at <a href="https://commissioner.vercel.app/">https://commissioner.vercel.app/</a>
 
 - Commissioner is built with Solidity, TypeScript, React, NextJs, and AssemblyScript.
 - You must connect MetaMask to use Commissioner.
